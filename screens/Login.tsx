@@ -91,7 +91,7 @@ const Login = ({ navigation }) => {
 								Set first connection properties in Settings
 							</ErrorMsgBox>}
 							<StyledButton onPress={handleSubmit} disabled={!isConnectionPropertiesExist}>
-								<ButtonText>{isSignInning ? 'SignInning' : 'Login'}</ButtonText>
+								<ButtonText>{isSignInning ? 'SignIn...' : 'Login'}</ButtonText>
 							</StyledButton>
 						</StyledFormArea>}
 					</Formik>

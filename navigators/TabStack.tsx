@@ -13,7 +13,6 @@ import RouteNames from './../constants/route.names';
 
 const Login = React.lazy(() => import('./../screens/Login'));
 const Settings = React.lazy(() => import('./../screens/Settings'));
-const Welcome = React.lazy(() => import('./../screens/Welcome'));
 
 
 const Tabs = createBottomTabNavigator();

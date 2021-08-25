@@ -13,7 +13,7 @@ const StatusBarHeight = Constants.statusBarHeight;
 //colors
 export const Colors = {
 	primary: '#ffffff',
-	secondary: '#e5e7eb',
+	secondary: '#d3d3d3',
 	tertiary: '#1f2937',
 	darkLight: '#9ca3af',
 	brand: '#6d28d9',
@@ -58,7 +58,8 @@ export const StyledFormArea = styled(View)`
 `;
 
 export const StyledTextInput = styled(TextInput)`
-	background-color: ${Colors.secondary};
+	background-color: ${({ disabled }) => !!disabled ? Colors.secondary : Colors.primary};
+	border: 1px solid ${Colors.secondary}
 	padding: 15px 55px 15px 55px;
 	border-radius: 5px;
 	font-size: 16px;
@@ -90,7 +91,8 @@ export const RightIcon = styled(TouchableOpacity)`
 
 export const StyledButton: React.FC<{ [key: string]: any }> = styled(TouchableOpacity)`
 	padding: 15px;
-	background-color: ${(props) => props.disabled ? Colors.darkLight : Colors.green};
+	background-color: ${Colors.green};
+	opacity: ${(props) => props.disabled ? '0.5' : '1'};
 	justify-content: center;
 	align-items: center;
 	border-radius: 5px;
@@ -109,5 +111,10 @@ export const ErrorMsgBox = styled(Text)`
 	font-size: 14px;
 	padding: 10px 0;
 	color: ${Colors.red}
+`;
+
+export const LabelingErrorMsgBox = styled(ErrorMsgBox)`
+	padding: 0 0 10px 0;
+	text-align: left;
 `;
 
