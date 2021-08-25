@@ -3,9 +3,10 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-module.exports = function(api) {
-	api.cache(true);
-	return {
-		presets: ['babel-preset-expo'],
-	};
-};
+enum RouteNames {
+	LOGIN = 'LOGIN',
+	SETTINGS = 'SETTINGS',
+	WELCOME = 'WELCOME'
+}
+
+export default RouteNames;

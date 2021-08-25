@@ -3,9 +3,12 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-module.exports = function(api) {
-	api.cache(true);
-	return {
-		presets: ['babel-preset-expo'],
-	};
-};
+export interface TextInputProps {
+	label: string,
+	icon: any,
+	isPassword?: boolean,
+	hidePassword?: boolean,
+	setHidePassword?: Function,
+
+	[key: string]: any
+}
