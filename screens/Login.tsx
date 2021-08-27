@@ -42,7 +42,7 @@ const Login = ({ navigation }) => {
 		<KeyboardAvoidingWrapper>
 			<StyledContainer>
 				<InnerContainer>
-					<PageTitle>Scanning App</PageTitle>
+					<PageTitle>Labeling App</PageTitle>
 					<SubTitle>Please Login!</SubTitle>
 
 					<Formik
@@ -56,13 +56,13 @@ const Login = ({ navigation }) => {
 										: null,
 								);
 								checkIsSignedIn(() => setSingInning(false));
-							});
+							}).finally(() => setSingInning(false));
 						}}
 					>
 						{({ handleChange, handleBlur, handleSubmit, values }) => <StyledFormArea>
 							<TextInput
-								label={'Email Address'}
-								icon={'mail'}
+								label={'Login'}
+								icon={'person'}
 								placeholder={'w2mo@logivations.com'}
 								placeholderTextColor={Colors.darkLight}
 								onChangeText={handleChange('email')}

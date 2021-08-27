@@ -8,7 +8,7 @@ interface AppContextProviderParams {
 }
 
 export const AppContextProvider = ({ children }: AppContextProviderParams) => {
-	const [isLoading, setLoading] = useState<boolean>(true);
+	const [isLoading, setLoading] = useState<boolean>(false);
 	const [isSignedIn, setSignedIn] = useState<boolean>(false);
 
 	const checkIsSignedIn = useCallback((setSingInning?: Function) => {
@@ -16,12 +16,11 @@ export const AppContextProvider = ({ children }: AppContextProviderParams) => {
 			setSingInning && setSingInning();
 			setLoading(false);
 			setSignedIn(!!accessToken);
-		});
+		}).finally(() => setLoading(false));
 	}, []);
 	useEffect(() => {
 		Communicator.getToken(true)
-			.then(async (tokens) => {
-				tokens = await tokens.json();
+			.then((tokens) => {
 				return Communicator.tokenService.setTokens(tokens);
 			}).finally(() => checkIsSignedIn());
 	}, []);

@@ -5,6 +5,7 @@
 
 import BaseCommunicator from './BaseCommunicator';
 import TokenService from './../services/token.service';
+import { Platform } from 'react-native';
 
 export interface ConnectionProperties {
 	host: string,
@@ -14,7 +15,6 @@ export interface ConnectionProperties {
 
 export class Communicator extends BaseCommunicator {
 	static Instance: Communicator;
-	private warehouseId: number = 0;
 
 	constructor() {
 		super();
@@ -33,16 +33,14 @@ export class Communicator extends BaseCommunicator {
 		return this.fetchData('auth/login', {}, formData, {
 			method: 'POST',
 			ignoreTokens: true,
-			contentType: 'application/json',
+			contentType: Platform.OS === 'ios' ? 'application/json' : 'multipart/form-data',
 		})
 			.then(async (result) => {
-				result = await result.json();
 				if (result) {
 					await this.tokenService.setTokens(result);
 				}
-				console.log('LOGIN_RESULT ->>>>> ', result);
 				return result;
-			});
+			})
 	}
 
 	public async logout() {
@@ -60,10 +58,6 @@ export class Communicator extends BaseCommunicator {
 			ignoreTokens,
 			contentType: 'application/json',
 		});
-	}
-
-	public async getUserId(username: string) {
-		return this.fetchData('anonymous/getUserId', { login: username }, {}, { method: 'GET', ignoreTokens: true });
 	}
 
 	public retrieveTokenOnInit(): Promise<string | undefined> {

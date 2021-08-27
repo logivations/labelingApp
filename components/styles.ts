@@ -58,7 +58,7 @@ export const StyledFormArea = styled(View)`
 `;
 
 export const StyledTextInput = styled(TextInput)`
-	background-color: ${({ disabled }) => !!disabled ? Colors.secondary : Colors.primary};
+	background-color: ${(props) => !!props.disabled ? Colors.secondary : Colors.primary};
 	border: 1px solid ${Colors.secondary}
 	padding: 15px 55px 15px 55px;
 	border-radius: 5px;
@@ -67,11 +67,12 @@ export const StyledTextInput = styled(TextInput)`
 	margin-vertical: 3px;
 	margin-bottom: 10px;
 	color: ${Colors.tertiary};
+	min-width: ${(props) => props.minWidth ? props.minWidth + 'px' : 'auto'};
 `;
 
 export const StyledInputLabel = styled(Text)`
 	color: ${Colors.tertiary};
-	font-size: 13px;
+	font-size: 16px;
 	text-align: left;
 `;
 
@@ -98,7 +99,7 @@ export const StyledButton: React.FC<{ [key: string]: any }> = styled(TouchableOp
 	border-radius: 5px;
 	margin-vertical: 5px;
 	height: 60px;
-
+	min-width: ${(props) => props.minWidth ? props.minWidth + 'px' : 'auto'};
 `;
 export const ButtonText = styled(Text)`
 	color: ${Colors.primary};

@@ -19,7 +19,9 @@ import { Formik } from 'formik';
 import TextInput from '../components/TextInput';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 import Communicator from '../api/Communicator';
-
+// @ts-ignore
+import { Popup, Toast } from 'popup-ui';
+import CheckPLDialogWindow from '../components/CheckPLDialogWindow';
 
 const Labeling = () => {
 
@@ -28,17 +30,19 @@ const Labeling = () => {
 	const [ean, setEan] = useState<string>('');
 	const [sn, setSn] = useState<string>('');
 
+	const [isCheckPlDialogWindowOpen, setCheckPlDialogWindowOpen] = useState<boolean>(false);
+
 	const clearTextFields = () => {
 		setNve('');
 		setEan('');
 		setSn('');
 	};
 
-	console.log(`
-		NVE -> >${nve}<;
-		EAN -> >${ean}<;
-		SN -> >${sn}<;
-	`);
+	// console.log(`
+	// 	NVE -> >${nve}<;
+	// 	EAN -> >${ean}<;
+	// 	SN -> >${sn}<;
+	// `);
 	return (
 		<KeyboardAvoidingWrapper>
 			<StyledContainer>
@@ -94,13 +98,31 @@ const Labeling = () => {
 							{!ean && !nve && <LabelingErrorMsgBox>Please fill EAN and NVE first</LabelingErrorMsgBox>}
 							{!ean && !!nve && <LabelingErrorMsgBox>Please fill EAN first</LabelingErrorMsgBox>}
 
-							<StyledButton onPress={handleSubmit} disabled={!nve || !ean || !sn}>
+							<StyledButton onPress={() => {
+								setCheckPlDialogWindowOpen(!isCheckPlDialogWindowOpen);
+								// }} disabled={!nve || !ean || !sn}>
+							}}>
+
 								<ButtonText>{'Ok'}</ButtonText>
 							</StyledButton>
-							<StyledButton onPress={handleSubmit} disabled={!nve || !ean || !sn}>
+							<StyledButton onPress={() => {
+								Toast.show({
+									title: 'User created',
+									text: 'Your user was successfully created, use the app now.',
+									color: '#8dbf4c',
+								});
+							}}>
 								<ButtonText>{'Ready for loading'}</ButtonText>
 							</StyledButton>
 							<StyledButton onPress={async () => {
+								Popup.show({
+									type: 'Success',
+									title: 'Upload complete',
+									button: true,
+									textBody: 'Congrats! Your upload successfully done',
+									buttonText: 'Ok',
+									callback: () => Popup.hide(),
+								});
 							}} disabled={false}>
 								<ButtonText>{'Clear'}</ButtonText>
 							</StyledButton>
@@ -112,6 +134,7 @@ const Labeling = () => {
 							</StyledButton>
 						</StyledFormArea>}
 					</Formik>
+					<CheckPLDialogWindow isOpen={isCheckPlDialogWindowOpen}/>
 				</InnerContainer>
 			</StyledContainer>
 		</KeyboardAvoidingWrapper>

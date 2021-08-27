@@ -6,6 +6,9 @@
 import TokenService from './../services/token.service';
 import { getData, STORAGE_KEYS } from '../services/AsyncStorageOperations';
 import { ConnectionProperties } from './Communicator';
+// @ts-ignore
+import { Toast } from 'popup-ui';
+import { Colors } from '../components/styles';
 
 class BaseCommunicator {
 	public tokenService!: TokenService;
@@ -42,7 +45,7 @@ class BaseCommunicator {
 	}
 
 	private getUrlByContextPath(path: string): string {
-		return `http://${this.serverUrl}/${path}`;
+		return `${this.serverUrl}/${path}`;
 	}
 
 	private getUrlWithQueryParameters(path: string, query: object): string {
@@ -84,15 +87,40 @@ class BaseCommunicator {
 		},
 	): Promise<any> {
 		return this.tokenService.getTokens(params.ignoreTokens).then(() => {
-			console.log('PATH ->>>', this.getUrlWithQueryParameters(path, query));
-			return fetch(this.getUrlWithQueryParameters(path, query), this.getConfig(params, body))
-				.then((result) => result)
-				.catch((error) => {
-					console.log('ERROR: ', error);
-					throw error;
+			return new Promise((resolve, reject) => {
+				console.log('URL: ', this.getUrlWithQueryParameters(path, query));
+				fetch(this.getUrlWithQueryParameters(path, query), this.getConfig(params, body))
+					.then(async (response) => {
+						if (response.ok) {
+							try {
+								const respJson = await response.json();
+								resolve(respJson);
+							} catch (e) {
+								resolve(response);
+							} finally {
+								resolve(response);
+							}
+						} else {
+							let error = new Error(`Response not OK, response status: ${response.status}.`);
+							try {
+								const respJson = await response.json();
+								if (respJson.hasOwnProperty('errorMessage')) {
+									error = new Error(respJson.errorMessage);
+									resolve(respJson);
+								}
+							} finally {
+							}
+							throw error;
+						}
+					}).catch((error) => {
+					console.error(error);
+					Toast.show({ title: error.name, text: error.message, color: Colors.red, timing: 10000 });
+					reject(error);
 				});
+			});
 		});
 	}
+
 }
 
 export default BaseCommunicator;

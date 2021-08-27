@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "scanningApp",
-    "slug": "scanningApp",
+    "name": "LabelingApp",
+    "slug": "LabelingApp",
+    "owner": "rilhad1",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -10,6 +11,18 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "Logivations GmbH",
+            "project": "LabelingApp",
+            "authToken": "175a85cf472a4f04bba403bbe34472674a4f8f7ef84542d591db0d9497fc7717"
+          }
+        }
+      ]
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -17,9 +30,13 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.logivations.labelingapp",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.logivations.labelingapp",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -27,6 +44,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "sentry-expo"
+    ]
   }
 }

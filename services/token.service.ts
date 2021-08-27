@@ -81,7 +81,7 @@ class TokenService {
                             resolve();
                         },
                         (error: any) => reject(error),
-                    );
+                    ).catch((error: any) => reject(error));
                 });
             } else {
                 return Promise.resolve();
