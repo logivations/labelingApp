@@ -63,6 +63,38 @@ export class Communicator extends BaseCommunicator {
 	public retrieveTokenOnInit(): Promise<string | undefined> {
 		return this.tokenService.getAccessTokenFromStorage();
 	}
+
+	public async createNewDocument(info: any): Promise<string | undefined> {
+		return this.fetchData('api/vgg/createNewDocument', {}, info, {
+			method: 'POST',
+			ignoreTokens: false,
+			contentType: 'application/json',
+		});
+	}
+
+	public async checkNveConsistent(plId: string): Promise<string | undefined> {
+		return this.fetchData('api/vgg/checkNveConsistent', { plId }, {}, {
+			method: 'GET',
+			ignoreTokens: false,
+			contentType: 'application/json',
+		});
+	}
+
+	public async setInternalOrdersReadyForPacking(plId: string): Promise<string | undefined> {
+		return this.fetchData('api/vgg/setInternalOrdersReadyForPacking', { plId }, {}, {
+			method: 'POST',
+			ignoreTokens: false,
+			contentType: 'application/json',
+		});
+	}
+
+	public async getLatestPlId(): Promise<string | undefined> {
+		return this.fetchData('api/vgg/getLatestPlId', {}, {}, {
+			method: 'GET',
+			ignoreTokens: false,
+			contentType: 'application/json',
+		});
+	}
 }
 
 const communicatorInstance = new Communicator();

@@ -3,34 +3,53 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-import React, { useEffect, useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Modal, StyleSheet, Text, View } from 'react-native';
 import { ButtonText, Colors, ErrorMsgBox, InnerContainer, StyledButton, StyledFormArea } from './styles';
 import TextInput from './TextInput';
 import { Formik } from 'formik';
-
+import api from '../api/Communicator';
 // @ts-ignore
-const CheckPLDialogWindow = ({ isOpen }) => {
+import { Toast } from 'popup-ui';
+import { CheckPlProps } from './Interfaces';
+
+const CheckPLDialogWindow: React.FC<CheckPlProps> = ({ isOpen, setCheckPlDialogWindowOpen, latestPlId }) => {
 	const [modalVisible, setModalVisible] = useState(isOpen);
+	const [plId, setPlId] = useState<string>(latestPlId);
 	useEffect(() => {
 		setModalVisible(isOpen);
 	}, [isOpen]);
+	useEffect(() => {
+		setPlId(latestPlId);
+	}, [latestPlId]);
+
+	const checkPlId = useCallback(async (info) => {
+		try {
+			const checkNve = await api.checkNveConsistent(info.plId);
+			if (checkNve) {
+				await api.setInternalOrdersReadyForPacking(info.plId);
+				Toast.show({ title: 'READY_OF_LOADING' });
+			} else {
+				Toast.show({ title: 'NOT_COMPLETE' });
+			}
+		} finally {
+			setCheckPlDialogWindowOpen(false);
+		}
+	}, []);
 	return (
 		<View style={styles.centeredView}>
 			<Modal
 				animationType="fade"
 				transparent={true}
 				visible={modalVisible}
-				onRequestClose={() => {
-					Alert.alert('Modal has been closed.');
-				}}>
+			>
 				<InnerContainer style={styles.centeredView}>
 					<View style={styles.modalView}>
 						<Text style={styles.modalText}>Check PL-ID</Text>
 						<Formik
-							initialValues={{ plId: '' }}
-							onSubmit={(val) => {
-							}}
+							enableReinitialize={true}
+							initialValues={{ plId }}
+							onSubmit={(info) => checkPlId(info)}
 						>
 							{({ handleChange, handleBlur, handleSubmit, values }) => <StyledFormArea>
 								<TextInput
@@ -44,12 +63,12 @@ const CheckPLDialogWindow = ({ isOpen }) => {
 									value={values.plId}
 									editable={true}
 									icon={null}
-									minWidth={200}
+									minWidth={300}
 								/>
 								{!values.plId && <ErrorMsgBox>
-									Set first connection properties in Settings
+									Set PL-ID for checking
 								</ErrorMsgBox>}
-								<StyledButton minWidth={210} onPress={handleSubmit}>
+								<StyledButton minWidth={310} onPress={handleSubmit} disabled={!values.plId}>
 									<ButtonText>{'Check'}</ButtonText>
 								</StyledButton>
 							</StyledFormArea>
@@ -85,7 +104,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
 		elevation: 5,
-		// width: 300,
+		minWidth: '90%',
 	},
 	openButton: {
 		backgroundColor: '#F194FF',

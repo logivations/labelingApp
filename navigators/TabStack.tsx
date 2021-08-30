@@ -10,7 +10,7 @@ import { Colors, StyledContainer } from '../components/styles';
 
 import RouteNames from './../constants/route.names';
 import NetworkLogger from 'react-native-network-logger';
-
+import Constants from 'expo-constants';
 
 const Login = React.lazy(() => import('./../screens/Login'));
 const Settings = React.lazy(() => import('./../screens/Settings'));
@@ -22,7 +22,7 @@ const NetworkLoggerContainer = () => <StyledContainer>
 	<NetworkLogger/>
 </StyledContainer>;
 
-const TabStackScreen = () => {
+const TabStackScreen: React.FC = () => {
 	return <Tabs.Navigator
 		initialRouteName={RouteNames.LOGIN}
 		screenOptions={({ route }) => ({
@@ -40,7 +40,9 @@ const TabStackScreen = () => {
 	>
 		<Tabs.Screen name={RouteNames.LOGIN} component={Login}/>
 		<Tabs.Screen name={RouteNames.SETTINGS} component={Settings}/>
-		<Tabs.Screen name={RouteNames.WELCOME} component={NetworkLoggerContainer}/>
+		{/*TODO remove NetworkLogger*/}
+		{Constants.manifest?.extra?.isDevMode &&
+		<Tabs.Screen name={RouteNames.WELCOME} component={NetworkLoggerContainer}/>}
 	</Tabs.Navigator>;
 };
 

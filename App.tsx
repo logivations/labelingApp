@@ -20,7 +20,7 @@ Sentry.init({
 
 export default function App() {
     useEffect(() => {
-        startNetworkLogging({ ignoredHosts: ['127.0.0.1:19000'] });
+        startNetworkLogging();
     }, []);
     return <AppContextProvider>
         <Root><RootStack/></Root>

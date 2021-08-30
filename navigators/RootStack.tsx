@@ -12,9 +12,7 @@ import { InnerContainer, StyledContainer } from '../components/styles';
 
 import Labeling from '../screens/Labeling';
 
-// const Stack = createNativeStackNavigator();
-
-const RootStack = () => {
+const RootStack: React.FC = () => {
 	const { isSignedIn, isLoading } = useAppContext();
 	return (
 		<NavigationContainer>

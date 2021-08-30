@@ -92,31 +92,37 @@ class BaseCommunicator {
 				fetch(this.getUrlWithQueryParameters(path, query), this.getConfig(params, body))
 					.then(async (response) => {
 						if (response.ok) {
+							const responseText = await response.text();
 							try {
-								const respJson = await response.json();
-								resolve(respJson);
+								resolve(JSON.parse(responseText));
 							} catch (e) {
-								resolve(response);
-							} finally {
-								resolve(response);
+								resolve(responseText);
 							}
 						} else {
 							let error = new Error(`Response not OK, response status: ${response.status}.`);
 							try {
-								const respJson = await response.json();
-								if (respJson.hasOwnProperty('errorMessage')) {
-									error = new Error(respJson.errorMessage);
-									resolve(respJson);
+								const responseText = await response.text();
+								try {
+									const respJson = JSON.parse(responseText);
+									if (respJson.hasOwnProperty('errorMessage')) {
+										error = new Error(respJson.errorMessage);
+										reject(respJson);
+									}
+								} catch (e) {
+									reject(responseText);
 								}
 							} finally {
+								// console.error(error);
+								Toast.show({
+									title: error.name,
+									text: error.message,
+									color: Colors.red,
+									timing: 10000,
+								});
+								reject(error);
 							}
-							throw error;
 						}
-					}).catch((error) => {
-					console.error(error);
-					Toast.show({ title: error.name, text: error.message, color: Colors.red, timing: 10000 });
-					reject(error);
-				});
+					});
 			});
 		});
 	}

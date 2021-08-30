@@ -12,3 +12,9 @@ export interface TextInputProps {
 
 	[key: string]: any
 }
+
+export interface CheckPlProps {
+	isOpen: boolean,
+	setCheckPlDialogWindowOpen: Function,
+	latestPlId: string
+}

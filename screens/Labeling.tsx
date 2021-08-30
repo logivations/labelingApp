@@ -2,7 +2,7 @@
  * (C) Copyright
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import {
 	ButtonText,
@@ -15,42 +15,50 @@ import {
 } from '../components/styles';
 import useAppContext from '../AppContext';
 import { Formik } from 'formik';
-
+import api from './../api/Communicator';
 import TextInput from '../components/TextInput';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 import Communicator from '../api/Communicator';
 // @ts-ignore
-import { Popup, Toast } from 'popup-ui';
+import { Toast } from 'popup-ui';
 import CheckPLDialogWindow from '../components/CheckPLDialogWindow';
 
 const Labeling = () => {
-
 	const { checkIsSignedIn } = useAppContext();
 	const [nve, setNve] = useState<string>('');
 	const [ean, setEan] = useState<string>('');
 	const [sn, setSn] = useState<string>('');
 
 	const [isCheckPlDialogWindowOpen, setCheckPlDialogWindowOpen] = useState<boolean>(false);
+	const [latestPlId, setLatestPlId] = useState<string>('');
 
-	const clearTextFields = () => {
+	const clearTextFields = useCallback(() => {
 		setNve('');
 		setEan('');
 		setSn('');
-	};
+	}, [setNve, setEan, setSn]);
 
-	// console.log(`
-	// 	NVE -> >${nve}<;
-	// 	EAN -> >${ean}<;
-	// 	SN -> >${sn}<;
-	// `);
+	const createNewDocument = useCallback(async (info) => {
+		await api.createNewDocument(info);
+		Toast.show({ title: 'NVE_IS_ADDED' });
+	}, []);
+	const readyForLoadingAction = useCallback(async () => {
+		try {
+			const plId = await api.getLatestPlId();
+			plId && setLatestPlId(plId);
+		} finally {
+			setCheckPlDialogWindowOpen(true);
+		}
+	}, []);
+
 	return (
 		<KeyboardAvoidingWrapper>
 			<StyledContainer>
 				<InnerContainer>
 					<Formik
-						initialValues={{ nve: '', ean: '', sn: '' }}
-						onSubmit={(val) => {
-						}}
+						enableReinitialize={true}
+						initialValues={{ nve, ean, sn }}
+						onSubmit={(val) => createNewDocument(val)}
 					>
 						{({ handleChange, handleBlur, handleSubmit, values }) => <StyledFormArea>
 							<TextInput
@@ -98,32 +106,16 @@ const Labeling = () => {
 							{!ean && !nve && <LabelingErrorMsgBox>Please fill EAN and NVE first</LabelingErrorMsgBox>}
 							{!ean && !!nve && <LabelingErrorMsgBox>Please fill EAN first</LabelingErrorMsgBox>}
 
-							<StyledButton onPress={() => {
-								setCheckPlDialogWindowOpen(!isCheckPlDialogWindowOpen);
-								// }} disabled={!nve || !ean || !sn}>
-							}}>
-
+							<StyledButton
+								onPress={handleSubmit}
+								disabled={!nve || !ean || !sn}
+							>
 								<ButtonText>{'Ok'}</ButtonText>
 							</StyledButton>
-							<StyledButton onPress={() => {
-								Toast.show({
-									title: 'User created',
-									text: 'Your user was successfully created, use the app now.',
-									color: '#8dbf4c',
-								});
-							}}>
+							<StyledButton onPress={readyForLoadingAction}>
 								<ButtonText>{'Ready for loading'}</ButtonText>
 							</StyledButton>
-							<StyledButton onPress={async () => {
-								Popup.show({
-									type: 'Success',
-									title: 'Upload complete',
-									button: true,
-									textBody: 'Congrats! Your upload successfully done',
-									buttonText: 'Ok',
-									callback: () => Popup.hide(),
-								});
-							}} disabled={false}>
+							<StyledButton onPress={clearTextFields} disabled={false}>
 								<ButtonText>{'Clear'}</ButtonText>
 							</StyledButton>
 							<StyledButton onPress={async () => {
@@ -134,7 +126,11 @@ const Labeling = () => {
 							</StyledButton>
 						</StyledFormArea>}
 					</Formik>
-					<CheckPLDialogWindow isOpen={isCheckPlDialogWindowOpen}/>
+					<CheckPLDialogWindow
+						isOpen={isCheckPlDialogWindowOpen}
+						setCheckPlDialogWindowOpen={setCheckPlDialogWindowOpen}
+						latestPlId={latestPlId}
+					/>
 				</InnerContainer>
 			</StyledContainer>
 		</KeyboardAvoidingWrapper>

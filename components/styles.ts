@@ -2,9 +2,9 @@
  * (C) Copyright
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
-
+// @ts-nocheck
 import styled from 'styled-components';
-import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Constants from 'expo-constants';
 import React from 'react';
 
@@ -32,11 +32,6 @@ export const InnerContainer = styled(View)`
 	flex: 1;
 	width: 100%;
 	align-items: center;
-`;
-
-export const PageLogo = styled(Image)`
-	width: 250px;
-	height: 250px;
 `;
 
 export const PageTitle = styled(Text)`
