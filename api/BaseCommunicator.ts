@@ -73,7 +73,7 @@ class BaseCommunicator {
 			cache: 'no-cache',
 			credentials: 'same-origin',
 			headers: getHeaders(),
-		}, params.method === 'POST' ? { body } : {});
+		}, params.method === 'POST' ? { body: JSON.stringify(body) } : {});
 	}
 
 	protected async fetchData(

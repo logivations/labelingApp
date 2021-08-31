@@ -48,7 +48,7 @@ const Settings = () => {
 							<TextInput
 								label={'Host'}
 								icon={''}
-								placeholder={'127.0.0.1'}
+								placeholder={'http://127.0.0.1'}
 								placeholderTextColor={Colors.darkLight}
 								onChangeText={handleChange('host')}
 								onBlur={handleBlur('host')}
