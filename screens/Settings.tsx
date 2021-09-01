@@ -16,8 +16,10 @@ import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 import { Formik } from 'formik';
 import { getData, STORAGE_KEYS, storeData } from '../services/AsyncStorageOperations';
 import api, { ConnectionProperties } from '../api/Communicator';
+import RouteNames from '../constants/route.names';
 
-const Settings = () => {
+// @ts-ignore
+const Settings = ({ navigation }) => {
 	const [connectionProperties, setConnectionProperties] = useState<ConnectionProperties>({
 		host: '',
 		port: '',
@@ -41,6 +43,7 @@ const Settings = () => {
 					onSubmit={async (properties: ConnectionProperties) => {
 						await storeData(STORAGE_KEYS.CONNECTION_PROPERTIES, properties);
 						properties && api.saveConnectionProperties(properties);
+						await navigation.navigate(RouteNames.LOGIN);
 					}}
 				>
 					{({ handleChange, handleBlur, handleSubmit, values }) => {

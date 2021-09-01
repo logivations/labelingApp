@@ -28,7 +28,6 @@ const RootStack: React.FC = () => {
 				</Suspense>
 			)}
 		</NavigationContainer>
-
 	);
 };
 

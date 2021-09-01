@@ -43,15 +43,6 @@ export class Communicator extends BaseCommunicator {
 			})
 	}
 
-	public async logout() {
-		await this.fetchData('j_spring_security_logout', {}, {}, {
-			method: 'GET',
-			contentType: 'text/plain',
-			ignoreTokens: true,
-		});
-		await this.tokenService.removeTokens();
-	}
-
 	public async getToken(ignoreTokens: boolean): Promise<any> {
 		return this.fetchData('api/auth/token', {}, {}, {
 			method: 'GET',

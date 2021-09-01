@@ -4,12 +4,13 @@
  ******************************************************************************/
 // @ts-nocheck
 import styled from 'styled-components';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Constants from 'expo-constants';
 import React from 'react';
 
 const StatusBarHeight = Constants.statusBarHeight;
-
+console.log('Dimensions.get(', Dimensions.get('screen').height);
+console.log('Dimensions.get(', Dimensions.get('window'));
 //colors
 export const Colors = {
 	primary: '#ffffff',
@@ -26,6 +27,8 @@ export const StyledContainer = styled(View)`
 	padding: 25px;
 	padding-top: ${StatusBarHeight + 30}px;
 	background-color: ${Colors.primary};
+	height: ${Dimensions.get('screen').height}px;
+	width: ${Dimensions.get('screen').width}px;
 `;
 
 export const InnerContainer = styled(View)`
@@ -79,8 +82,9 @@ export const LeftIcon = styled(View)`
 `;
 
 export const RightIcon = styled(TouchableOpacity)`
-	right: 15px;
-	top: 34px;
+	right: 0;
+	top: 21px;
+	padding: 15px;
 	position: absolute;
 	z-index: 1;
 `;

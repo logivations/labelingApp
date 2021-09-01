@@ -9,6 +9,7 @@ import {
 	Colors,
 	InnerContainer,
 	LabelingErrorMsgBox,
+	RightIcon,
 	StyledButton,
 	StyledContainer,
 	StyledFormArea,
@@ -22,6 +23,8 @@ import Communicator from '../api/Communicator';
 // @ts-ignore
 import { Toast } from 'popup-ui';
 import CheckPLDialogWindow from '../components/CheckPLDialogWindow';
+import { Ionicons } from '@expo/vector-icons';
+import ScanningModal from '../components/ScanningModal';
 
 const Labeling = () => {
 	const { checkIsSignedIn } = useAppContext();
@@ -30,6 +33,7 @@ const Labeling = () => {
 	const [sn, setSn] = useState<string>('');
 
 	const [isCheckPlDialogWindowOpen, setCheckPlDialogWindowOpen] = useState<boolean>(false);
+	const [scanningWindowType, setScanningWindowType] = useState<string>('');
 	const [latestPlId, setLatestPlId] = useState<string>('');
 
 	const clearTextFields = useCallback(() => {
@@ -48,6 +52,24 @@ const Labeling = () => {
 			plId && setLatestPlId(plId);
 		} finally {
 			setCheckPlDialogWindowOpen(true);
+		}
+	}, []);
+
+	const openScanningModal = useCallback((type) => {
+		setScanningWindowType(type);
+	}, []);
+
+	const getOnBarcodeScan = useCallback((type: string) => {
+		switch (type) {
+			case 'nve':
+				return setNve;
+			case 'ean':
+				return setEan;
+			case 'sn':
+				return setSn;
+			default:
+				return () => {
+				};
 		}
 	}, []);
 
@@ -73,6 +95,13 @@ const Labeling = () => {
 								value={values.nve}
 								editable={true}
 								icon={null}
+								rightIcon={<RightIcon onPress={() => openScanningModal('nve')}>
+									<Ionicons
+										size={30}
+										color={Colors.darkLight}
+										name={'barcode'}
+									/>
+								</RightIcon>}
 							/>
 							<TextInput
 								label={'EAN'}
@@ -87,6 +116,13 @@ const Labeling = () => {
 								editable={!!nve}
 								disabled={!nve}
 								icon={null}
+								rightIcon={<RightIcon onPress={() => !!nve && openScanningModal('ean')}>
+									<Ionicons
+										size={30}
+										color={Colors.darkLight}
+										name={'barcode'}
+									/>
+								</RightIcon>}
 							/>
 							{!nve && <LabelingErrorMsgBox>Please fill NVE first</LabelingErrorMsgBox>}
 							<TextInput
@@ -102,6 +138,13 @@ const Labeling = () => {
 								editable={!!nve && !!ean}
 								disabled={!nve || !ean}
 								icon={null}
+								rightIcon={<RightIcon onPress={() => !!nve && !!ean && openScanningModal('sn')}>
+									<Ionicons
+										size={30}
+										color={Colors.darkLight}
+										name={'barcode'}
+									/>
+								</RightIcon>}
 							/>
 							{!ean && !nve && <LabelingErrorMsgBox>Please fill EAN and NVE first</LabelingErrorMsgBox>}
 							{!ean && !!nve && <LabelingErrorMsgBox>Please fill EAN first</LabelingErrorMsgBox>}
@@ -130,6 +173,12 @@ const Labeling = () => {
 						isOpen={isCheckPlDialogWindowOpen}
 						setCheckPlDialogWindowOpen={setCheckPlDialogWindowOpen}
 						latestPlId={latestPlId}
+					/>
+					<ScanningModal
+						isOpen={!!scanningWindowType}
+						scanningWindowType={scanningWindowType}
+						setScanningWindowOpen={setScanningWindowType}
+						getOnBarcodeScan={getOnBarcodeScan}
 					/>
 				</InnerContainer>
 			</StyledContainer>

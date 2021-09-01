@@ -44,6 +44,15 @@ class BaseCommunicator {
 		this.connectionProperties.contextPath = properties.contextPath;
 	}
 
+	public async logout() {
+		await this.fetchData('j_spring_security_logout', {}, {}, {
+			method: 'GET',
+			contentType: 'text/plain',
+			ignoreTokens: true,
+		});
+		await this.tokenService.removeTokens();
+	}
+
 	private getUrlByContextPath(path: string): string {
 		return `${this.serverUrl}/${path}`;
 	}
@@ -67,13 +76,14 @@ class BaseCommunicator {
 				'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, X-Requested-With',
 			}, token ? { 'Authorization': token } : {});
 		};
+		console.log('body', body);
 		return Object.assign({
 			method: params.method,
 			mode: 'cors',
 			cache: 'no-cache',
 			credentials: 'same-origin',
 			headers: getHeaders(),
-		}, params.method === 'POST' ? { body: JSON.stringify(body) } : {});
+		}, params.method === 'POST' ? { body: body instanceof FormData ? body : JSON.stringify(body) } : {});
 	}
 
 	protected async fetchData(
@@ -100,6 +110,10 @@ class BaseCommunicator {
 							}
 						} else {
 							let error = new Error(`Response not OK, response status: ${response.status}.`);
+							if (response.status === 401) {
+								console.log('logout');
+								await this.logout();
+							}
 							try {
 								const responseText = await response.text();
 								try {
@@ -112,7 +126,6 @@ class BaseCommunicator {
 									reject(responseText);
 								}
 							} finally {
-								// console.error(error);
 								Toast.show({
 									title: error.name,
 									text: error.message,

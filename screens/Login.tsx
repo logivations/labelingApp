@@ -12,6 +12,7 @@ import {
 	ErrorMsgBox,
 	InnerContainer,
 	PageTitle,
+	RightIcon,
 	StyledButton,
 	StyledContainer,
 	StyledFormArea,
@@ -21,6 +22,7 @@ import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 import Communicator from './../api/Communicator';
 import RouteNames from '../constants/route.names';
 import useAppContext from '../AppContext';
+import { Ionicons } from '@expo/vector-icons';
 
 
 // @ts-ignore
@@ -81,9 +83,14 @@ const Login = ({ navigation }) => {
 								value={values.password}
 								secureTextEntry={hidePassword}
 								isPassword={true}
-								hidePassword={hidePassword}
-								setHidePassword={setHidePassword}
 								editable={isConnectionPropertiesExist}
+								rightIcon={<RightIcon onPress={() => setHidePassword && setHidePassword(!hidePassword)}>
+									<Ionicons
+										size={30}
+										color={Colors.darkLight}
+										name={hidePassword ? 'md-eye-off' : 'md-eye'}
+									/>
+								</RightIcon>}
 							/>
 							{loginErrorMessage && <ErrorMsgBox>{loginErrorMessage}</ErrorMsgBox>}
 							{!isConnectionPropertiesExist &&

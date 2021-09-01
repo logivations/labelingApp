@@ -39,7 +39,7 @@ const CheckPLDialogWindow: React.FC<CheckPlProps> = ({ isOpen, setCheckPlDialogW
 	return (
 		<View style={styles.centeredView}>
 			<Modal
-				animationType="fade"
+				animationType={'fade'}
 				transparent={true}
 				visible={modalVisible}
 			>
@@ -105,17 +105,6 @@ const styles = StyleSheet.create({
 		shadowRadius: 3.84,
 		elevation: 5,
 		minWidth: '90%',
-	},
-	openButton: {
-		backgroundColor: '#F194FF',
-		borderRadius: 20,
-		padding: 10,
-		elevation: 2,
-	},
-	textStyle: {
-		color: 'white',
-		fontWeight: 'bold',
-		textAlign: 'center',
 	},
 	modalText: {
 		marginBottom: 15,
