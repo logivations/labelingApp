@@ -27,6 +27,7 @@ export const StyledContainer = styled(View)`
 	padding: 25px;
 	padding-top: ${StatusBarHeight + 30}px;
 	background-color: ${Colors.primary};
+	position: relative;
 	height: ${Dimensions.get('screen').height}px;
 	width: ${Dimensions.get('screen').width}px;
 `;
