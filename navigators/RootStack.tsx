@@ -9,8 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import TabStackScreen from './TabStack';
 import useAppContext from '../AppContext';
 import { InnerContainer, StyledContainer } from '../components/styles';
-
-import Labeling from '../screens/Labeling';
+import LabelingStack from './NativeStack';
 
 const RootStack: React.FC = () => {
 	const { isSignedIn, isLoading } = useAppContext();
@@ -24,7 +23,7 @@ const RootStack: React.FC = () => {
 				</StyledContainer>
 			) : (
 				<Suspense fallback={<Text>Loading...</Text>}>
-					{isSignedIn ? <Labeling/> : <TabStackScreen/>}
+					{isSignedIn ? <LabelingStack/> : <TabStackScreen/>}
 				</Suspense>
 			)}
 		</NavigationContainer>

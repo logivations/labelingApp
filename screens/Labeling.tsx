@@ -24,16 +24,16 @@ import Communicator from '../api/Communicator';
 import { Toast } from 'popup-ui';
 import CheckPLDialogWindow from '../components/CheckPLDialogWindow';
 import { Ionicons } from '@expo/vector-icons';
-import ScanningModal from '../components/ScanningModal';
+import RouteNames from '../constants/route.names';
 
-const Labeling = () => {
+// @ts-ignore
+const Labeling = ({ navigation }) => {
 	const { checkIsSignedIn } = useAppContext();
 	const [nve, setNve] = useState<string>('');
 	const [ean, setEan] = useState<string>('');
 	const [sn, setSn] = useState<string>('');
 
 	const [isCheckPlDialogWindowOpen, setCheckPlDialogWindowOpen] = useState<boolean>(false);
-	const [scanningWindowType, setScanningWindowType] = useState<string>('');
 	const [latestPlId, setLatestPlId] = useState<string>('');
 
 	const clearTextFields = useCallback(() => {
@@ -52,24 +52,6 @@ const Labeling = () => {
 			plId && setLatestPlId(plId);
 		} finally {
 			setCheckPlDialogWindowOpen(true);
-		}
-	}, []);
-
-	const openScanningModal = useCallback((type) => {
-		setScanningWindowType(type);
-	}, []);
-
-	const getOnBarcodeScan = useCallback((type: string) => {
-		switch (type) {
-			case 'nve':
-				return setNve;
-			case 'ean':
-				return setEan;
-			case 'sn':
-				return setSn;
-			default:
-				return () => {
-				};
 		}
 	}, []);
 
@@ -95,7 +77,9 @@ const Labeling = () => {
 								value={values.nve}
 								editable={true}
 								icon={null}
-								rightIcon={<RightIcon onPress={() => openScanningModal('nve')}>
+								rightIcon={<RightIcon onPress={() => {
+									navigation.push(RouteNames.SCANNING, { onScan: setNve });
+								}}>
 									<Ionicons
 										size={30}
 										color={Colors.darkLight}
@@ -116,7 +100,9 @@ const Labeling = () => {
 								editable={!!nve}
 								disabled={!nve}
 								icon={null}
-								rightIcon={<RightIcon onPress={() => !!nve && openScanningModal('ean')}>
+								rightIcon={<RightIcon onPress={() => {
+									!!nve && navigation.push(RouteNames.SCANNING, { onScan: setEan });
+								}}>
 									<Ionicons
 										size={30}
 										color={Colors.darkLight}
@@ -138,7 +124,9 @@ const Labeling = () => {
 								editable={!!nve && !!ean}
 								disabled={!nve || !ean}
 								icon={null}
-								rightIcon={<RightIcon onPress={() => !!nve && !!ean && openScanningModal('sn')}>
+								rightIcon={<RightIcon onPress={() => {
+									!!nve && !!ean && navigation.push(RouteNames.SCANNING, { onScan: setSn });
+								}}>
 									<Ionicons
 										size={30}
 										color={Colors.darkLight}
@@ -173,12 +161,6 @@ const Labeling = () => {
 						isOpen={isCheckPlDialogWindowOpen}
 						setCheckPlDialogWindowOpen={setCheckPlDialogWindowOpen}
 						latestPlId={latestPlId}
-					/>
-					<ScanningModal
-						isOpen={!!scanningWindowType}
-						scanningWindowType={scanningWindowType}
-						setScanningWindowOpen={setScanningWindowType}
-						getOnBarcodeScan={getOnBarcodeScan}
 					/>
 				</InnerContainer>
 			</StyledContainer>

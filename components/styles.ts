@@ -24,8 +24,7 @@ export const Colors = {
 
 export const StyledContainer = styled(View)`
 	flex: 1;
-	padding: 25px;
-	padding-top: ${StatusBarHeight + 30}px;
+	padding-top: ${StatusBarHeight}px;
 	background-color: ${Colors.primary};
 	position: relative;
 	height: ${Dimensions.get('screen').height}px;
@@ -34,7 +33,8 @@ export const StyledContainer = styled(View)`
 
 export const InnerContainer = styled(View)`
 	flex: 1;
-	width: 100%;
+	width: ${Dimensions.get('screen').width}px;
+	height: ${Dimensions.get('screen').height}px;
 	align-items: center;
 `;
 

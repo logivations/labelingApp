@@ -6,7 +6,9 @@
 enum RouteNames {
 	LOGIN = 'LOGIN',
 	SETTINGS = 'SETTINGS',
-	WELCOME = 'WELCOME'
+	LABELING = 'LABELING',
+	SCANNING = 'SCANNING',
+	WELCOME = 'WELCOME',
 }
 
 export default RouteNames;

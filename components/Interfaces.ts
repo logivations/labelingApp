@@ -18,10 +18,3 @@ export interface CheckPlProps {
 	setCheckPlDialogWindowOpen: Function,
 	latestPlId: string
 }
-
-export interface ScanningModalProps {
-	isOpen: boolean,
-	setScanningWindowOpen: Function,
-	getOnBarcodeScan: Function,
-	scanningWindowType: string,
-}
