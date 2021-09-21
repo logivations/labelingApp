@@ -12,7 +12,7 @@ import { Octicons } from '@expo/vector-icons';
 const TextInput: React.FC<TextInputProps> = ({ label, icon, rightIcon, ...props }) => {
 	return <View>
 		<LeftIcon>
-			<Octicons name={icon} size={30} color={Colors.green}/>
+			<Octicons name={icon} size={24} color={Colors.green}/>
 		</LeftIcon>
 		<StyledInputLabel>{label}</StyledInputLabel>
 		<StyledTextInput {...props}/>

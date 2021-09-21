@@ -36,6 +36,8 @@ const TabStackScreen: React.FC = () => {
 			headerTintColor: Colors.tertiary,
 			headerTransparent: true,
 			headerTitle: '',
+			tabBarActiveTintColor: '#8dbf4c',
+			tabBarStyle: { position: 'absolute' },
 		})}
 	>
 		<Tabs.Screen name={RouteNames.LOGIN} component={Login}/>

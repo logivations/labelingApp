@@ -17,8 +17,8 @@ export const Colors = {
 	secondary: '#d3d3d3',
 	tertiary: '#1f2937',
 	darkLight: '#9ca3af',
-	brand: '#6d28d9',
 	green: '#8dbf4c',
+	gray: '#4d4d4d',
 	red: '#ef4444',
 };
 
@@ -27,43 +27,48 @@ export const StyledContainer = styled(View)`
 	padding-top: ${StatusBarHeight}px;
 	background-color: ${Colors.primary};
 	position: relative;
-	height: ${Dimensions.get('screen').height}px;
+	height: ${Dimensions.get('window').height}px;
 	width: ${Dimensions.get('screen').width}px;
 `;
 
 export const InnerContainer = styled(View)`
 	flex: 1;
 	width: ${Dimensions.get('screen').width}px;
-	height: ${Dimensions.get('screen').height}px;
-	align-items: center;
+	height: 100%;
+	align-items: flex-start;
+	padding: 0 30px;
 `;
 
 export const PageTitle = styled(Text)`
-	font-size: 30px;
+	font-size: 36px;
 	text-align: center;
-	font-weight: bold;
+	width: 100%;
+	font-weight: 700;
+	margin: 30px 0 0;
 	color: ${Colors.green};
 `;
 
 export const SubTitle = styled(Text)`
-	font-size: 18px;
-	margin-bottom: 20px;
+	font-size: 16px;
+	margin-bottom: 15px;
+	margin-top: 15px;
 	font-weight: bold;
+	text-align: center;
+	width: 100%;
 	color: ${Colors.tertiary};
 `;
 
 export const StyledFormArea = styled(View)`
-	width: 90%;
+	width: 100%;
 `;
-
 export const StyledTextInput = styled(TextInput)`
 	background-color: ${(props) => !!props.disabled ? Colors.secondary : Colors.primary};
 	border: 1px solid ${Colors.secondary}
-	padding: 15px 55px 15px 55px;
-	border-radius: 5px;
+	padding: ${(props) => props.authInput ? '0 0 0 40px' : '0 10px'};
+	border-radius: 4px;
 	font-size: 16px;
-	height: 60px;
-	margin-vertical: 3px;
+	height: 38px;
+	margin-vertical: 0px;
 	margin-bottom: 10px;
 	color: ${Colors.tertiary};
 	min-width: ${(props) => props.minWidth ? props.minWidth + 'px' : 'auto'};
@@ -73,44 +78,62 @@ export const StyledInputLabel = styled(Text)`
 	color: ${Colors.tertiary};
 	font-size: 16px;
 	text-align: left;
+	font-weight: bold;
+	margin-bottom: 5px;
 `;
 
 export const LeftIcon = styled(View)`
-	left: 15px;
-	top: 34px;
+	left: 10px;
+	top: 8px;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	position: absolute;
 	z-index: 1;
 `;
 
 export const RightIcon = styled(TouchableOpacity)`
 	right: 0;
-	top: 21px;
-	padding: 15px;
+	top: 20px;
+	padding: 10px;
 	position: absolute;
 	z-index: 1;
 `;
 
 export const StyledButton: React.FC<{ [key: string]: any }> = styled(TouchableOpacity)`
-	padding: 15px;
+	padding: 0;
 	background-color: ${Colors.green};
 	opacity: ${(props) => props.disabled ? '0.5' : '1'};
 	justify-content: center;
 	align-items: center;
-	border-radius: 5px;
-	margin-vertical: 5px;
-	height: 60px;
+	border-radius: 4px;
+	margin-bottom: 10px;
+	height: 38px;
 	min-width: ${(props) => props.minWidth ? props.minWidth + 'px' : 'auto'};
 `;
+
+export const SecondaryStyledButton = styled(StyledButton)`
+	background-color: ${Colors.primary};
+	border: 1px solid ${Colors.secondary}
+`;
+
 export const ButtonText = styled(Text)`
 	color: ${Colors.primary};
+	font-size: 16px;
+`;
+
+export const SecondaryButtonText = styled(Text)`
+	color: ${Colors.gray};
 	font-size: 16px;
 `;
 //@ts-ignore
 
 export const ErrorMsgBox = styled(Text)`
-	text-align: center;
-	font-size: 14px;
-	padding: 10px 0;
+	text-align: left;
+	font-size: 12px;
+	margin-top: -5px;
+	padding: 0 0 10px;
 	color: ${Colors.red}
 `;
 

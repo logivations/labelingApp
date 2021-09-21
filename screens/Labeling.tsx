@@ -13,6 +13,7 @@ import {
 	StyledButton,
 	StyledContainer,
 	StyledFormArea,
+	SecondaryStyledButton, SecondaryButtonText,
 } from '../components/styles';
 import useAppContext from '../AppContext';
 import { Formik } from 'formik';
@@ -146,15 +147,15 @@ const Labeling = ({ navigation }) => {
 							<StyledButton onPress={readyForLoadingAction}>
 								<ButtonText>{'Ready for loading'}</ButtonText>
 							</StyledButton>
-							<StyledButton onPress={clearTextFields} disabled={false}>
-								<ButtonText>{'Clear'}</ButtonText>
-							</StyledButton>
-							<StyledButton onPress={async () => {
+							<SecondaryStyledButton onPress={clearTextFields} disabled={false}>
+								<SecondaryButtonText>{'Clear'}</SecondaryButtonText>
+							</SecondaryStyledButton>
+							<SecondaryStyledButton onPress={async () => {
 								await Communicator.logout();
 								checkIsSignedIn();
 							}}>
-								<ButtonText>Logout</ButtonText>
-							</StyledButton>
+								<SecondaryButtonText>Logout</SecondaryButtonText>
+							</SecondaryStyledButton>
 						</StyledFormArea>}
 					</Formik>
 					<CheckPLDialogWindow

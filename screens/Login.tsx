@@ -45,7 +45,7 @@ const Login = ({ navigation }) => {
 			<StyledContainer>
 				<InnerContainer>
 					<PageTitle>Labeling App</PageTitle>
-					<SubTitle>Please Login!</SubTitle>
+					<SubTitle>Log In to continue</SubTitle>
 
 					<Formik
 						initialValues={{ email: 'admin', password: '23mOHi,' }}
@@ -63,6 +63,7 @@ const Login = ({ navigation }) => {
 					>
 						{({ handleChange, handleBlur, handleSubmit, values }) => <StyledFormArea>
 							<TextInput
+								authInput={true}
 								label={'Login'}
 								icon={'person'}
 								placeholder={'w2mo@logivations.com'}
@@ -74,6 +75,7 @@ const Login = ({ navigation }) => {
 								editable={isConnectionPropertiesExist}
 							/>
 							<TextInput
+								authInput={true}
 								label={'Password'}
 								icon={'lock'}
 								placeholder={'* * * * * * * *'}

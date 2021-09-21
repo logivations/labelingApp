@@ -89,11 +89,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginTop: 22,
+		backgroundColor: '#00000087',
 	},
 	modalView: {
 		margin: 10,
 		backgroundColor: 'white',
-		borderRadius: 5,
+		borderRadius: 4,
 		padding: 20,
 		alignItems: 'center',
 		shadowColor: '#000',

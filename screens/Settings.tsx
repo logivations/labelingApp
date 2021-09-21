@@ -10,7 +10,7 @@ import {
 	InnerContainer,
 	StyledButton,
 	StyledContainer,
-	StyledFormArea,
+	StyledFormArea, SubTitle,
 } from '../components/styles';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 import { Formik } from 'formik';
@@ -37,6 +37,7 @@ const Settings = ({ navigation }) => {
 	return <KeyboardAvoidingWrapper>
 		<StyledContainer>
 			<InnerContainer>
+				<SubTitle>Connection properties</SubTitle>
 				<Formik
 					enableReinitialize={true}
 					initialValues={connectionProperties}
