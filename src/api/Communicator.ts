@@ -4,7 +4,7 @@
  ******************************************************************************/
 
 import BaseCommunicator from './BaseCommunicator';
-import TokenService from './../services/token.service';
+import TokenService from '../services/token.service';
 import { Platform } from 'react-native';
 
 export interface ConnectionProperties {
@@ -81,6 +81,22 @@ export class Communicator extends BaseCommunicator {
 
 	public async getLatestPlId(): Promise<string | undefined> {
 		return this.fetchData('api/vgg/getLatestPlId', {}, {}, {
+			method: 'GET',
+			ignoreTokens: false,
+			contentType: 'application/json',
+		});
+	}
+
+	public async getAllPickListsByLastScannedLoadingListId(): Promise<any> {
+		return this.fetchData('api/vgg/getAllPickListsByLastScannedLoadingListId', {}, {}, {
+			method: 'GET',
+			ignoreTokens: false,
+			contentType: 'application/json',
+		});
+	}
+
+	public getAllRacks() {
+		return this.fetchData(`api/layouts/60638/racks/`, {}, {}, {
 			method: 'GET',
 			ignoreTokens: false,
 			contentType: 'application/json',

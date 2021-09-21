@@ -3,12 +3,11 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-enum RouteNames {
-	LOGIN = 'LOGIN',
-	SETTINGS = 'SETTINGS',
-	LABELING = 'LABELING',
-	SCANNING = 'SCANNING',
-	WELCOME = 'WELCOME',
+enum ShipmentType {
+	S = 0,
+	FP = 1,
+	XP = 2,
+	M = 3,
 }
 
-export default RouteNames;
+export default ShipmentType;

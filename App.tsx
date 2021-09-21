@@ -6,7 +6,7 @@
 import React, { useEffect } from 'react';
 import * as Sentry from 'sentry-expo';
 
-import RootStack from './navigators/RootStack';
+import RootStack from './src/navigators/RootStack';
 import { AppContextProvider } from './AppContext';
 // @ts-ignore
 import { Root } from 'popup-ui';

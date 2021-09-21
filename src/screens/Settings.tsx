@@ -3,14 +3,15 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 import React, { useEffect, useState } from 'react';
-import TextInput from './../components/TextInput';
+import TextInput from '../components/TextInput';
 import {
 	ButtonText,
 	Colors,
 	InnerContainer,
 	StyledButton,
 	StyledContainer,
-	StyledFormArea, SubTitle,
+	StyledFormArea,
+	SubTitle,
 } from '../components/styles';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 import { Formik } from 'formik';

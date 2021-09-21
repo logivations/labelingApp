@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
-import TextInput from './../components/TextInput';
+import TextInput from '../components/TextInput';
 import {
 	ButtonText,
 	Colors,
@@ -18,10 +18,10 @@ import {
 	StyledFormArea,
 	SubTitle,
 } from '../components/styles';
-import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
-import Communicator from './../api/Communicator';
+import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
+import Communicator from '../api/Communicator';
 import RouteNames from '../constants/route.names';
-import useAppContext from '../AppContext';
+import useAppContext from '../../AppContext';
 import { Ionicons } from '@expo/vector-icons';
 
 

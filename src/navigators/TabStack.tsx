@@ -8,12 +8,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Colors, StyledContainer } from '../components/styles';
 
-import RouteNames from './../constants/route.names';
+import RouteNames from '../constants/route.names';
 import NetworkLogger from 'react-native-network-logger';
 import Constants from 'expo-constants';
 
-const Login = React.lazy(() => import('./../screens/Login'));
-const Settings = React.lazy(() => import('./../screens/Settings'));
+const Login = React.lazy(() => import('../screens/Login'));
+const Settings = React.lazy(() => import('../screens/Settings'));
 
 
 const Tabs = createBottomTabNavigator();

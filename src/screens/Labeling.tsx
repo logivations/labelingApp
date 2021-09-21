@@ -2,29 +2,28 @@
  * (C) Copyright
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
 	ButtonText,
 	Colors,
 	InnerContainer,
 	LabelingErrorMsgBox,
-	RightIcon,
+	SecondaryButtonText,
+	SecondaryStyledButton,
 	StyledButton,
 	StyledContainer,
 	StyledFormArea,
-	SecondaryStyledButton, SecondaryButtonText,
 } from '../components/styles';
-import useAppContext from '../AppContext';
+import useAppContext from '../../AppContext';
 import { Formik } from 'formik';
-import api from './../api/Communicator';
+import api from '../api/Communicator';
+import Communicator from '../api/Communicator';
 import TextInput from '../components/TextInput';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
-import Communicator from '../api/Communicator';
 // @ts-ignore
 import { Toast } from 'popup-ui';
 import CheckPLDialogWindow from '../components/CheckPLDialogWindow';
-import { Ionicons } from '@expo/vector-icons';
 import RouteNames from '../constants/route.names';
 
 // @ts-ignore
@@ -33,6 +32,14 @@ const Labeling = ({ navigation }) => {
 	const [nve, setNve] = useState<string>('');
 	const [ean, setEan] = useState<string>('');
 	const [sn, setSn] = useState<string>('');
+
+	const nveRef = useRef(null);
+	const eanRef = useRef(null);
+	const snRef = useRef(null);
+
+	useEffect(() => {
+		nveRef.current && nveRef.current.focus();
+	}, [nveRef]);
 
 	const [isCheckPlDialogWindowOpen, setCheckPlDialogWindowOpen] = useState<boolean>(false);
 	const [latestPlId, setLatestPlId] = useState<string>('');
@@ -48,14 +55,8 @@ const Labeling = ({ navigation }) => {
 		Toast.show({ title: 'NVE_IS_ADDED' });
 	}, []);
 	const readyForLoadingAction = useCallback(async () => {
-		try {
-			const plId = await api.getLatestPlId();
-			plId && setLatestPlId(plId);
-		} finally {
-			setCheckPlDialogWindowOpen(true);
-		}
+		navigation.push(RouteNames.PICK_LISTS);
 	}, []);
-
 	return (
 		<KeyboardAvoidingWrapper>
 			<StyledContainer>
@@ -74,19 +75,15 @@ const Labeling = ({ navigation }) => {
 									setNve(value);
 									handleChange('nve')(value);
 								}}
-								onBlur={handleBlur('nve')}
+								reference={nveRef}
+								onBlur={(value: any) => {
+									// @ts-ignore
+									eanRef.current && eanRef.current.focus();
+									handleBlur('nve')(value);
+								}}
 								value={values.nve}
 								editable={true}
 								icon={null}
-								rightIcon={<RightIcon onPress={() => {
-									navigation.push(RouteNames.SCANNING, { onScan: setNve });
-								}}>
-									<Ionicons
-										size={30}
-										color={Colors.darkLight}
-										name={'barcode'}
-									/>
-								</RightIcon>}
 							/>
 							<TextInput
 								label={'EAN'}
@@ -96,20 +93,16 @@ const Labeling = ({ navigation }) => {
 									setEan(value);
 									handleChange('ean')(value);
 								}}
-								onBlur={handleBlur('ean')}
+								reference={eanRef}
+								onBlur={(value: any) => {
+									// @ts-ignore
+									snRef.current && snRef.current.focus();
+									handleBlur('ean')(value);
+								}}
 								value={values.ean}
 								editable={!!nve}
 								disabled={!nve}
 								icon={null}
-								rightIcon={<RightIcon onPress={() => {
-									!!nve && navigation.push(RouteNames.SCANNING, { onScan: setEan });
-								}}>
-									<Ionicons
-										size={30}
-										color={Colors.darkLight}
-										name={'barcode'}
-									/>
-								</RightIcon>}
 							/>
 							{!nve && <LabelingErrorMsgBox>Please fill NVE first</LabelingErrorMsgBox>}
 							<TextInput
@@ -120,20 +113,17 @@ const Labeling = ({ navigation }) => {
 									setSn(value);
 									handleChange('sn')(value);
 								}}
-								onBlur={handleBlur('sn')}
+								reference={snRef}
+								onBlur={(value: any) => {
+									handleBlur('sn')(value);
+									handleSubmit();
+									clearTextFields();
+									nveRef.current && nveRef.current.focus();
+								}}
 								value={values.sn}
 								editable={!!nve && !!ean}
 								disabled={!nve || !ean}
 								icon={null}
-								rightIcon={<RightIcon onPress={() => {
-									!!nve && !!ean && navigation.push(RouteNames.SCANNING, { onScan: setSn });
-								}}>
-									<Ionicons
-										size={30}
-										color={Colors.darkLight}
-										name={'barcode'}
-									/>
-								</RightIcon>}
 							/>
 							{!ean && !nve && <LabelingErrorMsgBox>Please fill EAN and NVE first</LabelingErrorMsgBox>}
 							{!ean && !!nve && <LabelingErrorMsgBox>Please fill EAN first</LabelingErrorMsgBox>}

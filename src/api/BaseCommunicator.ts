@@ -3,7 +3,7 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-import TokenService from './../services/token.service';
+import TokenService from '../services/token.service';
 import { getData, STORAGE_KEYS } from '../services/AsyncStorageOperations';
 import { ConnectionProperties } from './Communicator';
 // @ts-ignore
