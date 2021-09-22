@@ -10,8 +10,7 @@ import React from 'react';
 import { PicklistScanStatus } from '../enums';
 
 const StatusBarHeight = Constants.statusBarHeight;
-console.log('Dimensions.get(', Dimensions.get('screen').height);
-console.log('Dimensions.get(', Dimensions.get('window'));
+
 //colors
 export const Colors = {
 	primary: '#ffffff',

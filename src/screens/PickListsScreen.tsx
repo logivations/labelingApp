@@ -29,8 +29,8 @@ const PickListsScreen = ({ navigation }) => {
 						try {
 							await api.setInternalOrdersReadyForPacking(readyForLoadingPicklistsIds);
 							await api.updatePickListsStatus(readyForLoadingPicklistsIds, StatusApproved.SCANNED);
-						} catch (e) {
-							console.log(e);
+						} catch (error) {
+							console.log('Error:', error);
 						}
 					}}
 				>
@@ -58,7 +58,7 @@ const PickListsScreen = ({ navigation }) => {
 
 				setPLList([...allPicklists, ...allPicklists, ...allPicklists]);
 			} catch (error) {
-				console.log('error', error);
+				console.log('Error: ', error);
 			}
 		})();
 	}, []);

@@ -17,7 +17,6 @@ class BaseCommunicator {
 	constructor() {
 		getData(STORAGE_KEYS.CONNECTION_PROPERTIES).then((result: string) => {
 			if (result) {
-				console.log(result);
 				const connectionProperties: ConnectionProperties = JSON.parse(result);
 				this.saveConnectionProperties(connectionProperties);
 			}
@@ -76,7 +75,6 @@ class BaseCommunicator {
 				'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, X-Requested-With',
 			}, token ? { 'Authorization': token } : {});
 		};
-		console.log('body', body);
 		return Object.assign({
 			method: params.method,
 			mode: 'cors',
@@ -98,7 +96,7 @@ class BaseCommunicator {
 	): Promise<any> {
 		return this.tokenService.getTokens(params.ignoreTokens).then(() => {
 			return new Promise((resolve, reject) => {
-				console.log('URL: ', this.getUrlWithQueryParameters(path, query));
+				console.log('Request URL: ', this.getUrlWithQueryParameters(path, query));
 				fetch(this.getUrlWithQueryParameters(path, query), this.getConfig(params, body))
 					.then(async (response) => {
 						if (response.ok) {
@@ -111,7 +109,6 @@ class BaseCommunicator {
 						} else {
 							let error = new Error(`Response not OK, response status: ${response.status}.`);
 							if (response.status === 401) {
-								console.log('logout');
 								await this.logout();
 							}
 							try {
