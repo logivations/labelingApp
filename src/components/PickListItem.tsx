@@ -2,29 +2,102 @@
  * (C) Copyright
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
+// @ts-ignore-file
 
-import React from 'react';
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Platform, StatusBar, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import Picklist from '../models/Picklist';
-import { Colors } from './styles';
+import { Colors, getColorByStatus, ListItemWrapper, TooltipContainer, TooltipText } from './styles';
+import { PicklistScanStatus, ShipmentType } from '../enums';
+import Tooltip from 'react-native-walkthrough-tooltip';
+// @ts-ignore
+import CheckIcon from './../../assets/icons/circle-check-icon.svg';
+// @ts-ignore
+import CrossIcon from './../../assets/icons/circle-cross-icon.svg';
+// @ts-ignore
+import WarnIcon from './../../assets/icons/circle-warning-icon.svg';
 
-const PickListItem: React.FC<Picklist> = ({ picklistId, rampName, shipmentType }) => {
-	return <View style={styles.listItem}>
-		<Text>{picklistId}</Text>
-		<Text>{rampName}</Text>
-		<Text>{shipmentType}</Text>
-	</View>;
+const IconByStatus = ({ status }: { status: PicklistScanStatus }) => {
+	switch (status) {
+		case PicklistScanStatus.READY_FOR_LOADING:
+			return <CheckIcon/>;
+		case PicklistScanStatus.NOT_FOUND:
+			return <CrossIcon/>;
+		case PicklistScanStatus.NOT_COMPLETE:
+			return <WarnIcon/>;
+	}
+};
+
+
+const PickListItem: React.FC<Picklist> = ({ picklistId, rampName, shipmentType, scanStatus }) => {
+	const [showTip, setTip] = useState<boolean>(false);
+
+	return <Tooltip
+		isVisible={showTip}
+		content={<TooltipContainer>
+			<IconByStatus status={scanStatus}/>
+			<TooltipText>{PicklistScanStatus[scanStatus]}</TooltipText>
+		</TooltipContainer>}
+		placement="top"
+		onClose={() => setTip(false)}
+		disableShadow={true}
+		backgroundColor={'none'}
+		topAdjustment={Platform.OS === 'android' ? -(StatusBar.currentHeight || 0) + 15 : 15}
+		showChildInTooltip={false}
+		contentStyle={{ borderColor: getColorByStatus(scanStatus), borderWidth: 1 }}
+		arrowStyle={{ display: 'none' }}
+		displayInsets={{ top: 0, bottom: 0, left: 0, right: 0 }}
+	>
+		<TouchableHighlight
+			activeOpacity={0.6}
+			underlayColor={Colors.secondary}
+			onPress={() => setTip(true)}
+		>
+			<ListItemWrapper scanStatus={scanStatus}>
+				<View style={styles.picklistId}><Text>{picklistId}</Text></View>
+				<View style={styles.rampName}><Text>{rampName}</Text></View>
+				<View style={styles.shipmentType}><Text>{ShipmentType[shipmentType]}</Text></View>
+				<View style={styles.status}><IconByStatus status={scanStatus}/></View>
+			</ListItemWrapper>
+		</TouchableHighlight>
+	</Tooltip>;
 };
 
 const styles = StyleSheet.create({
-	listItem: {
+	picklistId: {
+		paddingLeft: 10,
+		paddingRight: 10,
+		flex: 7,
+	},
+	rampName: {
+		flex: 6,
+		paddingLeft: 10,
+		paddingRight: 10,
+		alignItems: 'flex-start',
+		justifyContent: 'center',
+		height: '100%',
+		borderLeftColor: Colors.secondary,
+		borderLeftWidth: 1,
+	},
+	shipmentType: {
+		flex: 3,
+		paddingLeft: 10,
+		paddingRight: 10,
+		alignItems: 'center',
+		justifyContent: 'center',
+		height: '100%',
+		borderLeftColor: Colors.secondary,
+		borderLeftWidth: 1,
+	},
+	status: {
 		flex: 1,
-		//width: '100%',
-		margin: 10,
-		borderStyle: 'solid',
-		borderColor: Colors.secondary,
-		borderWidth: 1,
-		marginTop: StatusBar.currentHeight || 0,
+		alignItems: 'center',
+		justifyContent: 'center',
+		height: '100%',
+		borderLeftColor: Colors.secondary,
+		borderLeftWidth: 1,
+		paddingLeft: 10,
+		paddingRight: 10,
 	},
 });
 

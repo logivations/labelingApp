@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { Dimensions, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Constants from 'expo-constants';
 import React from 'react';
+import { PicklistScanStatus } from '../enums';
 
 const StatusBarHeight = Constants.statusBarHeight;
 console.log('Dimensions.get(', Dimensions.get('screen').height);
@@ -20,6 +21,11 @@ export const Colors = {
 	green: '#8dbf4c',
 	gray: '#4d4d4d',
 	red: '#ef4444',
+	statusColors: {
+		success: '#8dbf4c',
+		warning: '#e9d41e',
+		error: '#e63e3e',
+	},
 };
 
 export const StyledContainer = styled(View)`
@@ -142,3 +148,46 @@ export const LabelingErrorMsgBox = styled(ErrorMsgBox)`
 	text-align: left;
 `;
 
+export const ListColumnWrapper = styled(View)`
+	flex: ${({ flex }: { flex: number }) => flex};
+	paddingLeft: 10px;
+	paddingRight: 10px;
+	alignItems: center;
+	justifyContent: center;
+	height: 100%;
+`;
+
+
+export const getColorByStatus = (status: PicklistScanStatus) => {
+	switch (status) {
+		case PicklistScanStatus.NOT_FOUND:
+			return Colors.statusColors.error;
+		case PicklistScanStatus.NOT_COMPLETE:
+			return Colors.statusColors.warning;
+		case PicklistScanStatus.READY_FOR_LOADING:
+			return Colors.statusColors.success;
+	}
+};
+
+export const ListItemWrapper = styled(View)`
+	display: flex;
+	justifyContent: space-between;
+	flexDirection: row;
+	alignItems: center;
+	margin: 5px 10px;
+	border: 1px solid ${({ scanStatus }: { scanStatus: PicklistScanStatus }) => {
+	return getColorByStatus(scanStatus);
+}};
+	borderLeftWidth: 6px;
+	borderRadius: 4px;
+	height: 38px;
+`;
+
+export const TooltipContainer = styled(View)`
+	display: flex;
+	flexDirection: row;
+`;
+
+export const TooltipText = styled(Text)`
+	marginLeft: 5px;
+`;

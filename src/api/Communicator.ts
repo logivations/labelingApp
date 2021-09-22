@@ -6,6 +6,7 @@
 import BaseCommunicator from './BaseCommunicator';
 import TokenService from '../services/token.service';
 import { Platform } from 'react-native';
+import { StatusApproved } from '../enums';
 
 export interface ConnectionProperties {
 	host: string,
@@ -71,8 +72,16 @@ export class Communicator extends BaseCommunicator {
 		});
 	}
 
-	public async setInternalOrdersReadyForPacking(plId: string): Promise<string | undefined> {
-		return this.fetchData('api/vgg/setInternalOrdersReadyForPacking', { plId }, {}, {
+	public async setInternalOrdersReadyForPacking(plIds: number[]): Promise<void> {
+		return this.fetchData('api/vgg/setInternalOrdersReadyForPacking', { plIds }, {}, {
+			method: 'POST',
+			ignoreTokens: false,
+			contentType: 'application/json',
+		});
+	}
+
+	public async updatePickListsStatus(pickListIds: number[], statusApproved: StatusApproved): Promise<void> {
+		return this.fetchData('api/vgg/updatePickListsStatus', { pickListIds, statusApproved }, {}, {
 			method: 'POST',
 			ignoreTokens: false,
 			contentType: 'application/json',
@@ -95,8 +104,16 @@ export class Communicator extends BaseCommunicator {
 		});
 	}
 
-	public getAllRacks() {
-		return this.fetchData(`api/layouts/60638/racks/`, {}, {}, {
+	public getActiveWhId() {
+		return this.fetchData(`api/vgg/getActiveWhId`, {}, {}, {
+			method: 'GET',
+			ignoreTokens: false,
+			contentType: 'application/json',
+		});
+	}
+
+	public getAllRacks(whId: number) {
+		return this.fetchData(`api/layouts/${whId}/racks/`, {}, {}, {
 			method: 'GET',
 			ignoreTokens: false,
 			contentType: 'application/json',

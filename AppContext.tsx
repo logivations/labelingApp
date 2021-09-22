@@ -26,7 +26,8 @@ export const AppContextProvider = ({ children }: AppContextProviderParams) => {
 					return Communicator.tokenService.setTokens(tokens);
 				}).finally(() => checkIsSignedIn());
 
-			const allRacks = await Communicator.getAllRacks();
+			const whId = await Communicator.getActiveWhId();
+			const allRacks = await Communicator.getAllRacks(whId);
 			const mappedRacks: Map<number, string> = allRacks.reduce((acc: Map<number, string>, rack: any) => {
 				acc.set(rack.rackId, rack.text);
 				return acc;
