@@ -8,7 +8,6 @@ enum RouteNames {
 	SETTINGS = 'SETTINGS',
 	LABELING = 'LABELING',
 	PICK_LISTS = 'PICK_LISTS',
-	WELCOME = 'WELCOME',
 }
 
 export default RouteNames;

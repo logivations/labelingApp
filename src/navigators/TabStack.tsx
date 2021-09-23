@@ -6,21 +6,14 @@
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Colors, StyledContainer } from '../components/styles';
+import { Colors } from '../components/styles';
 
 import RouteNames from '../constants/route.names';
-import NetworkLogger from 'react-native-network-logger';
-import Constants from 'expo-constants';
 
 const Login = React.lazy(() => import('../screens/Login'));
 const Settings = React.lazy(() => import('../screens/Settings'));
 
-
 const Tabs = createBottomTabNavigator();
-
-const NetworkLoggerContainer = () => <StyledContainer>
-	<NetworkLogger/>
-</StyledContainer>;
 
 const TabStackScreen: React.FC = () => {
 	return <Tabs.Navigator
@@ -42,9 +35,6 @@ const TabStackScreen: React.FC = () => {
 	>
 		<Tabs.Screen name={RouteNames.LOGIN} component={Login}/>
 		<Tabs.Screen name={RouteNames.SETTINGS} component={Settings}/>
-		{/*TODO remove NetworkLogger*/}
-		{Constants.manifest?.extra?.isDevMode &&
-		<Tabs.Screen name={RouteNames.WELCOME} component={NetworkLoggerContainer}/>}
 	</Tabs.Navigator>;
 };
 
