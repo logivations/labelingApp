@@ -119,7 +119,6 @@ class BaseCommunicator {
 							}
 						} else {
 							let error = new Error(`Response not OK, response status: ${response.status}.`);
-							console.log('response.status', response.status);
 							if (response.status === 401 || response.status === 400) {
 								!params.ignoreTokens && await this.logout();
 							}
