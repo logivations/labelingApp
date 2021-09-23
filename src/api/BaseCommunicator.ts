@@ -21,12 +21,23 @@ class BaseCommunicator {
 				this.saveConnectionProperties(connectionProperties);
 			}
 		});
+		this.runPingInterval();
 	}
 
 	public get isExistConnectionProperties(): boolean {
 		return !!this.connectionProperties.host
 			&& !!this.connectionProperties.port
 			&& !!this.connectionProperties.contextPath;
+	}
+
+	private runPingInterval(): void {
+		setInterval(() => {
+			this.fetchData(`anonymous/ping`, {}, {}, {
+				method: 'GET',
+				ignoreTokens: true,
+				contentType: 'application/json',
+			});
+		}, 60000);
 	}
 
 	protected setTokenService(tokenService: TokenService) {
@@ -108,8 +119,9 @@ class BaseCommunicator {
 							}
 						} else {
 							let error = new Error(`Response not OK, response status: ${response.status}.`);
-							if (response.status === 401) {
-								await this.logout();
+							console.log('response.status', response.status);
+							if (response.status === 401 || response.status === 400) {
+								!params.ignoreTokens && await this.logout();
 							}
 							try {
 								const responseText = await response.text();
@@ -127,7 +139,7 @@ class BaseCommunicator {
 									title: error.name,
 									text: error.message,
 									color: Colors.red,
-									timing: 10000,
+									timing: 5000,
 								});
 								reject(error);
 							}

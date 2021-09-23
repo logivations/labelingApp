@@ -10,7 +10,7 @@ interface AppContextProviderParams {
 export const AppContextProvider = ({ children }: AppContextProviderParams) => {
 	const [isLoading, setLoading] = useState<boolean>(false);
 	const [isSignedIn, setSignedIn] = useState<boolean>(false);
-	const [mappedRacksById, setMappedRackById] = useState<Map<number, string>>(new Map());
+	const [mappedRackNameById, setMappedRackById] = useState<Map<number, string>>(new Map());
 
 	const checkIsSignedIn = useCallback((setSingInning?: Function) => {
 		return Communicator.retrieveTokenOnInit().then((accessToken) => {
@@ -21,23 +21,16 @@ export const AppContextProvider = ({ children }: AppContextProviderParams) => {
 	}, []);
 	useEffect(() => {
 		(async () => {
-			await Communicator.getToken(true)
+			await Communicator.getToken()
 				.then((tokens) => {
 					return Communicator.tokenService.setTokens(tokens);
 				}).finally(() => checkIsSignedIn());
-
-			const whId = await Communicator.getActiveWhId();
-			const allRacks = await Communicator.getAllRacks(whId);
-			const mappedRacks: Map<number, string> = allRacks.reduce((acc: Map<number, string>, rack: any) => {
-				acc.set(rack.rackId, rack.text);
-				return acc;
-			}, new Map());
-			setMappedRackById(mappedRacks);
 		})();
 	}, []);
 
 	return (
-		<AppContext.Provider value={{ isSignedIn, isLoading, setSignedIn, checkIsSignedIn, mappedRacksById }}>
+		<AppContext.Provider
+			value={{ isSignedIn, isLoading, setSignedIn, checkIsSignedIn, setMappedRackById, mappedRackNameById }}>
 			{children}
 		</AppContext.Provider>
 	);

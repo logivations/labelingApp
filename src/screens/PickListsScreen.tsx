@@ -16,7 +16,7 @@ import { StatusApproved } from '../enums';
 
 // @ts-ignore
 const PickListsScreen = ({ navigation }) => {
-	const { mappedRacksById } = useAppContext();
+	const { mappedRackNameById } = useAppContext();
 	const [PLList, setPLList] = useState<PickList[]>([]);
 
 	useLayoutEffect(() => {
@@ -50,7 +50,7 @@ const PickListsScreen = ({ navigation }) => {
 						...acc,
 						...picklistsByLastLoadingList[picklistScanStatus].map((picklist: any) => new PickList({
 							...picklist,
-							rampName: mappedRacksById.get(picklist.ramp),
+							rampName: mappedRackNameById.get(picklist.ramp),
 							scanStatus: PicklistScanStatus[picklistScanStatus],
 						})),
 					];

@@ -75,7 +75,7 @@ class TokenService {
         return TokenService.isTokensDatesExpired().then((isExpired) => {
             if (isExpired && !ignoreTokens) {
                 return new Promise((resolve, reject) => {
-                    this.api.getToken(true).then(
+                    this.api.getToken().then(
                         async (response: { [key: string]: string }) => {
                             await this.setTokens(response);
                             resolve();

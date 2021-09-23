@@ -44,10 +44,10 @@ export class Communicator extends BaseCommunicator {
 			})
 	}
 
-	public async getToken(ignoreTokens: boolean): Promise<any> {
+	public async getToken(): Promise<any> {
 		return this.fetchData('api/auth/token', {}, {}, {
 			method: 'GET',
-			ignoreTokens,
+			ignoreTokens: true,
 			contentType: 'application/json',
 		});
 	}
@@ -64,14 +64,6 @@ export class Communicator extends BaseCommunicator {
 		});
 	}
 
-	public async checkNveConsistent(plId: string): Promise<string | undefined> {
-		return this.fetchData('api/vgg/checkNveConsistent', { plId }, {}, {
-			method: 'GET',
-			ignoreTokens: false,
-			contentType: 'application/json',
-		});
-	}
-
 	public async setInternalOrdersReadyForPacking(plIds: number[]): Promise<void> {
 		return this.fetchData('api/vgg/setInternalOrdersReadyForPacking', { plIds }, {}, {
 			method: 'POST',
@@ -83,14 +75,6 @@ export class Communicator extends BaseCommunicator {
 	public async updatePickListsStatus(pickListIds: number[], statusApproved: StatusApproved): Promise<void> {
 		return this.fetchData('api/vgg/updatePickListsStatus', { pickListIds, statusApproved }, {}, {
 			method: 'POST',
-			ignoreTokens: false,
-			contentType: 'application/json',
-		});
-	}
-
-	public async getLatestPlId(): Promise<string | undefined> {
-		return this.fetchData('api/vgg/getLatestPlId', {}, {}, {
-			method: 'GET',
 			ignoreTokens: false,
 			contentType: 'application/json',
 		});

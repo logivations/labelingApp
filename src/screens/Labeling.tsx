@@ -27,7 +27,21 @@ import RouteNames from '../constants/route.names';
 
 // @ts-ignore
 const Labeling = ({ navigation }) => {
-	const { checkIsSignedIn } = useAppContext();
+	const { checkIsSignedIn, setMappedRackById } = useAppContext();
+
+	useEffect(() => {
+		(async () => {
+			const whId = await Communicator.getActiveWhId();
+			const allRacks = await Communicator.getAllRacks(whId);
+			const mappedRackNameById: Map<number, string> = allRacks.reduce((acc: Map<number, string>, rack: any) => {
+				acc.set(rack.rackId, rack.text);
+				return acc;
+			}, new Map());
+			setMappedRackById(mappedRackNameById);
+		})();
+	}, []);
+
+
 	const [nve, setNve] = useState<string>('');
 	const [ean, setEan] = useState<string>('');
 	const [sn, setSn] = useState<string>('');
