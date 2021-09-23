@@ -5,6 +5,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "format": "prettier --config ./.prettierrc --write \"src/**/*.*\"",
     "eject": "expo eject"
   },
   "dependencies": {
@@ -38,6 +39,7 @@
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "@types/styled-components": "^5.1.12",
+    "prettier": "^2.4.1",
     "react-native-svg-transformer": "^0.14.3",
     "typescript": "~4.0.0"
   },

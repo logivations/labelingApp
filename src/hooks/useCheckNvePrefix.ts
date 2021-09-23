@@ -18,13 +18,16 @@ const useCheckNvePrefix = () => {
 		})();
 	}, []);
 
-	return useCallback(async (nveValue, successCallback) => {
-		if (nveValue.startsWith(nvePrefixForCheck) || !nveValue) {
-			successCallback();
-		} else {
-			getSoundAndPlay('warningSignal');
-		}
-	}, [nvePrefixForCheck]);
+	return useCallback(
+		async (nveValue, successCallback) => {
+			if (nveValue.startsWith(nvePrefixForCheck) || !nveValue) {
+				successCallback();
+			} else {
+				getSoundAndPlay('warningSignal');
+			}
+		},
+		[nvePrefixForCheck],
+	);
 };
 
 export default useCheckNvePrefix;

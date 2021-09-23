@@ -9,9 +9,9 @@ import { Platform } from 'react-native';
 import { StatusApproved } from '../enums';
 
 export interface ConnectionProperties {
-	host: string,
-	port: string,
-	contextPath: string
+	host: string;
+	port: string;
+	contextPath: string;
 }
 
 export class Communicator extends BaseCommunicator {
@@ -35,21 +35,25 @@ export class Communicator extends BaseCommunicator {
 			method: 'POST',
 			ignoreTokens: true,
 			contentType: Platform.OS === 'ios' ? 'application/json' : 'multipart/form-data',
-		})
-			.then(async (result) => {
-				if (result) {
-					await this.tokenService.setTokens(result);
-				}
-				return result;
-			})
+		}).then(async (result) => {
+			if (result) {
+				await this.tokenService.setTokens(result);
+			}
+			return result;
+		});
 	}
 
 	public async getToken(): Promise<any> {
-		return this.fetchData('api/auth/token', {}, {}, {
-			method: 'GET',
-			ignoreTokens: true,
-			contentType: 'application/json',
-		});
+		return this.fetchData(
+			'api/auth/token',
+			{},
+			{},
+			{
+				method: 'GET',
+				ignoreTokens: true,
+				contentType: 'application/json',
+			},
+		);
 	}
 
 	public retrieveTokenOnInit(): Promise<string | undefined> {
@@ -65,51 +69,81 @@ export class Communicator extends BaseCommunicator {
 	}
 
 	public async setInternalOrdersReadyForPacking(plIds: number[]): Promise<void> {
-		return this.fetchData('api/vgg/setInternalOrdersReadyForPacking', { plIds }, {}, {
-			method: 'POST',
-			ignoreTokens: false,
-			contentType: 'application/json',
-		});
+		return this.fetchData(
+			'api/vgg/setInternalOrdersReadyForPacking',
+			{ plIds },
+			{},
+			{
+				method: 'POST',
+				ignoreTokens: false,
+				contentType: 'application/json',
+			},
+		);
 	}
 
 	public async updatePickListsStatus(pickListIds: number[], statusApproved: StatusApproved): Promise<void> {
-		return this.fetchData('api/vgg/updatePickListsStatus', { pickListIds, statusApproved }, {}, {
-			method: 'POST',
-			ignoreTokens: false,
-			contentType: 'application/json',
-		});
+		return this.fetchData(
+			'api/vgg/updatePickListsStatus',
+			{ pickListIds, statusApproved },
+			{},
+			{
+				method: 'POST',
+				ignoreTokens: false,
+				contentType: 'application/json',
+			},
+		);
 	}
 
 	public async getAllPickListsByLastScannedLoadingListId(): Promise<any> {
-		return this.fetchData('api/vgg/getAllPickListsByLastScannedLoadingListId', {}, {}, {
-			method: 'GET',
-			ignoreTokens: false,
-			contentType: 'application/json',
-		});
+		return this.fetchData(
+			'api/vgg/getAllPickListsByLastScannedLoadingListId',
+			{},
+			{},
+			{
+				method: 'GET',
+				ignoreTokens: false,
+				contentType: 'application/json',
+			},
+		);
 	}
 
 	public getActiveWhId() {
-		return this.fetchData(`api/vgg/getActiveWhId`, {}, {}, {
-			method: 'GET',
-			ignoreTokens: false,
-			contentType: 'application/json',
-		});
+		return this.fetchData(
+			`api/vgg/getActiveWhId`,
+			{},
+			{},
+			{
+				method: 'GET',
+				ignoreTokens: false,
+				contentType: 'application/json',
+			},
+		);
 	}
 
 	public getNvePrefixForCheck() {
-		return this.fetchData(`api/vgg/getNvePrefixForCheck`, {}, {}, {
-			method: 'GET',
-			ignoreTokens: false,
-			contentType: 'application/json',
-		});
+		return this.fetchData(
+			`api/vgg/getNvePrefixForCheck`,
+			{},
+			{},
+			{
+				method: 'GET',
+				ignoreTokens: false,
+				contentType: 'application/json',
+			},
+		);
 	}
 
 	public getAllRacks(whId: number) {
-		return this.fetchData(`api/layouts/${whId}/racks/`, {}, {}, {
-			method: 'GET',
-			ignoreTokens: false,
-			contentType: 'application/json',
-		});
+		return this.fetchData(
+			`api/layouts/${whId}/racks/`,
+			{},
+			{},
+			{
+				method: 'GET',
+				ignoreTokens: false,
+				contentType: 'application/json',
+			},
+		);
 	}
 }
 

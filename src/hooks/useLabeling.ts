@@ -5,7 +5,6 @@ import RouteNames from '../constants/route.names';
 import { Toast } from 'popup-ui';
 import useAppContext from '../../AppContext';
 
-
 const useLabeling = (navigation: any): any => {
 	const { getSoundAndPlay } = useAppContext();
 	const [nve, setNve] = useState<string>('');

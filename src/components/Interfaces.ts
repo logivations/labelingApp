@@ -4,17 +4,17 @@
  ******************************************************************************/
 
 export interface TextInputProps {
-	label: string,
-	icon: any,
-	isPassword?: boolean,
-	hidePassword?: boolean,
-	setHidePassword?: Function,
+	label: string;
+	icon: any;
+	isPassword?: boolean;
+	hidePassword?: boolean;
+	setHidePassword?: Function;
 
-	[key: string]: any
+	[key: string]: any;
 }
 
 export interface CheckPlProps {
-	isOpen: boolean,
-	setCheckPlDialogWindowOpen: Function,
-	latestPlId: string
+	isOpen: boolean;
+	setCheckPlDialogWindowOpen: Function;
+	latestPlId: string;
 }
