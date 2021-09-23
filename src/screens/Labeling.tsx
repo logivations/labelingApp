@@ -23,7 +23,6 @@ import TextInput from '../components/TextInput';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 // @ts-ignore
 import { Toast } from 'popup-ui';
-import CheckPLDialogWindow from '../components/CheckPLDialogWindow';
 import RouteNames from '../constants/route.names';
 
 // @ts-ignore
@@ -38,11 +37,9 @@ const Labeling = ({ navigation }) => {
 	const snRef = useRef(null);
 
 	useEffect(() => {
+		// @ts-ignore
 		nveRef.current && nveRef.current.focus();
 	}, [nveRef]);
-
-	const [isCheckPlDialogWindowOpen, setCheckPlDialogWindowOpen] = useState<boolean>(false);
-	const [latestPlId, setLatestPlId] = useState<string>('');
 
 	const clearTextFields = useCallback(() => {
 		setNve('');
@@ -118,6 +115,7 @@ const Labeling = ({ navigation }) => {
 									handleBlur('sn')(value);
 									handleSubmit();
 									clearTextFields();
+									// @ts-ignore
 									nveRef.current && nveRef.current.focus();
 								}}
 								value={values.sn}
@@ -148,11 +146,6 @@ const Labeling = ({ navigation }) => {
 							</SecondaryStyledButton>
 						</StyledFormArea>}
 					</Formik>
-					<CheckPLDialogWindow
-						isOpen={isCheckPlDialogWindowOpen}
-						setCheckPlDialogWindowOpen={setCheckPlDialogWindowOpen}
-						latestPlId={latestPlId}
-					/>
 				</InnerContainer>
 			</StyledContainer>
 		</KeyboardAvoidingWrapper>
