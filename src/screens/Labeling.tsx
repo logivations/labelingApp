@@ -2,7 +2,7 @@
  * (C) Copyright
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 import {
 	ButtonText,
@@ -17,57 +17,23 @@ import {
 } from '../components/styles';
 import useAppContext from '../../AppContext';
 import { Formik } from 'formik';
-import api from '../api/Communicator';
 import Communicator from '../api/Communicator';
 import TextInput from '../components/TextInput';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 // @ts-ignore
-import { Toast } from 'popup-ui';
-import RouteNames from '../constants/route.names';
+import useCheckNvePrefix from '../hooks/useCheckNvePrefix';
+import useWarehouseRacks from '../hooks/useWarehouseRacks';
+import useLabeling from '../hooks/useLabeling';
 
 // @ts-ignore
 const Labeling = ({ navigation }) => {
-	const { checkIsSignedIn, setMappedRackById } = useAppContext();
+	useWarehouseRacks();
+	const { checkIsSignedIn } = useAppContext();
+	const checkNveByPrefix = useCheckNvePrefix();
+	const {
+		nve, ean, sn, setNve, setEan, setSn, nveRef, eanRef, snRef, clearTextFields, createNewDocument, readyForLoadingAction,
+	} = useLabeling(navigation);
 
-	useEffect(() => {
-		(async () => {
-			const whId = await Communicator.getActiveWhId();
-			const allRacks = await Communicator.getAllRacks(whId);
-			const mappedRackNameById: Map<number, string> = allRacks.reduce((acc: Map<number, string>, rack: any) => {
-				acc.set(rack.rackId, rack.text);
-				return acc;
-			}, new Map());
-			setMappedRackById(mappedRackNameById);
-		})();
-	}, []);
-
-
-	const [nve, setNve] = useState<string>('');
-	const [ean, setEan] = useState<string>('');
-	const [sn, setSn] = useState<string>('');
-
-	const nveRef = useRef(null);
-	const eanRef = useRef(null);
-	const snRef = useRef(null);
-
-	useEffect(() => {
-		// @ts-ignore
-		nveRef.current && nveRef.current.focus();
-	}, [nveRef]);
-
-	const clearTextFields = useCallback(() => {
-		setNve('');
-		setEan('');
-		setSn('');
-	}, [setNve, setEan, setSn]);
-
-	const createNewDocument = useCallback(async (info) => {
-		await api.createNewDocument(info);
-		Toast.show({ title: 'NVE_IS_ADDED' });
-	}, []);
-	const readyForLoadingAction = useCallback(async () => {
-		navigation.push(RouteNames.PICK_LISTS);
-	}, []);
 	return (
 		<KeyboardAvoidingWrapper>
 			<StyledContainer>
@@ -87,10 +53,11 @@ const Labeling = ({ navigation }) => {
 									handleChange('nve')(value);
 								}}
 								reference={nveRef}
-								onBlur={(value: any) => {
-									// @ts-ignore
-									eanRef.current && eanRef.current.focus();
-									handleBlur('nve')(value);
+								onBlur={async (value: any) => {
+									await checkNveByPrefix(nve, () => {
+										eanRef.current && eanRef.current.focus();
+										handleBlur('nve')(value);
+									});
 								}}
 								value={values.nve}
 								editable={true}

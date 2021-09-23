@@ -1,5 +1,6 @@
 import React, { Context, useCallback, useContext, useEffect, useState } from 'react';
 import Communicator from './src/api/Communicator';
+import usePlayAudio from './src/hooks/useAudio';
 
 export const AppContext: Context<any> = React.createContext(null);
 
@@ -28,9 +29,19 @@ export const AppContextProvider = ({ children }: AppContextProviderParams) => {
 		})();
 	}, []);
 
+	const getSoundAndPlay = usePlayAudio();
+
 	return (
 		<AppContext.Provider
-			value={{ isSignedIn, isLoading, setSignedIn, checkIsSignedIn, setMappedRackById, mappedRackNameById }}>
+			value={{
+				isSignedIn,
+				isLoading,
+				setSignedIn,
+				checkIsSignedIn,
+				setMappedRackById,
+				mappedRackNameById,
+				getSoundAndPlay,
+			}}>
 			{children}
 		</AppContext.Provider>
 	);

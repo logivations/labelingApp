@@ -96,6 +96,14 @@ export class Communicator extends BaseCommunicator {
 		});
 	}
 
+	public getNvePrefixForCheck() {
+		return this.fetchData(`api/vgg/getNvePrefixForCheck`, {}, {}, {
+			method: 'GET',
+			ignoreTokens: false,
+			contentType: 'application/json',
+		});
+	}
+
 	public getAllRacks(whId: number) {
 		return this.fetchData(`api/layouts/${whId}/racks/`, {}, {}, {
 			method: 'GET',
