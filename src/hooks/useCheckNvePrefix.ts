@@ -23,7 +23,7 @@ const useCheckNvePrefix = () => {
 			if (nveValue.startsWith(nvePrefixForCheck) || !nveValue) {
 				successCallback();
 			} else {
-				getSoundAndPlay('warningSignal');
+				getSoundAndPlay('warningNotification');
 			}
 		},
 		[nvePrefixForCheck],

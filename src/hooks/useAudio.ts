@@ -12,17 +12,20 @@ const usePlayAudio = () => {
 		(async () => {
 			const sounds = new Map();
 			await Audio.Sound.createAsync(require('../../assets/sounds/warning-notification-sound.wav')).then(
-				({ sound }) => sounds.set('warningSignal', sound),
+				({ sound }) => sounds.set('warningNotification', sound),
 			);
-			await Audio.Sound.createAsync(require('../../assets/sounds/warn-signal.mp3')).then(
-				({ sound }) => sounds.set('successSignal', sound),
+			await Audio.Sound.createAsync(require('../../assets/sounds/warning-alarm.wav')).then(
+				({ sound }) => sounds.set('warningAlarm', sound),
+			);
+			await Audio.Sound.createAsync(require('../../assets/sounds/success-notification.wav')).then(
+				({ sound }) => sounds.set('successNotification', sound),
 			);
 			setSignals(sounds);
 		})();
 	}, []);
 
 	return useCallback(
-		async (signalName = 'warningSignal') => {
+		async (signalName: string) => {
 			const signal: Audio.Sound | undefined = signals.get(signalName);
 			if (signal) {
 				await signal.setPositionAsync(0);

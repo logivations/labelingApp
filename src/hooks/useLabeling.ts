@@ -29,10 +29,11 @@ const useLabeling = (navigation: any): any => {
 	const createNewDocument = useCallback(async (info) => {
 		try {
 			await api.createNewDocument(info);
+			getSoundAndPlay('successNotification');
 			Toast.show({ title: 'NVE_IS_ADDED' });
 		} catch (error) {
 			console.log('Error: ', error);
-			getSoundAndPlay('successSignal');
+			getSoundAndPlay('warningAlarm');
 		}
 	}, []);
 	const readyForLoadingAction = useCallback(async () => {
