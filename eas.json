@@ -1,6 +1,7 @@
 {
   "build": {
     "release": {},
+    "releaseChannel": "1.2.0",
     "development": {
       "developmentClient": true,
       "distribution": "internal"
