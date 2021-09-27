@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 
 const LabelingStack = () => {
 	return (
-		<Stack.Navigator initialRouteName={RouteNames.LABELING} screenOptions={{ headerShown: true }}>
+		<Stack.Navigator initialRouteName={RouteNames.LABELING} screenOptions={{ headerShown: false }}>
 			<Stack.Screen name={RouteNames.LABELING} component={Labeling}/>
 			<Stack.Screen name={RouteNames.PICK_LISTS} component={PickListsScreen}/>
 		</Stack.Navigator>

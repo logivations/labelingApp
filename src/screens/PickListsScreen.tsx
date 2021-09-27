@@ -38,6 +38,7 @@ const PickListsScreen = ({ navigation }) => {
 					<Text style={styles.checkBtnText}>Check</Text>
 				</TouchableOpacity>
 			),
+			headerShown: true,
 		});
 	}, [navigation, PLList]);
 
