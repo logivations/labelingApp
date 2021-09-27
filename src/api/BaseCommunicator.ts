@@ -21,12 +21,26 @@ class BaseCommunicator {
 				this.saveConnectionProperties(connectionProperties);
 			}
 		});
+		this.runPingInterval();
 	}
 
 	public get isExistConnectionProperties(): boolean {
-		return !!this.connectionProperties.host
-			&& !!this.connectionProperties.port
-			&& !!this.connectionProperties.contextPath;
+		return (
+			!!this.connectionProperties.host &&
+			!!this.connectionProperties.port &&
+			!!this.connectionProperties.contextPath
+		);
+	}
+
+	private runPingInterval(): void {
+		setInterval(() => {
+			// prettier-ignore
+			this.fetchData(`anonymous/ping`, {}, {}, {
+				method: 'GET',
+				ignoreTokens: true,
+				contentType: 'application/json',
+			});
+		}, 60000);
 	}
 
 	protected setTokenService(tokenService: TokenService) {
@@ -44,11 +58,16 @@ class BaseCommunicator {
 	}
 
 	public async logout() {
-		await this.fetchData('j_spring_security_logout', {}, {}, {
-			method: 'GET',
-			contentType: 'text/plain',
-			ignoreTokens: true,
-		});
+		await this.fetchData(
+			'j_spring_security_logout',
+			{},
+			{},
+			{
+				method: 'GET',
+				contentType: 'text/plain',
+				ignoreTokens: true,
+			},
+		);
 		await this.tokenService.removeTokens();
 	}
 
@@ -67,28 +86,34 @@ class BaseCommunicator {
 	private getConfig(params: { [key: string]: any }, body: any): object {
 		const getHeaders = () => {
 			const token = this.tokenService.getCashedTokens(STORAGE_KEYS.ACCESS_TOKEN);
-			return Object.assign({
-				'Accept': '*/*',
-				'Connection': 'keep-alive',
-				'Content-Type': params.contentType,
-				'Access-Control-Allow-Methods': 'POST, GET',
-				'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, X-Requested-With',
-			}, token ? { 'Authorization': token } : {});
+			return Object.assign(
+				{
+					Accept: '*/*',
+					Connection: 'keep-alive',
+					'Content-Type': params.contentType,
+					'Access-Control-Allow-Methods': 'POST, GET',
+					'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, X-Requested-With',
+				},
+				token ? { Authorization: token } : {},
+			);
 		};
-		return Object.assign({
-			method: params.method,
-			mode: 'cors',
-			cache: 'no-cache',
-			credentials: 'same-origin',
-			headers: getHeaders(),
-		}, params.method === 'POST' ? { body: body instanceof FormData ? body : JSON.stringify(body) } : {});
+		return Object.assign(
+			{
+				method: params.method,
+				mode: 'cors',
+				cache: 'no-cache',
+				credentials: 'same-origin',
+				headers: getHeaders(),
+			},
+			params.method === 'POST' ? { body: body instanceof FormData ? body : JSON.stringify(body) } : {},
+		);
 	}
 
 	protected async fetchData(
 		path: string,
 		query: object = {},
 		body: any = {},
-		params: { contentType?: string, method: string, ignoreTokens: boolean } = {
+		params: { contentType?: string; method: string; ignoreTokens: boolean } = {
 			contentType: 'application/json',
 			method: 'GET',
 			ignoreTokens: false,
@@ -97,8 +122,8 @@ class BaseCommunicator {
 		return this.tokenService.getTokens(params.ignoreTokens).then(() => {
 			return new Promise((resolve, reject) => {
 				console.log('Request URL: ', this.getUrlWithQueryParameters(path, query));
-				fetch(this.getUrlWithQueryParameters(path, query), this.getConfig(params, body))
-					.then(async (response) => {
+				fetch(this.getUrlWithQueryParameters(path, query), this.getConfig(params, body)).then(
+					async (response) => {
 						if (response.ok) {
 							const responseText = await response.text();
 							try {
@@ -108,8 +133,8 @@ class BaseCommunicator {
 							}
 						} else {
 							let error = new Error(`Response not OK, response status: ${response.status}.`);
-							if (response.status === 401) {
-								await this.logout();
+							if (response.status === 401 || response.status === 400) {
+								!params.ignoreTokens && (await this.logout());
 							}
 							try {
 								const responseText = await response.text();
@@ -127,16 +152,16 @@ class BaseCommunicator {
 									title: error.name,
 									text: error.message,
 									color: Colors.red,
-									timing: 10000,
+									timing: 5000,
 								});
 								reject(error);
 							}
 						}
-					});
+					},
+				);
 			});
 		});
 	}
-
 }
 
 export default BaseCommunicator;

@@ -35,60 +35,64 @@ const Settings = ({ navigation }) => {
 			}
 		});
 	}, []);
-	return <KeyboardAvoidingWrapper>
-		<StyledContainer>
-			<InnerContainer>
-				<SubTitle>Connection properties</SubTitle>
-				<Formik
-					enableReinitialize={true}
-					initialValues={connectionProperties}
-					onSubmit={async (properties: ConnectionProperties) => {
-						await storeData(STORAGE_KEYS.CONNECTION_PROPERTIES, properties);
-						properties && api.saveConnectionProperties(properties);
-						await navigation.navigate(RouteNames.LOGIN);
-					}}
-				>
-					{({ handleChange, handleBlur, handleSubmit, values }) => {
-						return <StyledFormArea>
-							<TextInput
-								label={'Host'}
-								icon={''}
-								placeholder={'http://127.0.0.1'}
-								placeholderTextColor={Colors.darkLight}
-								onChangeText={handleChange('host')}
-								onBlur={handleBlur('host')}
-								value={values.host}
-								keyboardType={'url'}
-							/>
-							<TextInput
-								label={'Port'}
-								icon={''}
-								placeholder={'8080'}
-								placeholderTextColor={Colors.darkLight}
-								onChangeText={handleChange('port')}
-								onBlur={handleBlur('port')}
-								value={values.port}
-								keyboardType={'numeric'}
-							/>
-							<TextInput
-								label={'Context path'}
-								icon={''}
-								placeholder={'whapp'}
-								placeholderTextColor={Colors.darkLight}
-								onChangeText={handleChange('contextPath')}
-								onBlur={handleBlur('contextPath')}
-								value={values.contextPath}
-								keyboardType={'default'}
-							/>
-							<StyledButton onPress={handleSubmit}>
-								<ButtonText>Save</ButtonText>
-							</StyledButton>
-						</StyledFormArea>;
-					}}
-				</Formik>
-			</InnerContainer>
-		</StyledContainer>
-	</KeyboardAvoidingWrapper>;
+	return (
+		<KeyboardAvoidingWrapper>
+			<StyledContainer>
+				<InnerContainer>
+					<SubTitle>Connection properties</SubTitle>
+					<Formik
+						enableReinitialize={true}
+						initialValues={connectionProperties}
+						onSubmit={async (properties: ConnectionProperties) => {
+							await storeData(STORAGE_KEYS.CONNECTION_PROPERTIES, properties);
+							properties && api.saveConnectionProperties(properties);
+							await navigation.navigate(RouteNames.LOGIN);
+						}}
+					>
+						{({ handleChange, handleBlur, handleSubmit, values }) => {
+							return (
+								<StyledFormArea>
+									<TextInput
+										label={'Host'}
+										icon={''}
+										placeholder={'http://127.0.0.1'}
+										placeholderTextColor={Colors.darkLight}
+										onChangeText={handleChange('host')}
+										onBlur={handleBlur('host')}
+										value={values.host}
+										keyboardType={'url'}
+									/>
+									<TextInput
+										label={'Port'}
+										icon={''}
+										placeholder={'8080'}
+										placeholderTextColor={Colors.darkLight}
+										onChangeText={handleChange('port')}
+										onBlur={handleBlur('port')}
+										value={values.port}
+										keyboardType={'numeric'}
+									/>
+									<TextInput
+										label={'Context path'}
+										icon={''}
+										placeholder={'whapp'}
+										placeholderTextColor={Colors.darkLight}
+										onChangeText={handleChange('contextPath')}
+										onBlur={handleBlur('contextPath')}
+										value={values.contextPath}
+										keyboardType={'default'}
+									/>
+									<StyledButton onPress={handleSubmit}>
+										<ButtonText>Save</ButtonText>
+									</StyledButton>
+								</StyledFormArea>
+							);
+						}}
+					</Formik>
+				</InnerContainer>
+			</StyledContainer>
+		</KeyboardAvoidingWrapper>
+	);
 };
 
 export default Settings;

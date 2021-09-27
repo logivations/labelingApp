@@ -28,39 +28,46 @@ const IconByStatus = ({ status }: { status: PicklistScanStatus }) => {
 	}
 };
 
-
 const PickListItem: React.FC<Picklist> = ({ picklistId, rampName, shipmentType, scanStatus }) => {
 	const [showTip, setTip] = useState<boolean>(false);
 
-	return <Tooltip
-		isVisible={showTip}
-		content={<TooltipContainer>
-			<IconByStatus status={scanStatus}/>
-			<TooltipText>{PicklistScanStatus[scanStatus]}</TooltipText>
-		</TooltipContainer>}
-		placement="top"
-		onClose={() => setTip(false)}
-		disableShadow={true}
-		backgroundColor={'none'}
-		topAdjustment={Platform.OS === 'android' ? -(StatusBar.currentHeight || 0) + 15 : 15}
-		showChildInTooltip={false}
-		contentStyle={{ borderColor: getColorByStatus(scanStatus), borderWidth: 1 }}
-		arrowStyle={{ display: 'none' }}
-		displayInsets={{ top: 0, bottom: 0, left: 0, right: 0 }}
-	>
-		<TouchableHighlight
-			activeOpacity={0.6}
-			underlayColor={Colors.secondary}
-			onPress={() => setTip(true)}
+	return (
+		<Tooltip
+			isVisible={showTip}
+			content={
+				<TooltipContainer>
+					<IconByStatus status={scanStatus}/>
+					<TooltipText>{PicklistScanStatus[scanStatus]}</TooltipText>
+				</TooltipContainer>
+			}
+			placement="top"
+			onClose={() => setTip(false)}
+			disableShadow={true}
+			backgroundColor={'none'}
+			topAdjustment={Platform.OS === 'android' ? -(StatusBar.currentHeight || 0) + 15 : 15}
+			showChildInTooltip={false}
+			contentStyle={{ borderColor: getColorByStatus(scanStatus), borderWidth: 1 }}
+			arrowStyle={{ display: 'none' }}
+			displayInsets={{ top: 0, bottom: 0, left: 0, right: 0 }}
 		>
-			<ListItemWrapper scanStatus={scanStatus}>
-				<View style={styles.picklistId}><Text>{picklistId}</Text></View>
-				<View style={styles.rampName}><Text>{rampName}</Text></View>
-				<View style={styles.shipmentType}><Text>{ShipmentType[shipmentType]}</Text></View>
-				<View style={styles.status}><IconByStatus status={scanStatus}/></View>
-			</ListItemWrapper>
-		</TouchableHighlight>
-	</Tooltip>;
+			<TouchableHighlight activeOpacity={0.6} underlayColor={Colors.secondary} onPress={() => setTip(true)}>
+				<ListItemWrapper scanStatus={scanStatus}>
+					<View style={styles.picklistId}>
+						<Text>{picklistId}</Text>
+					</View>
+					<View style={styles.rampName}>
+						<Text>{rampName}</Text>
+					</View>
+					<View style={styles.shipmentType}>
+						<Text>{ShipmentType[shipmentType]}</Text>
+					</View>
+					<View style={styles.status}>
+						<IconByStatus status={scanStatus}/>
+					</View>
+				</ListItemWrapper>
+			</TouchableHighlight>
+		</Tooltip>
+	);
 };
 
 const styles = StyleSheet.create({

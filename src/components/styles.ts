@@ -67,16 +67,16 @@ export const StyledFormArea = styled(View)`
 	width: 100%;
 `;
 export const StyledTextInput = styled(TextInput)`
-	background-color: ${(props) => !!props.disabled ? Colors.secondary : Colors.primary};
+	background-color: ${(props) => (!!props.disabled ? Colors.secondary : Colors.primary)};
 	border: 1px solid ${Colors.secondary}
-	padding: ${(props) => props.authInput ? '0 0 0 40px' : '0 10px'};
+	padding: ${(props) => (props.authInput ? '0 0 0 40px' : '0 10px')};
 	border-radius: 4px;
 	font-size: 16px;
 	height: 38px;
 	margin-vertical: 0px;
 	margin-bottom: 10px;
 	color: ${Colors.tertiary};
-	min-width: ${(props) => props.minWidth ? props.minWidth + 'px' : 'auto'};
+	min-width: ${(props) => (props.minWidth ? props.minWidth + 'px' : 'auto')};
 `;
 
 export const StyledInputLabel = styled(Text)`
@@ -109,18 +109,18 @@ export const RightIcon = styled(TouchableOpacity)`
 export const StyledButton: React.FC<{ [key: string]: any }> = styled(TouchableOpacity)`
 	padding: 0;
 	background-color: ${Colors.green};
-	opacity: ${(props) => props.disabled ? '0.5' : '1'};
+	opacity: ${(props) => (props.disabled ? '0.5' : '1')};
 	justify-content: center;
 	align-items: center;
 	border-radius: 4px;
 	margin-bottom: 10px;
 	height: 38px;
-	min-width: ${(props) => props.minWidth ? props.minWidth + 'px' : 'auto'};
+	min-width: ${(props) => (props.minWidth ? props.minWidth + 'px' : 'auto')};
 `;
 
 export const SecondaryStyledButton = styled(StyledButton)`
 	background-color: ${Colors.primary};
-	border: 1px solid ${Colors.secondary}
+	border: 1px solid ${Colors.secondary};
 `;
 
 export const ButtonText = styled(Text)`
@@ -139,7 +139,7 @@ export const ErrorMsgBox = styled(Text)`
 	font-size: 12px;
 	margin-top: -5px;
 	padding: 0 0 10px;
-	color: ${Colors.red}
+	color: ${Colors.red};
 `;
 
 export const LabelingErrorMsgBox = styled(ErrorMsgBox)`
@@ -149,13 +149,12 @@ export const LabelingErrorMsgBox = styled(ErrorMsgBox)`
 
 export const ListColumnWrapper = styled(View)`
 	flex: ${({ flex }: { flex: number }) => flex};
-	paddingLeft: 10px;
-	paddingRight: 10px;
-	alignItems: center;
-	justifyContent: center;
+	padding-left: 10px;
+	padding-right: 10px;
+	align-items: center;
+	justify-content: center;
 	height: 100%;
 `;
-
 
 export const getColorByStatus = (status: PicklistScanStatus) => {
 	switch (status) {
@@ -170,23 +169,24 @@ export const getColorByStatus = (status: PicklistScanStatus) => {
 
 export const ListItemWrapper = styled(View)`
 	display: flex;
-	justifyContent: space-between;
-	flexDirection: row;
-	alignItems: center;
+	justify-content: space-between;
+	flex-direction: row;
+	align-items: center;
 	margin: 5px 10px;
-	border: 1px solid ${({ scanStatus }: { scanStatus: PicklistScanStatus }) => {
+	border: 1px solid
+		${({ scanStatus }: { scanStatus: PicklistScanStatus }) => {
 	return getColorByStatus(scanStatus);
 }};
-	borderLeftWidth: 6px;
-	borderRadius: 4px;
+	border-left-width: 6px;
+	border-radius: 4px;
 	height: 38px;
 `;
 
 export const TooltipContainer = styled(View)`
 	display: flex;
-	flexDirection: row;
+	flex-direction: row;
 `;
 
 export const TooltipText = styled(Text)`
-	marginLeft: 5px;
+	margin-left: 5px;
 `;

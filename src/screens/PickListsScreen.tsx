@@ -13,14 +13,15 @@ import PickList from '../models/Picklist';
 import PicklistScanStatus from '../enums/PicklistScanStatus';
 import { StatusApproved } from '../enums';
 
-
 // @ts-ignore
 const PickListsScreen = ({ navigation }) => {
-	const { mappedRacksById } = useAppContext();
+	const { mappedRackNameById } = useAppContext();
 	const [PLList, setPLList] = useState<PickList[]>([]);
 
 	useLayoutEffect(() => {
-		const readyForLoadingPicklists = PLList.filter(({ scanStatus }) => scanStatus === PicklistScanStatus.READY_FOR_LOADING);
+		const readyForLoadingPicklists = PLList.filter(
+			({ scanStatus }) => scanStatus === PicklistScanStatus.READY_FOR_LOADING,
+		);
 		const readyForLoadingPicklistsIds = readyForLoadingPicklists.map(({ picklistId }) => picklistId);
 		navigation.setOptions({
 			headerRight: () => (
@@ -37,6 +38,7 @@ const PickListsScreen = ({ navigation }) => {
 					<Text style={styles.checkBtnText}>Check</Text>
 				</TouchableOpacity>
 			),
+			headerShown: true,
 		});
 	}, [navigation, PLList]);
 
@@ -45,16 +47,22 @@ const PickListsScreen = ({ navigation }) => {
 			try {
 				const picklistsByLastLoadingList = await api.getAllPickListsByLastScannedLoadingListId();
 
-				const allPicklists = Object.keys(picklistsByLastLoadingList).reduce((acc: PickList[], picklistScanStatus: any) => {
-					return [
-						...acc,
-						...picklistsByLastLoadingList[picklistScanStatus].map((picklist: any) => new PickList({
-							...picklist,
-							rampName: mappedRacksById.get(picklist.ramp),
-							scanStatus: PicklistScanStatus[picklistScanStatus],
-						})),
-					];
-				}, []);
+				const allPicklists = Object.keys(picklistsByLastLoadingList).reduce(
+					(acc: PickList[], picklistScanStatus: any) => {
+						return [
+							...acc,
+							...picklistsByLastLoadingList[picklistScanStatus].map(
+								(picklist: any) =>
+									new PickList({
+										...picklist,
+										rampName: mappedRackNameById.get(picklist.ramp),
+										scanStatus: PicklistScanStatus[picklistScanStatus],
+									}),
+							),
+						];
+					},
+					[],
+				);
 
 				setPLList([...allPicklists, ...allPicklists, ...allPicklists]);
 			} catch (error) {
@@ -63,21 +71,29 @@ const PickListsScreen = ({ navigation }) => {
 		})();
 	}, []);
 
-	return <View style={styles.container}>
-		<SafeAreaView style={styles.safeAreaStyle}>
-			<View style={styles.headerWrapper}>
-				<ListColumnWrapper flex={5}><Text style={styles.headerText}>Picklist ID</Text></ListColumnWrapper>
-				<ListColumnWrapper flex={6}><Text style={styles.headerText}>Ramp name</Text></ListColumnWrapper>
-				<ListColumnWrapper flex={3}><Text style={styles.headerText}>Shipm. type</Text></ListColumnWrapper>
-				<ListColumnWrapper flex={1}/>
-			</View>
-			<FlatList
-				data={PLList}
-				renderItem={(props) => <PickListItem {...props.item} />}
-				keyExtractor={(item, index) => `${index}-${item.picklistId.toString()}`}
-			/>
-		</SafeAreaView>
-	</View>;
+	return (
+		<View style={styles.container}>
+			<SafeAreaView style={styles.safeAreaStyle}>
+				<View style={styles.headerWrapper}>
+					<ListColumnWrapper flex={5}>
+						<Text style={styles.headerText}>Picklist ID</Text>
+					</ListColumnWrapper>
+					<ListColumnWrapper flex={6}>
+						<Text style={styles.headerText}>Ramp name</Text>
+					</ListColumnWrapper>
+					<ListColumnWrapper flex={3}>
+						<Text style={styles.headerText}>Shipm. type</Text>
+					</ListColumnWrapper>
+					<ListColumnWrapper flex={1}/>
+				</View>
+				<FlatList
+					data={PLList}
+					renderItem={(props) => <PickListItem {...props.item} />}
+					keyExtractor={(item, index) => `${index}-${item.picklistId.toString()}`}
+				/>
+			</SafeAreaView>
+		</View>
+	);
 };
 
 const styles = StyleSheet.create({
