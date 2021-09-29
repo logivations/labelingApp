@@ -6,7 +6,7 @@ import { Toast } from 'popup-ui';
 import useAppContext from '../../AppContext';
 
 const useLabeling = (navigation: any): any => {
-	const { getSoundAndPlay } = useAppContext();
+	const { getSoundAndPlay, t } = useAppContext();
 	const [nve, setNve] = useState<string>('');
 	const [ean, setEan] = useState<string>('');
 	const [sn, setSn] = useState<string>('');
@@ -30,7 +30,7 @@ const useLabeling = (navigation: any): any => {
 		try {
 			await api.createNewDocument(info);
 			getSoundAndPlay('successNotification');
-			Toast.show({ title: 'NVE_IS_ADDED' });
+			Toast.show({ title: t('NVE_IS_ADDED') });
 		} catch (error) {
 			console.log('Error: ', error);
 			getSoundAndPlay('warningAlarm');

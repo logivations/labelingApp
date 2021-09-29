@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import de from './../../assets/localization/de.json';
 import en from './../../assets/localization/en.json';
 
-const initI18n = async () => await i18n
+i18n
 	.use(initReactI18next)
 	.init({
 		resources: {
@@ -15,5 +15,3 @@ const initI18n = async () => await i18n
 			escapeValue: false,
 		},
 	});
-
-export default initI18n;

@@ -2,6 +2,7 @@
  * (C) Copyright
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
+
 import React, { useEffect, useState } from 'react';
 import TextInput from '../components/TextInput';
 import {
@@ -18,9 +19,11 @@ import { Formik } from 'formik';
 import { getData, STORAGE_KEYS, storeData } from '../services/AsyncStorageOperations';
 import api, { ConnectionProperties } from '../api/Communicator';
 import RouteNames from '../constants/route.names';
+import useAppContext from '../../AppContext';
 
 // @ts-ignore
 const Settings = ({ navigation }) => {
+	const { t } = useAppContext();
 	const [connectionProperties, setConnectionProperties] = useState<ConnectionProperties>({
 		host: '',
 		port: '',
@@ -39,7 +42,7 @@ const Settings = ({ navigation }) => {
 		<KeyboardAvoidingWrapper>
 			<StyledContainer>
 				<InnerContainer>
-					<SubTitle>Connection properties</SubTitle>
+					<SubTitle>{t('CONNECTION_PROPERTIES')}</SubTitle>
 					<Formik
 						enableReinitialize={true}
 						initialValues={connectionProperties}
@@ -53,7 +56,7 @@ const Settings = ({ navigation }) => {
 							return (
 								<StyledFormArea>
 									<TextInput
-										label={'Host'}
+										label={t('HOST')}
 										icon={''}
 										placeholder={'http://127.0.0.1'}
 										placeholderTextColor={Colors.darkLight}
@@ -63,7 +66,7 @@ const Settings = ({ navigation }) => {
 										keyboardType={'url'}
 									/>
 									<TextInput
-										label={'Port'}
+										label={t('PORT')}
 										icon={''}
 										placeholder={'8080'}
 										placeholderTextColor={Colors.darkLight}
@@ -73,7 +76,7 @@ const Settings = ({ navigation }) => {
 										keyboardType={'numeric'}
 									/>
 									<TextInput
-										label={'Context path'}
+										label={t('CONTEXT_PATH')}
 										icon={''}
 										placeholder={'whapp'}
 										placeholderTextColor={Colors.darkLight}
@@ -83,7 +86,7 @@ const Settings = ({ navigation }) => {
 										keyboardType={'default'}
 									/>
 									<StyledButton onPress={handleSubmit}>
-										<ButtonText>Save</ButtonText>
+										<ButtonText>{t('SAVE')}</ButtonText>
 									</StyledButton>
 								</StyledFormArea>
 							);

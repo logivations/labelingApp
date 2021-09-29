@@ -12,17 +12,17 @@ import { InnerContainer, StyledContainer } from '../components/styles';
 import LabelingStack from './NativeStack';
 
 const RootStack: React.FC = () => {
-	const { isSignedIn, isLoading } = useAppContext();
+	const { isSignedIn, isLoading, t } = useAppContext();
 	return (
 		<NavigationContainer>
 			{isLoading ? (
 				<StyledContainer>
 					<InnerContainer>
-						<Text>Loading...</Text>
+						<Text>{t('LOADING')}...</Text>
 					</InnerContainer>
 				</StyledContainer>
 			) : (
-				<Suspense fallback={<Text>Loading...</Text>}>
+				<Suspense fallback={<Text>{t('LOADING')}...</Text>}>
 					{isSignedIn ? <LabelingStack/> : <TabStackScreen/>}
 				</Suspense>
 			)}
