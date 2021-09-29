@@ -149,9 +149,7 @@ export const LabelingErrorMsgBox = styled(ErrorMsgBox)`
 
 export const ListColumnWrapper = styled(View)`
 	flex: ${({ flex }: { flex: number }) => flex};
-	padding-left: 10px;
-	padding-right: 10px;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: center;
 	height: 100%;
 `;
@@ -173,8 +171,7 @@ export const ListItemWrapper = styled(View)`
 	flex-direction: row;
 	align-items: center;
 	margin: 5px 10px;
-	border: 1px solid
-		${({ scanStatus }: { scanStatus: PicklistScanStatus }) => {
+	border: 1.5px solid ${({ scanStatus }: { scanStatus: PicklistScanStatus }) => {
 	return getColorByStatus(scanStatus);
 }};
 	border-left-width: 6px;

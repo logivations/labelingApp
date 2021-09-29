@@ -50,7 +50,7 @@ const PickListItem: React.FC<Picklist> = ({ picklistId, rampName, shipmentType, 
 			arrowStyle={{ display: 'none' }}
 			displayInsets={{ top: 0, bottom: 0, left: 0, right: 0 }}
 		>
-			<TouchableHighlight activeOpacity={0.6} underlayColor={Colors.secondary} onPress={() => setTip(true)}>
+			<TouchableHighlight activeOpacity={0.4} underlayColor={Colors.primary} onPress={() => setTip(true)}>
 				<ListItemWrapper scanStatus={scanStatus}>
 					<View style={styles.picklistId}>
 						<Text>{picklistId}</Text>

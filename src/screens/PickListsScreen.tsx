@@ -35,7 +35,9 @@ const PickListsScreen = ({ navigation }) => {
 						}
 					}}
 				>
-					<Text style={styles.checkBtnText}>Check</Text>
+					<View style={styles.checkBtnContainer}>
+						<Text style={styles.checkBtnText}>Check</Text>
+					</View>
 				</TouchableOpacity>
 			),
 			headerShown: true,
@@ -75,21 +77,20 @@ const PickListsScreen = ({ navigation }) => {
 		<View style={styles.container}>
 			<SafeAreaView style={styles.safeAreaStyle}>
 				<View style={styles.headerWrapper}>
-					<ListColumnWrapper flex={5}>
+					<ListColumnWrapper flex={7}>
 						<Text style={styles.headerText}>Picklist ID</Text>
 					</ListColumnWrapper>
 					<ListColumnWrapper flex={6}>
 						<Text style={styles.headerText}>Ramp name</Text>
 					</ListColumnWrapper>
-					<ListColumnWrapper flex={3}>
+					<ListColumnWrapper flex={6}>
 						<Text style={styles.headerText}>Shipm. type</Text>
 					</ListColumnWrapper>
-					<ListColumnWrapper flex={1}/>
 				</View>
 				<FlatList
 					data={PLList}
 					renderItem={(props) => <PickListItem {...props.item} />}
-					keyExtractor={(item, index) => `${index}-${item.picklistId.toString()}`}
+					keyExtractor={(item, index) => item.picklistId.toString()}
 				/>
 			</SafeAreaView>
 		</View>
@@ -99,7 +100,6 @@ const PickListsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-
 		backgroundColor: Colors.primary,
 	},
 	safeAreaStyle: {
@@ -108,23 +108,31 @@ const styles = StyleSheet.create({
 		width: '100%',
 	},
 	headerWrapper: {
+		paddingLeft: 10,
+		paddingRight: 10,
 		display: 'flex',
 		alignItems: 'center',
-		justifyContent: 'space-between',
+		justifyContent: 'flex-start',
 		flexDirection: 'row',
 		height: 38,
 	},
 	headerText: {
 		fontWeight: 'bold',
+		padding: 0,
 	},
 	checkBtnText: {
 		fontWeight: 'bold',
-		fontSize: 16,
-		color: Colors.green,
+		fontSize: 14,
+		color: Colors.primary,
+		padding: 15,
+		paddingTop: 7,
+		paddingBottom: 7,
+	},
+	checkBtnContainer: {
 		borderWidth: 1,
-		padding: 5,
 		borderRadius: 5,
 		borderColor: Colors.green,
+		backgroundColor: Colors.green,
 	},
 });
 
