@@ -6,6 +6,7 @@
 import React, { Context, useCallback, useContext, useEffect, useState } from 'react';
 import Communicator from './src/api/Communicator';
 import usePlayAudio from './src/hooks/useAudio';
+import useLanguage from './src/hooks/useLanguage';
 
 export const AppContext: Context<any> = React.createContext(null);
 
@@ -34,6 +35,7 @@ export const AppContextProvider = ({ children, t }: AppContextProviderParams) =>
 	}, []);
 
 	const getSoundAndPlay = usePlayAudio();
+	const activeLanguage = useLanguage();
 
 	return (
 		<AppContext.Provider
@@ -45,6 +47,7 @@ export const AppContextProvider = ({ children, t }: AppContextProviderParams) =>
 				setMappedRackById,
 				mappedRackNameById,
 				getSoundAndPlay,
+				activeLanguage,
 				t,
 			}}
 		>

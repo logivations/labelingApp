@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * (C) Copyright
+ * Logivations GmbH, Munich 2010-2021
+ ******************************************************************************/
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import api from '../api/Communicator';
 import RouteNames from '../constants/route.names';

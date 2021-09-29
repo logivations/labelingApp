@@ -49,7 +49,7 @@ export const PageTitle = styled(Text)`
 	text-align: center;
 	width: 100%;
 	font-weight: 700;
-	margin: 30px 0 0;
+	margin: 15px 0 0;
 	color: ${Colors.green};
 `;
 
@@ -187,3 +187,24 @@ export const TooltipContainer = styled(View)`
 export const TooltipText = styled(Text)`
 	margin-left: 5px;
 `;
+
+export const LanguageContainer = styled(View)`
+	width: 100%;
+	margin: 15px 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+`;
+
+export const FlagButton: React.FC<{ [key: string]: any }> = styled(TouchableOpacity)`
+	padding: 5px;
+	margin: 0 5px;
+	border: ${(props) => `1px solid ${props.isActive ? Colors.green : Colors.primary}`};
+	border-radius: 6px;
+`;
+
+export const FlagWrapper = styled(View)`
+	padding: 5px;
+`;
+

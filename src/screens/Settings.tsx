@@ -20,6 +20,8 @@ import { getData, STORAGE_KEYS, storeData } from '../services/AsyncStorageOperat
 import api, { ConnectionProperties } from '../api/Communicator';
 import RouteNames from '../constants/route.names';
 import useAppContext from '../../AppContext';
+import LanguageSelect from '../components/LanguageSelect';
+
 
 // @ts-ignore
 const Settings = ({ navigation }) => {
@@ -92,6 +94,7 @@ const Settings = ({ navigation }) => {
 							);
 						}}
 					</Formik>
+					<LanguageSelect/>
 				</InnerContainer>
 			</StyledContainer>
 		</KeyboardAvoidingWrapper>
