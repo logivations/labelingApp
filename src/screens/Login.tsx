@@ -2,9 +2,10 @@
  * (C) Copyright
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
-
 import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
+import { useTranslation } from 'react-i18next';
+
 import TextInput from '../components/TextInput';
 import {
 	ButtonText,
@@ -26,6 +27,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 // @ts-ignore
 const Login = ({ navigation }) => {
+	const { t } = useTranslation();
 	const { checkIsSignedIn } = useAppContext();
 	const [isSignInning, setSingInning] = useState<boolean>(false);
 	const [hidePassword, setHidePassword] = useState<boolean>(true);
@@ -43,7 +45,7 @@ const Login = ({ navigation }) => {
 		<KeyboardAvoidingWrapper>
 			<StyledContainer>
 				<InnerContainer>
-					<PageTitle>Labeling App</PageTitle>
+					<PageTitle>{t('LABELING_APP')}</PageTitle>
 					<SubTitle>Log In to continue</SubTitle>
 
 					<Formik

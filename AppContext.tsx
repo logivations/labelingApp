@@ -1,6 +1,12 @@
+/*******************************************************************************
+ * (C) Copyright
+ * Logivations GmbH, Munich 2010-2021
+ ******************************************************************************/
+
 import React, { Context, useCallback, useContext, useEffect, useState } from 'react';
 import Communicator from './src/api/Communicator';
 import usePlayAudio from './src/hooks/useAudio';
+import initI18n from './src/i18n/i18n.index';
 
 export const AppContext: Context<any> = React.createContext(null);
 
@@ -22,6 +28,7 @@ export const AppContextProvider = ({ children }: AppContextProviderParams) => {
 	}, []);
 	useEffect(() => {
 		(async () => {
+			await initI18n();
 			await Communicator.getToken()
 				.then((tokens) => {
 					return Communicator.tokenService.setTokens(tokens);
