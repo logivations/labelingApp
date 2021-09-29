@@ -7,11 +7,11 @@ import { useEffect, useState } from 'react';
 import { getData, STORAGE_KEYS, storeData } from '../services/AsyncStorageOperations';
 
 const useLanguage = () => {
-	const [activeLng, setLng] = useState<string>('');
+	const [activeLng, setLng] = useState<string>(i18next.language);
 	useEffect(() => {
 		getData(STORAGE_KEYS.APPLICATION_LANGUAGE).then(async (lng) => {
 			setLng(lng);
-			await i18next.changeLanguage(lng);
+			lng && await i18next.changeLanguage(lng);
 		});
 		i18next.on('languageChanged', async (lng) => {
 			await storeData(STORAGE_KEYS.APPLICATION_LANGUAGE, lng);
