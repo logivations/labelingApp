@@ -16,6 +16,7 @@ import CheckIcon from './../../assets/icons/circle-check-icon.svg';
 import CrossIcon from './../../assets/icons/circle-cross-icon.svg';
 // @ts-ignore
 import WarnIcon from './../../assets/icons/circle-warning-icon.svg';
+import useAppContext from '../../AppContext';
 
 const IconByStatus = ({ status }: { status: PicklistScanStatus }) => {
 	switch (status) {
@@ -30,14 +31,14 @@ const IconByStatus = ({ status }: { status: PicklistScanStatus }) => {
 
 const PickListItem: React.FC<Picklist> = ({ picklistId, rampName, shipmentType, scanStatus }) => {
 	const [showTip, setTip] = useState<boolean>(false);
-
+	const { t } = useAppContext();
 	return (
 		<Tooltip
 			isVisible={showTip}
 			content={
 				<TooltipContainer>
 					<IconByStatus status={scanStatus}/>
-					<TooltipText>{PicklistScanStatus[scanStatus]}</TooltipText>
+					<TooltipText>{t(PicklistScanStatus[scanStatus])}</TooltipText>
 				</TooltipContainer>
 			}
 			placement="top"

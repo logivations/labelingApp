@@ -1,22 +1,27 @@
+/*******************************************************************************
+ * (C) Copyright
+ * Logivations GmbH, Munich 2010-2021
+ ******************************************************************************/
+
 import React, { Context, useCallback, useContext, useEffect, useState } from 'react';
 import Communicator from './src/api/Communicator';
 import usePlayAudio from './src/hooks/useAudio';
+import useLanguage from './src/hooks/useLanguage';
 
 export const AppContext: Context<any> = React.createContext(null);
 
 interface AppContextProviderParams {
 	children: any;
+	t: any;
 }
 
-export const AppContextProvider = ({ children }: AppContextProviderParams) => {
-	const [isLoading, setLoading] = useState<boolean>(false);
+export const AppContextProvider = ({ children, t }: AppContextProviderParams) => {
+	const [isLoading, setLoading] = useState<boolean>(true);
 	const [isSignedIn, setSignedIn] = useState<boolean>(false);
 	const [mappedRackNameById, setMappedRackById] = useState<Map<number, string>>(new Map());
-
 	const checkIsSignedIn = useCallback((setSingInning?: Function) => {
 		return Communicator.retrieveTokenOnInit().then((accessToken) => {
 			setSingInning && setSingInning();
-			setLoading(false);
 			setSignedIn(!!accessToken);
 		}).finally(() => setLoading(false));
 	}, []);
@@ -30,6 +35,7 @@ export const AppContextProvider = ({ children }: AppContextProviderParams) => {
 	}, []);
 
 	const getSoundAndPlay = usePlayAudio();
+	const activeLanguage = useLanguage();
 
 	return (
 		<AppContext.Provider
@@ -41,7 +47,10 @@ export const AppContextProvider = ({ children }: AppContextProviderParams) => {
 				setMappedRackById,
 				mappedRackNameById,
 				getSoundAndPlay,
-			}}>
+				activeLanguage,
+				t,
+			}}
+		>
 			{children}
 		</AppContext.Provider>
 	);

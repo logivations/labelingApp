@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export enum STORAGE_KEYS {
 	CONNECTION_PROPERTIES = '@MyServerConnectionProperties',
+	APPLICATION_LANGUAGE = '@ApplicationLanguage',
 	ACCESS_TOKEN_EXPIRE_DATE = '@AccessTokenExpireDate',
 	REFRESH_TOKEN_EXPIRE_DATE = '@RefreshTokenExpireDate',
 	ACCESS_TOKEN = '@AccessToken',

@@ -28,7 +28,7 @@ import useLabeling from '../hooks/useLabeling';
 // @ts-ignore
 const Labeling = ({ navigation }) => {
 	useWarehouseRacks();
-	const { checkIsSignedIn } = useAppContext();
+	const { checkIsSignedIn, t } = useAppContext();
 	const checkNveByPrefix = useCheckNvePrefix();
 	const {
 		nve,
@@ -94,7 +94,7 @@ const Labeling = ({ navigation }) => {
 									disabled={!nve}
 									icon={null}
 								/>
-								{!nve && <LabelingErrorMsgBox>Please fill NVE first</LabelingErrorMsgBox>}
+								{!nve && <LabelingErrorMsgBox>{t('PLEASE_FILL_NVE_FIRST')}</LabelingErrorMsgBox>}
 								<TextInput
 									label={'SN'}
 									placeholder={'SN'}
@@ -117,18 +117,19 @@ const Labeling = ({ navigation }) => {
 									icon={null}
 								/>
 								{!ean && !nve && (
-									<LabelingErrorMsgBox>Please fill EAN and NVE first</LabelingErrorMsgBox>
+									<LabelingErrorMsgBox>{t('PLEASE_FILL_EAN_AND_NVE_FIRST')}</LabelingErrorMsgBox>
 								)}
-								{!ean && !!nve && <LabelingErrorMsgBox>Please fill EAN first</LabelingErrorMsgBox>}
+								{!ean && !!nve &&
+								<LabelingErrorMsgBox>{t('PLEASE_FILL_EAN_FIRST')}</LabelingErrorMsgBox>}
 
 								<StyledButton onPress={handleSubmit} disabled={!nve || !ean || !sn}>
-									<ButtonText>{'Ok'}</ButtonText>
+									<ButtonText>{t('OK')}</ButtonText>
 								</StyledButton>
 								<StyledButton onPress={readyForLoadingAction}>
-									<ButtonText>{'Ready for loading'}</ButtonText>
+									<ButtonText>{t('READY_FOR_LOADING')}</ButtonText>
 								</StyledButton>
 								<SecondaryStyledButton onPress={clearTextFields} disabled={false}>
-									<SecondaryButtonText>{'Clear'}</SecondaryButtonText>
+									<SecondaryButtonText>{t('CLEAR')}</SecondaryButtonText>
 								</SecondaryStyledButton>
 								<SecondaryStyledButton
 									onPress={async () => {
@@ -136,7 +137,7 @@ const Labeling = ({ navigation }) => {
 										checkIsSignedIn();
 									}}
 								>
-									<SecondaryButtonText>Logout</SecondaryButtonText>
+									<SecondaryButtonText>{t('LOGOUT')}</SecondaryButtonText>
 								</SecondaryStyledButton>
 							</StyledFormArea>
 						)}

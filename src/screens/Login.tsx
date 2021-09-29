@@ -2,9 +2,9 @@
  * (C) Copyright
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
-
 import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
+
 import TextInput from '../components/TextInput';
 import {
 	ButtonText,
@@ -26,7 +26,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 // @ts-ignore
 const Login = ({ navigation }) => {
-	const { checkIsSignedIn } = useAppContext();
+	const { checkIsSignedIn, t } = useAppContext();
 	const [isSignInning, setSingInning] = useState<boolean>(false);
 	const [hidePassword, setHidePassword] = useState<boolean>(true);
 	const [loginErrorMessage, setLoginErrorMessage] = useState<string | null>(null);
@@ -43,8 +43,8 @@ const Login = ({ navigation }) => {
 		<KeyboardAvoidingWrapper>
 			<StyledContainer>
 				<InnerContainer>
-					<PageTitle>Labeling App</PageTitle>
-					<SubTitle>Log In to continue</SubTitle>
+					<PageTitle>{t('LABELING_APP')}</PageTitle>
+					<SubTitle>{t('LOG_IN_TO_CONTINUE')}</SubTitle>
 
 					<Formik
 						initialValues={{ email: 'admin', password: '23mOHi,' }}
@@ -65,7 +65,7 @@ const Login = ({ navigation }) => {
 							<StyledFormArea>
 								<TextInput
 									authInput={true}
-									label={'Login'}
+									label={t('LOGIN')}
 									icon={'person'}
 									placeholder={'w2mo@logivations.com'}
 									placeholderTextColor={Colors.darkLight}
@@ -77,7 +77,7 @@ const Login = ({ navigation }) => {
 								/>
 								<TextInput
 									authInput={true}
-									label={'Password'}
+									label={t('PASSWORD')}
 									icon={'lock'}
 									placeholder={'* * * * * * * *'}
 									placeholderTextColor={Colors.darkLight}
@@ -100,11 +100,11 @@ const Login = ({ navigation }) => {
 								{loginErrorMessage && <ErrorMsgBox>{loginErrorMessage}</ErrorMsgBox>}
 								{!isConnectionPropertiesExist && (
 									<ErrorMsgBox onPress={() => navigation.navigate(RouteNames.SETTINGS)}>
-										Set first connection properties in Settings
+										{t('SET_FIRST_CONNECTION_PROPERTIES')}
 									</ErrorMsgBox>
 								)}
 								<StyledButton onPress={handleSubmit} disabled={!isConnectionPropertiesExist}>
-									<ButtonText>{isSignInning ? 'SignIn...' : 'Login'}</ButtonText>
+									<ButtonText>{isSignInning ? t('SIGN_IN') : t('LOGIN')}</ButtonText>
 								</StyledButton>
 							</StyledFormArea>
 						)}

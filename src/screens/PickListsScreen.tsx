@@ -15,7 +15,7 @@ import { StatusApproved } from '../enums';
 
 // @ts-ignore
 const PickListsScreen = ({ navigation }) => {
-	const { mappedRackNameById } = useAppContext();
+	const { mappedRackNameById, t } = useAppContext();
 	const [PLList, setPLList] = useState<PickList[]>([]);
 
 	useLayoutEffect(() => {
@@ -36,11 +36,12 @@ const PickListsScreen = ({ navigation }) => {
 					}}
 				>
 					<View style={styles.checkBtnContainer}>
-						<Text style={styles.checkBtnText}>Check</Text>
+						<Text style={styles.checkBtnText}>{t('CHECK')}</Text>
 					</View>
 				</TouchableOpacity>
 			),
 			headerShown: true,
+			title: t('PICK_LISTS'),
 		});
 	}, [navigation, PLList]);
 
@@ -66,7 +67,7 @@ const PickListsScreen = ({ navigation }) => {
 					[],
 				);
 
-				setPLList([...allPicklists, ...allPicklists, ...allPicklists]);
+				setPLList(allPicklists);
 			} catch (error) {
 				console.log('Error: ', error);
 			}
@@ -78,13 +79,13 @@ const PickListsScreen = ({ navigation }) => {
 			<SafeAreaView style={styles.safeAreaStyle}>
 				<View style={styles.headerWrapper}>
 					<ListColumnWrapper flex={7}>
-						<Text style={styles.headerText}>Picklist ID</Text>
+						<Text style={styles.headerText}>{t('PICKLIST_ID')}</Text>
 					</ListColumnWrapper>
 					<ListColumnWrapper flex={6}>
-						<Text style={styles.headerText}>Ramp name</Text>
+						<Text style={styles.headerText}>{t('RAMP_NAME')}</Text>
 					</ListColumnWrapper>
 					<ListColumnWrapper flex={6}>
-						<Text style={styles.headerText}>Shipm. type</Text>
+						<Text style={styles.headerText}>{t('SHIPMENT_TYPE')}</Text>
 					</ListColumnWrapper>
 				</View>
 				<FlatList
