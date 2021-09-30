@@ -16,7 +16,7 @@ interface AppContextProviderParams {
 }
 
 export const AppContextProvider = ({ children, t }: AppContextProviderParams) => {
-	const [isLoading, setLoading] = useState<boolean>(true);
+	const [isLoading, setLoading] = useState<boolean>(false);
 	const [isSignedIn, setSignedIn] = useState<boolean>(false);
 	const [mappedRackNameById, setMappedRackById] = useState<Map<number, string>>(new Map());
 	const checkIsSignedIn = useCallback((setSingInning?: Function) => {
