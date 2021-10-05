@@ -5,7 +5,7 @@
 
 import TokenService from '../services/token.service';
 import { getData, STORAGE_KEYS } from '../services/AsyncStorageOperations';
-import { ConnectionProperties } from './Communicator';
+import { Communicator, ConnectionProperties } from './Communicator';
 // @ts-ignore
 import { Toast } from 'popup-ui';
 import { Colors } from '../components/styles';
@@ -133,8 +133,9 @@ class BaseCommunicator {
 							}
 						} else {
 							let error = new Error(`Response not OK, response status: ${response.status}.`);
-							if (response.status === 401 || response.status === 400) {
+							if (response.status === 401) {
 								!params.ignoreTokens && (await this.logout());
+								await Communicator.checkIsSignIn();
 							}
 							try {
 								const responseText = await response.text();

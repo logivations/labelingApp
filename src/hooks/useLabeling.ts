@@ -3,15 +3,20 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import api from '../api/Communicator';
 import RouteNames from '../constants/route.names';
 // @ts-ignore
 import { Toast } from 'popup-ui';
 import useAppContext from '../../AppContext';
+import FillLabelingController from '../services/FillLabelingController';
+import useCheckNvePrefix from './useCheckNvePrefix';
 
 const useLabeling = (navigation: any): any => {
+	const checkNveByPrefix = useCheckNvePrefix();
+
 	const { getSoundAndPlay, t } = useAppContext();
+
 	const [nve, setNve] = useState<string>('');
 	const [ean, setEan] = useState<string>('');
 	const [sn, setSn] = useState<string>('');
@@ -21,15 +26,13 @@ const useLabeling = (navigation: any): any => {
 	const snRef = useRef(null);
 
 	useEffect(() => {
+		checkNveByPrefix(nve);
+	}, [nve]);
+
+	useEffect(() => {
 		// @ts-ignore
 		nveRef.current && nveRef.current.focus();
 	}, [nveRef]);
-
-	const clearTextFields = useCallback(() => {
-		setNve('');
-		setEan('');
-		setSn('');
-	}, [setNve, setEan, setSn]);
 
 	const createNewDocument = useCallback(async (info) => {
 		try {
@@ -45,6 +48,20 @@ const useLabeling = (navigation: any): any => {
 		navigation.push(RouteNames.PICK_LISTS);
 	}, []);
 
+	const fillLabelingController = useMemo(() => {
+		return new FillLabelingController(setNve, setEan, setSn, createNewDocument);
+	}, [setNve, setEan, setSn]);
+
+	const clearTextFields = useCallback(() => {
+		setNve('');
+		setEan('');
+		setSn('');
+		fillLabelingController.clearFields();
+		// @ts-ignore
+		nveRef.current && nveRef.current.focus();
+	}, [setNve, setEan, setSn, fillLabelingController]);
+
+
 	return {
 		nve,
 		ean,
@@ -58,6 +75,7 @@ const useLabeling = (navigation: any): any => {
 		clearTextFields,
 		createNewDocument,
 		readyForLoadingAction,
+		fillLabelingController,
 	};
 };
 

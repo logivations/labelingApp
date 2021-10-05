@@ -4,15 +4,16 @@
  ******************************************************************************/
 
 import React, { Context, useCallback, useContext, useEffect, useState } from 'react';
-import Communicator from './src/api/Communicator';
+import Communicator, { Communicator as CommunicatorInstance } from './src/api/Communicator';
 import usePlayAudio from './src/hooks/useAudio';
 import useLanguage from './src/hooks/useLanguage';
+import { TFunction } from 'i18next';
 
 export const AppContext: Context<any> = React.createContext(null);
 
 interface AppContextProviderParams {
 	children: any;
-	t: any;
+	t: TFunction;
 }
 
 export const AppContextProvider = ({ children, t }: AppContextProviderParams) => {
@@ -27,6 +28,7 @@ export const AppContextProvider = ({ children, t }: AppContextProviderParams) =>
 	}, []);
 	useEffect(() => {
 		(async () => {
+			CommunicatorInstance.checkIsSignIn = checkIsSignedIn;
 			await Communicator.getToken()
 				.then((tokens) => {
 					return Communicator.tokenService.setTokens(tokens);

@@ -19,9 +19,10 @@ const useCheckNvePrefix = () => {
 	}, []);
 
 	return useCallback(
-		async (nveValue, successCallback) => {
+		(nveValue, successCallback = () => {
+		}) => {
 			if (nveValue.startsWith(nvePrefixForCheck) || !nveValue) {
-				successCallback();
+				successCallback && successCallback();
 			} else {
 				getSoundAndPlay('warningNotification');
 			}

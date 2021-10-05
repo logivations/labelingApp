@@ -16,6 +16,8 @@ export interface ConnectionProperties {
 
 export class Communicator extends BaseCommunicator {
 	static Instance: Communicator;
+	static checkIsSignIn: Function = () => {
+	};
 
 	constructor() {
 		super();
