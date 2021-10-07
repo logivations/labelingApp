@@ -4,7 +4,7 @@
  ### For IOS and Android
   - Download Expo Go from App Store or Play Market on your mobile device.
   - Login to Expo Go using credentials:
-    https://web.tresorit.com/l/48OEq#u1MU3xZSw9-GUZaRV31_9g
+    https://web.tresorit.com/l/NGr4L#BZG1vq9Mx3H62adKs76yow
   - Open Expo Go app
   - Go to "Profile" tab
   - Select LableingApp in project list -> default
