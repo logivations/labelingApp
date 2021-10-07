@@ -7,7 +7,7 @@
     https://web.tresorit.com/l/NGr4L#BZG1vq9Mx3H62adKs76yow
   - Open Expo Go app
   - Go to "Profile" tab
-  - Select LableingApp in project list -> default
+  - Select LabelingApp in project list -> default
  
  ### Only for Android
  - Download LabelingApp.apk from https://web.tresorit.com/l/tPKcp#TvFmXo_KyevMGB91VZpTqg
