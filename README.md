@@ -10,7 +10,7 @@
   - Select LabelingApp in project list -> default
  
  ### Only for Android
- - Download LabelingApp.apk from https://web.tresorit.com/l/tPKcp#TvFmXo_KyevMGB91VZpTqg
+ - Download LabelingApp.apk from https://web.tresorit.com/l/xJ1YY#3heGzuUbdg9Ts-tk8QM11g
  - Install on your android device
  - Run the application
  
