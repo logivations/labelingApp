@@ -5,7 +5,7 @@
 
 import TokenService from '../services/token.service';
 import { getData, STORAGE_KEYS } from '../services/AsyncStorageOperations';
-import { Communicator, ConnectionProperties } from './Communicator';
+import { ConnectionProperties } from './Communicator';
 // @ts-ignore
 import { Toast } from 'popup-ui';
 import { Colors } from '../components/styles';
@@ -13,6 +13,8 @@ import { Colors } from '../components/styles';
 class BaseCommunicator {
 	public tokenService!: TokenService;
 	private readonly connectionProperties: ConnectionProperties = { host: '', port: '', contextPath: '' };
+	static checkIsSignIn: Function = () => {
+	};
 
 	constructor() {
 		getData(STORAGE_KEYS.CONNECTION_PROPERTIES).then((result: string) => {
@@ -81,8 +83,6 @@ class BaseCommunicator {
 		return `${this.getUrlByContextPath(path)}${queryParams.toString() && `?${queryParams.toString()}`}`;
 	}
 
-	// 23mOHi,
-
 	private getConfig(params: { [key: string]: any }, body: any): object {
 		const getHeaders = () => {
 			const token = this.tokenService.getCashedTokens(STORAGE_KEYS.ACCESS_TOKEN);
@@ -135,7 +135,7 @@ class BaseCommunicator {
 							let error = new Error(`Response not OK, response status: ${response.status}.`);
 							if (response.status === 401) {
 								!params.ignoreTokens && (await this.logout());
-								await Communicator.checkIsSignIn();
+								await BaseCommunicator.checkIsSignIn();
 							}
 							try {
 								const responseText = await response.text();

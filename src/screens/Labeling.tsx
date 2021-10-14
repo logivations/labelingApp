@@ -2,7 +2,7 @@
  * (C) Copyright
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 
 import {
 	ButtonText,
@@ -50,9 +50,8 @@ const Labeling = ({ navigation }) => {
 					<Formik
 						enableReinitialize={true}
 						initialValues={{ nve, ean, sn }}
-						onSubmit={(val) => createNewDocument(val)}
 					>
-						{({ handleChange, handleSubmit, values }) => (
+						{({ handleChange, handleSubmit, handleBlur, values }) => (
 							<StyledFormArea>
 								<StyledTextInput
 									label={'NVE'}
@@ -65,9 +64,12 @@ const Labeling = ({ navigation }) => {
 										}
 									}}
 									onTextInput={({ nativeEvent: { text } }) => {
-										if (text.length !== 1) {
-											fillLabelingController.handleChange(text, clearTextFields);
-										}
+										fillLabelingController.onTextInput(text, clearTextFields);
+									}}
+									onBlur={(value: any) => {
+										// @ts-ignore
+										eanRef.current && eanRef.current.focus();
+										handleBlur('nve')(value);
 									}}
 									reference={nveRef}
 									value={values.nve}
@@ -85,9 +87,12 @@ const Labeling = ({ navigation }) => {
 										}
 									}}
 									onTextInput={({ nativeEvent: { text } }) => {
-										if (text.length !== 1) {
-											fillLabelingController.handleChange(text, clearTextFields);
-										}
+										fillLabelingController.onTextInput(text, clearTextFields);
+									}}
+									onBlur={(value: any) => {
+										// @ts-ignore
+										snRef.current && snRef.current.focus();
+										handleBlur('ean')(value);
 									}}
 									reference={eanRef}
 									value={values.ean}
@@ -107,9 +112,21 @@ const Labeling = ({ navigation }) => {
 										}
 									}}
 									onTextInput={({ nativeEvent: { text } }) => {
-										if (text.length !== 1) {
-											fillLabelingController.handleChange(text, clearTextFields);
+										fillLabelingController.onTextInput(text, clearTextFields);
+									}}
+									onBlur={async (value: SyntheticEvent) => {
+										handleBlur('sn')(value);
+										if (fillLabelingController.isManualInput) {
+											await fillLabelingController.createDocument({
+												nve,
+												ean,
+												sn,
+											}, clearTextFields);
+										} else {
+											clearTextFields();
 										}
+										// @ts-ignore
+										nveRef.current && nveRef.current.focus();
 									}}
 									reference={snRef}
 									value={values.sn}

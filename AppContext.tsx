@@ -4,7 +4,8 @@
  ******************************************************************************/
 
 import React, { Context, useCallback, useContext, useEffect, useState } from 'react';
-import Communicator, { Communicator as CommunicatorInstance } from './src/api/Communicator';
+import Communicator from './src/api/Communicator';
+import BaseCommunicator from './src/api/BaseCommunicator';
 import usePlayAudio from './src/hooks/useAudio';
 import useLanguage from './src/hooks/useLanguage';
 import { TFunction } from 'i18next';
@@ -28,7 +29,7 @@ export const AppContextProvider = ({ children, t }: AppContextProviderParams) =>
 	}, []);
 	useEffect(() => {
 		(async () => {
-			CommunicatorInstance.checkIsSignIn = checkIsSignedIn;
+			BaseCommunicator.checkIsSignIn = checkIsSignedIn;
 			await Communicator.getToken()
 				.then((tokens) => {
 					return Communicator.tokenService.setTokens(tokens);

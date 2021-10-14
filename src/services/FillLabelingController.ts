@@ -11,6 +11,7 @@ class FillLabelingController {
 	private fields: { [key: string]: string };
 
 	private documentWasCreated: boolean = false;
+	public isManualInput: boolean = false;
 
 	constructor(setNve: Function, setEan: Function, setSn: Function, createNewDocument: Function) {
 		this.setNve = setNve;
@@ -25,7 +26,16 @@ class FillLabelingController {
 		};
 	}
 
-	public handleChange(value: string, clearTextFields: Function): void {
+	public onTextInput(text: string, clearTextInput: Function) {
+		if (text.length && text.length !== 1) {
+			this.isManualInput = false;
+			this.handleChange(text, clearTextInput);
+		} else {
+			this.isManualInput = true;
+		}
+	}
+
+	private handleChange(value: string, clearTextFields: Function): void {
 		if (!this.fields.nve) {
 			this.fields.nve = value;
 			this.setNve(value);
@@ -37,20 +47,27 @@ class FillLabelingController {
 			this.setSn(value);
 		}
 
-		this.createDocument(clearTextFields);
+		this.createDocument(this.fields, clearTextFields);
 	}
 
-	private createDocument(clearTextFields: Function) {
-		if (this.fields.nve && this.fields.ean && this.fields.sn && !this.documentWasCreated) {
-			this.documentWasCreated = true;
-			setTimeout(async () => {
-				try {
-					await this.createNewDocument(this.fields);
-				} finally {
-					clearTextFields && clearTextFields();
-				}
-			}, 500);
-		}
+	public createDocument(fields: { [x: string]: string; nve?: any; ean?: any; sn?: any; }, clearTextFields: Function) {
+		return new Promise((resolve, reject) => {
+			if (fields.nve && fields.ean && fields.sn && !this.documentWasCreated) {
+				this.documentWasCreated = true;
+				setTimeout(async () => {
+					try {
+						await this.createNewDocument(fields);
+						resolve();
+					} catch (error) {
+						reject(error);
+					} finally {
+						clearTextFields && clearTextFields();
+					}
+				}, 500);
+			} else {
+				resolve();
+			}
+		});
 	}
 
 	public clearFields(): void {

@@ -11,6 +11,7 @@ import { Toast } from 'popup-ui';
 import useAppContext from '../../AppContext';
 import FillLabelingController from '../services/FillLabelingController';
 import useCheckNvePrefix from './useCheckNvePrefix';
+import { Colors } from '../components/styles';
 
 const useLabeling = (navigation: any): any => {
 	const checkNveByPrefix = useCheckNvePrefix();
@@ -38,7 +39,7 @@ const useLabeling = (navigation: any): any => {
 		try {
 			await api.createNewDocument(info);
 			getSoundAndPlay('successNotification');
-			Toast.show({ title: t('NVE_IS_ADDED') });
+			Toast.show({ title: t('NVE_IS_ADDED'), color: Colors.green, timing: 5000 });
 		} catch (error) {
 			console.log('Error: ', error);
 			getSoundAndPlay('warningAlarm');
