@@ -50,7 +50,7 @@ const useLabeling = (navigation: any): any => {
 	}, []);
 
 	const fillLabelingController = useMemo(() => {
-		return new FillLabelingController(setNve, setEan, setSn, createNewDocument);
+		return new FillLabelingController(setNve, setEan, setSn, createNewDocument, { nveRef, eanRef, snRef });
 	}, [setNve, setEan, setSn]);
 
 	const clearTextFields = useCallback(() => {

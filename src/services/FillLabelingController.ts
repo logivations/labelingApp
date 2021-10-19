@@ -3,20 +3,35 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
+import { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
+
 class FillLabelingController {
 	private readonly setNve: Function;
 	private readonly setEan: Function;
 	private readonly setSn: Function;
 	private readonly createNewDocument: Function;
+	private readonly refs: { [key: string]: any };
 	private fields: { [key: string]: string };
 
 	private documentWasCreated: boolean = false;
 	public isManualInput: boolean = false;
 
-	constructor(setNve: Function, setEan: Function, setSn: Function, createNewDocument: Function) {
+	constructor(
+		setNve: Function,
+		setEan: Function,
+		setSn: Function,
+		createNewDocument: Function,
+		refs: { [key: string]: any },
+	) {
 		this.setNve = setNve;
 		this.setEan = setEan;
 		this.setSn = setSn;
+		this.refs = {
+			nve: refs.nveRef,
+			ean: refs.eanRef,
+			sn: refs.snRef,
+		};
+
 		this.createNewDocument = createNewDocument;
 
 		this.fields = {
@@ -26,16 +41,32 @@ class FillLabelingController {
 		};
 	}
 
-	public onTextInput(text: string, clearTextInput: Function) {
+	public async onTextInput(text: string, clearTextInput: Function): Promise<void> {
 		if (text.length && text.length !== 1) {
 			this.isManualInput = false;
-			this.handleChange(text, clearTextInput);
+			await this.handleChange(text, clearTextInput);
 		} else {
 			this.isManualInput = true;
 		}
 	}
 
-	private handleChange(value: string, clearTextFields: Function): void {
+	public async onSubmitEditing(
+		fieldName: string,
+		nextFieldName: string,
+		event: NativeSyntheticEvent<TextInputFocusEventData>,
+		handleBlur: Function,
+		onBlur?: Function,
+	): Promise<void> {
+		event.persist();
+
+		onBlur && await onBlur();
+		const nextFieldRef = this.refs[nextFieldName];
+
+		nextFieldRef.current && nextFieldRef.current.focus();
+		handleBlur(fieldName)(event);
+	}
+
+	private async handleChange(value: string, clearTextFields: Function): Promise<void> {
 		if (!this.fields.nve) {
 			this.fields.nve = value;
 			this.setNve(value);
@@ -47,10 +78,10 @@ class FillLabelingController {
 			this.setSn(value);
 		}
 
-		this.createDocument(this.fields, clearTextFields);
+		await this.createDocument(this.fields, clearTextFields);
 	}
 
-	public createDocument(fields: { [x: string]: string; nve?: any; ean?: any; sn?: any; }, clearTextFields: Function) {
+	public createDocument(fields: { [x: string]: string; nve?: any; ean?: any; sn?: any; }, clearTextFields: Function): Promise<any> {
 		return new Promise((resolve, reject) => {
 			if (fields.nve && fields.ean && fields.sn && !this.documentWasCreated) {
 				this.documentWasCreated = true;

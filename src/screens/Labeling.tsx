@@ -22,6 +22,7 @@ import StyledTextInput from '../components/TextInput';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 import useWarehouseRacks from '../hooks/useWarehouseRacks';
 import useLabeling from '../hooks/useLabeling';
+import { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 
 // @ts-ignore
 const Labeling = ({ navigation }) => {
@@ -65,16 +66,15 @@ const Labeling = ({ navigation }) => {
 											handleChange('nve')(value);
 										}
 									}}
-									onTextInput={({ nativeEvent: { text } }) => {
-										fillLabelingController.onTextInput(text, clearTextFields);
+									onTextInput={async (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
+										await fillLabelingController.onTextInput(event.nativeEvent.text, clearTextFields);
 									}}
-									onBlur={(value: any) => {
-										// @ts-ignore
-										eanRef.current && eanRef.current.focus();
-										handleBlur('nve')(value);
+									onSubmitEditing={async (value: NativeSyntheticEvent<TextInputFocusEventData>) => {
+										await fillLabelingController.onSubmitEditing('nve', 'ean', value, handleBlur);
 									}}
 									reference={nveRef}
 									value={values.nve}
+									blurOnSubmit={false}
 									editable={true}
 									icon={null}
 								/>
@@ -88,18 +88,17 @@ const Labeling = ({ navigation }) => {
 											handleChange('ean')(value);
 										}
 									}}
-									onTextInput={({ nativeEvent: { text } }) => {
-										fillLabelingController.onTextInput(text, clearTextFields);
+									onTextInput={async (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
+										await fillLabelingController.onTextInput(event.nativeEvent.text, clearTextFields);
 									}}
-									onBlur={(value: any) => {
-										// @ts-ignore
-										snRef.current && snRef.current.focus();
-										handleBlur('ean')(value);
+									onSubmitEditing={async (value: SyntheticEvent) => {
+										await fillLabelingController.onSubmitEditing('ean', 'sn', value, handleBlur);
 									}}
 									reference={eanRef}
 									value={values.ean}
 									editable={!!nve}
 									disabled={!nve}
+									blurOnSubmit={false}
 									icon={null}
 								/>
 								{!nve && <LabelingErrorMsgBox>{t('PLEASE_FILL_NVE_FIRST')}</LabelingErrorMsgBox>}
@@ -113,27 +112,26 @@ const Labeling = ({ navigation }) => {
 											handleChange('sn')(value);
 										}
 									}}
-									onTextInput={({ nativeEvent: { text } }) => {
-										fillLabelingController.onTextInput(text, clearTextFields);
+									onTextInput={async (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
+										await fillLabelingController.onTextInput(event.nativeEvent.text, clearTextFields);
 									}}
-									onBlur={async (value: SyntheticEvent) => {
-										handleBlur('sn')(value);
-										if (fillLabelingController.isManualInput) {
-											await fillLabelingController.createDocument({
-												nve,
-												ean,
-												sn,
-											}, clearTextFields);
-										} else {
-											clearTextFields();
-										}
-										// @ts-ignore
-										nveRef.current && nveRef.current.focus();
+									onSubmitEditing={async (value: NativeSyntheticEvent<TextInputFocusEventData>) => {
+										await fillLabelingController.onSubmitEditing('sn', 'nve', value, handleBlur, async () => {
+											if (fillLabelingController.isManualInput) {
+												await fillLabelingController.createDocument(
+													{ nve, ean, sn },
+													clearTextFields,
+												);
+											} else {
+												clearTextFields();
+											}
+										});
 									}}
 									reference={snRef}
 									value={values.sn}
 									editable={!!nve && !!ean}
 									disabled={!nve || !ean}
+									blurOnSubmit={false}
 									icon={null}
 								/>
 								{!ean && !nve && (
