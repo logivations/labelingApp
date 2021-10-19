@@ -50,6 +50,8 @@ const Labeling = ({ navigation }) => {
 					<Formik
 						enableReinitialize={true}
 						initialValues={{ nve, ean, sn }}
+						onSubmit={() => {
+						}}
 					>
 						{({ handleChange, handleSubmit, handleBlur, values }) => (
 							<StyledFormArea>
