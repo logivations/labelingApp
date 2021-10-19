@@ -22,7 +22,6 @@ import RouteNames from '../constants/route.names';
 import useAppContext from '../../AppContext';
 import LanguageSelect from '../components/LanguageSelect';
 
-
 // @ts-ignore
 const Settings = ({ navigation }) => {
 	const { t } = useAppContext();

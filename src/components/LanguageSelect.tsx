@@ -7,18 +7,23 @@ import EnglandFlag from '../../assets/icons/english-flag.svg';
 import GermanFlag from '../../assets/icons/german-flag.svg';
 import useAppContext from '../../AppContext';
 
-
 const LanguageSelect = () => {
 	const { activeLanguage } = useAppContext();
 
-	return <LanguageContainer>
-		<FlagButton isActive={activeLanguage === 'en'} onPress={() => i18next.changeLanguage('en')}>
-			<FlagWrapper><EnglandFlag/></FlagWrapper>
-		</FlagButton>
-		<FlagButton isActive={activeLanguage === 'de'} onPress={() => i18next.changeLanguage('de')}>
-			<FlagWrapper><GermanFlag/></FlagWrapper>
-		</FlagButton>
-	</LanguageContainer>;
+	return (
+		<LanguageContainer>
+			<FlagButton isActive={activeLanguage === 'en'} onPress={() => i18next.changeLanguage('en')}>
+				<FlagWrapper>
+					<EnglandFlag/>
+				</FlagWrapper>
+			</FlagButton>
+			<FlagButton isActive={activeLanguage === 'de'} onPress={() => i18next.changeLanguage('de')}>
+				<FlagWrapper>
+					<GermanFlag/>
+				</FlagWrapper>
+			</FlagButton>
+		</LanguageContainer>
+	);
 };
 
 export default LanguageSelect;

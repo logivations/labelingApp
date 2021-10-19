@@ -62,7 +62,6 @@ const useLabeling = (navigation: any): any => {
 		nveRef.current && nveRef.current.focus();
 	}, [setNve, setEan, setSn, fillLabelingController]);
 
-
 	return {
 		nve,
 		ean,

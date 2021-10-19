@@ -59,7 +59,7 @@ class FillLabelingController {
 	): Promise<void> {
 		event.persist();
 
-		onBlur && await onBlur();
+		onBlur && (await onBlur());
 		const nextFieldRef = this.refs[nextFieldName];
 
 		nextFieldRef.current && nextFieldRef.current.focus();
@@ -81,7 +81,10 @@ class FillLabelingController {
 		await this.createDocument(this.fields, clearTextFields);
 	}
 
-	public createDocument(fields: { [x: string]: string; nve?: any; ean?: any; sn?: any; }, clearTextFields: Function): Promise<any> {
+	public createDocument(
+		fields: { [x: string]: string; nve?: any; ean?: any; sn?: any },
+		clearTextFields: Function,
+	): Promise<any> {
 		return new Promise((resolve, reject) => {
 			if (fields.nve && fields.ean && fields.sn && !this.documentWasCreated) {
 				this.documentWasCreated = true;

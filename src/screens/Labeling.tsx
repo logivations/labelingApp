@@ -39,7 +39,6 @@ const Labeling = ({ navigation }) => {
 		eanRef,
 		snRef,
 		clearTextFields,
-		createNewDocument,
 		readyForLoadingAction,
 		fillLabelingController,
 	} = useLabeling(navigation);
@@ -48,12 +47,8 @@ const Labeling = ({ navigation }) => {
 		<KeyboardAvoidingWrapper>
 			<StyledContainer>
 				<InnerContainer>
-					<Formik
-						enableReinitialize={true}
-						initialValues={{ nve, ean, sn }}
-						onSubmit={() => {
-						}}
-					>
+					<Formik enableReinitialize={true} initialValues={{ nve, ean, sn }} onSubmit={() => {
+					}}>
 						{({ handleChange, handleSubmit, handleBlur, values }) => (
 							<StyledFormArea>
 								<StyledTextInput
@@ -67,7 +62,10 @@ const Labeling = ({ navigation }) => {
 										}
 									}}
 									onTextInput={async (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
-										await fillLabelingController.onTextInput(event.nativeEvent.text, clearTextFields);
+										await fillLabelingController.onTextInput(
+											event.nativeEvent.text,
+											clearTextFields,
+										);
 									}}
 									onSubmitEditing={async (value: NativeSyntheticEvent<TextInputFocusEventData>) => {
 										await fillLabelingController.onSubmitEditing('nve', 'ean', value, handleBlur);
@@ -89,7 +87,10 @@ const Labeling = ({ navigation }) => {
 										}
 									}}
 									onTextInput={async (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
-										await fillLabelingController.onTextInput(event.nativeEvent.text, clearTextFields);
+										await fillLabelingController.onTextInput(
+											event.nativeEvent.text,
+											clearTextFields,
+										);
 									}}
 									onSubmitEditing={async (value: SyntheticEvent) => {
 										await fillLabelingController.onSubmitEditing('ean', 'sn', value, handleBlur);
@@ -113,19 +114,28 @@ const Labeling = ({ navigation }) => {
 										}
 									}}
 									onTextInput={async (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
-										await fillLabelingController.onTextInput(event.nativeEvent.text, clearTextFields);
+										await fillLabelingController.onTextInput(
+											event.nativeEvent.text,
+											clearTextFields,
+										);
 									}}
 									onSubmitEditing={async (value: NativeSyntheticEvent<TextInputFocusEventData>) => {
-										await fillLabelingController.onSubmitEditing('sn', 'nve', value, handleBlur, async () => {
-											if (fillLabelingController.isManualInput) {
-												await fillLabelingController.createDocument(
-													{ nve, ean, sn },
-													clearTextFields,
-												);
-											} else {
-												clearTextFields();
-											}
-										});
+										await fillLabelingController.onSubmitEditing(
+											'sn',
+											'nve',
+											value,
+											handleBlur,
+											async () => {
+												if (fillLabelingController.isManualInput) {
+													await fillLabelingController.createDocument(
+														{ nve, ean, sn },
+														clearTextFields,
+													);
+												} else {
+													clearTextFields();
+												}
+											},
+										);
 									}}
 									reference={snRef}
 									value={values.sn}
@@ -137,8 +147,9 @@ const Labeling = ({ navigation }) => {
 								{!ean && !nve && (
 									<LabelingErrorMsgBox>{t('PLEASE_FILL_EAN_AND_NVE_FIRST')}</LabelingErrorMsgBox>
 								)}
-								{!ean && !!nve &&
-								<LabelingErrorMsgBox>{t('PLEASE_FILL_EAN_FIRST')}</LabelingErrorMsgBox>}
+								{!ean && !!nve && (
+									<LabelingErrorMsgBox>{t('PLEASE_FILL_EAN_FIRST')}</LabelingErrorMsgBox>
+								)}
 
 								<StyledButton onPress={handleSubmit} disabled={!nve || !ean || !sn}>
 									<ButtonText>{t('OK')}</ButtonText>

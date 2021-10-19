@@ -14,11 +14,11 @@ const usePlayAudio = () => {
 			await Audio.Sound.createAsync(require('../../assets/sounds/warning-notification-sound.wav')).then(
 				({ sound }) => sounds.set('warningNotification', sound),
 			);
-			await Audio.Sound.createAsync(require('../../assets/sounds/warning-alarm.wav')).then(
-				({ sound }) => sounds.set('warningAlarm', sound),
+			await Audio.Sound.createAsync(require('../../assets/sounds/warning-alarm.wav')).then(({ sound }) =>
+				sounds.set('warningAlarm', sound),
 			);
-			await Audio.Sound.createAsync(require('../../assets/sounds/success-notification.wav')).then(
-				({ sound }) => sounds.set('successNotification', sound),
+			await Audio.Sound.createAsync(require('../../assets/sounds/success-notification.wav')).then(({ sound }) =>
+				sounds.set('successNotification', sound),
 			);
 			setSignals(sounds);
 		})();

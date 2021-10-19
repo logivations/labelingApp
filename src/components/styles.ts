@@ -207,4 +207,3 @@ export const FlagButton: React.FC<{ [key: string]: any }> = styled(TouchableOpac
 export const FlagWrapper = styled(View)`
 	padding: 5px;
 `;
-
