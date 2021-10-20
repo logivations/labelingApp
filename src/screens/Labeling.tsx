@@ -47,7 +47,11 @@ const Labeling = ({ navigation }) => {
 		<KeyboardAvoidingWrapper>
 			<StyledContainer>
 				<InnerContainer>
-					<Formik enableReinitialize={true} initialValues={{ nve, ean, sn }} onSubmit={() => {
+					<Formik enableReinitialize={true} initialValues={{ nve, ean, sn }} onSubmit={async () => {
+						await fillLabelingController.createDocument(
+							{ nve, ean, sn },
+							clearTextFields,
+						);
 					}}>
 						{({ handleChange, handleSubmit, handleBlur, values }) => (
 							<StyledFormArea>

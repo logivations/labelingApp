@@ -3,7 +3,7 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors, ListColumnWrapper } from '../components/styles';
 import PickListItem from '../components/PickListItem';
@@ -30,6 +30,7 @@ const PickListsScreen = ({ navigation }) => {
 						try {
 							await api.setInternalOrdersReadyForPacking(readyForLoadingPicklistsIds);
 							await api.updatePickListsStatus(readyForLoadingPicklistsIds, StatusApproved.SCANNED);
+							await updatePickLists();
 						} catch (error) {
 							console.log('Error:', error);
 						}
@@ -45,33 +46,35 @@ const PickListsScreen = ({ navigation }) => {
 		});
 	}, [navigation, PLList]);
 
+	const updatePickLists = useCallback(async () => {
+		try {
+			const picklistsByLastLoadingList = await api.getAllPickListsByLastScannedLoadingListId();
+
+			const allPicklists = Object.keys(picklistsByLastLoadingList).reduce(
+				(acc: PickList[], picklistScanStatus: any) => {
+					return [
+						...acc,
+						...picklistsByLastLoadingList[picklistScanStatus].map(
+							(picklist: any) =>
+								new PickList({
+									...picklist,
+									rampName: mappedRackNameById.get(picklist.ramp),
+									scanStatus: PicklistScanStatus[picklistScanStatus],
+								}),
+						),
+					];
+				},
+				[],
+			);
+
+			setPLList(allPicklists);
+		} catch (error) {
+			console.log('Error: ', error);
+		}
+	}, []);
+
 	useEffect(() => {
-		(async () => {
-			try {
-				const picklistsByLastLoadingList = await api.getAllPickListsByLastScannedLoadingListId();
-
-				const allPicklists = Object.keys(picklistsByLastLoadingList).reduce(
-					(acc: PickList[], picklistScanStatus: any) => {
-						return [
-							...acc,
-							...picklistsByLastLoadingList[picklistScanStatus].map(
-								(picklist: any) =>
-									new PickList({
-										...picklist,
-										rampName: mappedRackNameById.get(picklist.ramp),
-										scanStatus: PicklistScanStatus[picklistScanStatus],
-									}),
-							),
-						];
-					},
-					[],
-				);
-
-				setPLList(allPicklists);
-			} catch (error) {
-				console.log('Error: ', error);
-			}
-		})();
+		(async () => await updatePickLists())();
 	}, []);
 
 	return (
