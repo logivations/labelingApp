@@ -47,7 +47,7 @@ const Login = ({ navigation }) => {
 					<SubTitle>{t('LOG_IN_TO_CONTINUE')}</SubTitle>
 
 					<Formik
-						initialValues={{ email: 'admin', password: '23mOHi,' }}
+						initialValues={{ email: '', password: '' }}
 						onSubmit={(val) => {
 							setSingInning(true);
 							Communicator.login(val.email, val.password)

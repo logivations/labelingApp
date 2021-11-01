@@ -60,6 +60,7 @@ class BaseCommunicator {
 	}
 
 	public async logout() {
+		await this.tokenService.removeTokens();
 		await this.fetchData(
 			'j_spring_security_logout',
 			{},
@@ -70,7 +71,6 @@ class BaseCommunicator {
 				ignoreTokens: true,
 			},
 		);
-		await this.tokenService.removeTokens();
 	}
 
 	private getUrlByContextPath(path: string): string {
