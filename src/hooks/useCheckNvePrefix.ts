@@ -9,25 +9,33 @@ import useAppContext from '../../AppContext';
 
 const useCheckNvePrefix = () => {
 	const { getSoundAndPlay } = useAppContext();
-	const [nvePrefixForCheck, setNvePrefixForCheck] = useState<string>('');
+	const [nvePrefixesForCheck, setNvePrefixForCheck] = useState<string[]>(['']);
 
 	useEffect(() => {
 		(async () => {
-			const nvePrefix = await Communicator.getNvePrefixForCheck();
-			setNvePrefixForCheck(nvePrefix);
+			try {
+				const nvePrefixStr = await Communicator.getNvePrefixForCheck();
+				if (nvePrefixStr) {
+					const nvePrefixes = JSON.parse(nvePrefixStr);
+
+					setNvePrefixForCheck(nvePrefixes);
+				}
+			} catch (error) {
+				setNvePrefixForCheck(['']);
+			}
 		})();
 	}, []);
 
 	return useCallback(
 		(nveValue, successCallback = () => {
 		}) => {
-			if (nveValue.startsWith(nvePrefixForCheck) || !nveValue) {
+			if (nvePrefixesForCheck.some((prefixForCheck) => nveValue.startsWith(prefixForCheck)) || !nveValue) {
 				successCallback && successCallback();
 			} else {
 				getSoundAndPlay('warningNotification');
 			}
 		},
-		[nvePrefixForCheck],
+		[nvePrefixesForCheck],
 	);
 };
 
