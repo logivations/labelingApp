@@ -171,7 +171,8 @@ export const ListItemWrapper = styled(View)`
 	flex-direction: row;
 	align-items: center;
 	margin: 5px 10px;
-	border: 1.5px solid ${({ scanStatus }: { scanStatus: PicklistScanStatus }) => {
+	border: 1.5px solid
+		${({ scanStatus }: { scanStatus: PicklistScanStatus }) => {
 	return getColorByStatus(scanStatus);
 }};
 	border-left-width: 6px;

@@ -22,10 +22,12 @@ export const AppContextProvider = ({ children, t }: AppContextProviderParams) =>
 	const [isSignedIn, setSignedIn] = useState<boolean>(false);
 	const [mappedRackNameById, setMappedRackById] = useState<Map<number, string>>(new Map());
 	const checkIsSignedIn = useCallback((setSingInning?: Function) => {
-		return Communicator.retrieveTokenOnInit().then((accessToken) => {
-			setSingInning && setSingInning();
-			setSignedIn(!!accessToken);
-		}).finally(() => setLoading(false));
+		return Communicator.retrieveTokenOnInit()
+			.then((accessToken) => {
+				setSingInning && setSingInning();
+				setSignedIn(!!accessToken);
+			})
+			.finally(() => setLoading(false));
 	}, []);
 	useEffect(() => {
 		(async () => {
@@ -33,7 +35,8 @@ export const AppContextProvider = ({ children, t }: AppContextProviderParams) =>
 			await Communicator.getToken()
 				.then((tokens) => {
 					return Communicator.tokenService.setTokens(tokens);
-				}).finally(() => checkIsSignedIn());
+				})
+				.finally(() => checkIsSignedIn());
 		})();
 	}, []);
 
