@@ -16,7 +16,7 @@ import CheckIcon from './../../assets/icons/circle-check-icon.svg';
 import CrossIcon from './../../assets/icons/circle-cross-icon.svg';
 // @ts-ignore
 import WarnIcon from './../../assets/icons/circle-warning-icon.svg';
-import useAppContext from '../../AppContext';
+import useAppContext from '../context/AppContext';
 
 const IconByStatus = ({ status }: { status: PicklistScanStatus }) => {
 	switch (status) {

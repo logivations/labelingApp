@@ -7,7 +7,7 @@ import React from 'react';
 import * as Sentry from 'sentry-expo';
 
 import RootStack from './src/navigators/RootStack';
-import { AppContextProvider } from './AppContext';
+import { AppContextProvider } from './src/context/AppContext';
 // @ts-ignore
 import { Root } from 'popup-ui';
 import './src/i18n/i18n.index';

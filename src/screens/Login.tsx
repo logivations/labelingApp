@@ -21,7 +21,7 @@ import {
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 import Communicator from '../api/Communicator';
 import RouteNames from '../constants/route.names';
-import useAppContext from '../../AppContext';
+import useAppContext from '../context/AppContext';
 import { Ionicons } from '@expo/vector-icons';
 
 // @ts-ignore

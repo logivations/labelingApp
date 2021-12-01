@@ -19,7 +19,7 @@ import { Formik } from 'formik';
 import { getData, STORAGE_KEYS, storeData } from '../services/AsyncStorageOperations';
 import api, { ConnectionProperties } from '../api/Communicator';
 import RouteNames from '../constants/route.names';
-import useAppContext from '../../AppContext';
+import useAppContext from '../context/AppContext';
 import LanguageSelect from '../components/LanguageSelect';
 
 // @ts-ignore

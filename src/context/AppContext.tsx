@@ -4,10 +4,10 @@
  ******************************************************************************/
 
 import React, { Context, useCallback, useContext, useEffect, useState } from 'react';
-import Communicator from './src/api/Communicator';
-import BaseCommunicator from './src/api/BaseCommunicator';
-import usePlayAudio from './src/hooks/useAudio';
-import useLanguage from './src/hooks/useLanguage';
+import Communicator from '../api/Communicator';
+import BaseCommunicator from '../api/BaseCommunicator';
+import usePlayAudio from '../hooks/useAudio';
+import useLanguage from '../hooks/useLanguage';
 import { TFunction } from 'i18next';
 
 export const AppContext: Context<any> = React.createContext(null);

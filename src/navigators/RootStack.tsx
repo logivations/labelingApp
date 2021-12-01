@@ -7,7 +7,7 @@ import React, { Suspense } from 'react';
 import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import TabStackScreen from './TabStack';
-import useAppContext from '../../AppContext';
+import useAppContext from '../context/AppContext';
 import { InnerContainer, StyledContainer } from '../components/styles';
 import LabelingStack from './NativeStack';
 

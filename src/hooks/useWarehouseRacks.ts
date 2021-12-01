@@ -5,7 +5,7 @@
 
 import { useEffect } from 'react';
 import Communicator from '../api/Communicator';
-import useAppContext from '../../AppContext';
+import useAppContext from '../context/AppContext';
 
 const useWarehouseRacks = () => {
 	const { setMappedRackById } = useAppContext();

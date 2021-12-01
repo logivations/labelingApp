@@ -15,7 +15,7 @@ import {
 	StyledContainer,
 	StyledFormArea,
 } from '../components/styles';
-import useAppContext from '../../AppContext';
+import useAppContext from '../context/AppContext';
 import { Formik } from 'formik';
 import Communicator from '../api/Communicator';
 import StyledTextInput from '../components/TextInput';
