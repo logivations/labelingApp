@@ -17,17 +17,18 @@ import {
 } from '../components/styles';
 import useAppContext from '../context/AppContext';
 import { Formik } from 'formik';
-import Communicator from '../api/Communicator';
 import StyledTextInput from '../components/TextInput';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 import useWarehouseRacks from '../hooks/useWarehouseRacks';
 import useLabeling from '../hooks/useLabeling';
 import { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
+import useAppAuthContext from '../context/AppAuthContext';
 
 // @ts-ignore
 const Labeling = ({ navigation }) => {
 	useWarehouseRacks();
-	const { checkIsSignedIn, t } = useAppContext();
+	const { authActions } = useAppAuthContext();
+	const { t } = useAppContext();
 	const {
 		nve,
 		ean,
@@ -167,8 +168,7 @@ const Labeling = ({ navigation }) => {
 								</SecondaryStyledButton>
 								<SecondaryStyledButton
 									onPress={async () => {
-										await Communicator.logout();
-										checkIsSignedIn();
+										await authActions.signOut();
 									}}
 								>
 									<SecondaryButtonText>{t('LOGOUT')}</SecondaryButtonText>

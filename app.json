@@ -30,18 +30,6 @@
     "extra": {
       "isDevMode": false
     },
-    "hooks": {
-      "postPublish": [
-        {
-          "file": "sentry-expo/upload-sourcemaps",
-          "config": {
-            "organization": "Logivations GmbH",
-            "project": "LabelingApp",
-            "authToken": "0c41969ef75d436bb51b716b940d7ec2fa08b7406d774289bc98c13b87b297b2"
-          }
-        }
-      ]
-    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -63,9 +51,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "sentry-expo"
-    ]
+    }
   }
 }

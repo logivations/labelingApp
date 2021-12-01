@@ -56,10 +56,6 @@ export class Communicator extends BaseCommunicator {
 		);
 	}
 
-	public retrieveTokenOnInit(): Promise<string | undefined> {
-		return this.tokenService.getAccessTokenFromStorage();
-	}
-
 	public async createNewDocument(info: any): Promise<string | undefined> {
 		return this.fetchData('api/vgg/createNewDocument', {}, info, {
 			method: 'POST',

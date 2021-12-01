@@ -13,7 +13,7 @@ import { Colors } from '../components/styles';
 class BaseCommunicator {
 	public tokenService!: TokenService;
 	private readonly connectionProperties: ConnectionProperties = { host: '', port: '', contextPath: '' };
-	static checkIsSignIn: Function = () => {
+	static signOut: Function = () => {
 	};
 
 	constructor() {
@@ -134,15 +134,19 @@ class BaseCommunicator {
 						} else {
 							let error = new Error(`Response not OK, response status: ${response.status}.`);
 							if (response.status === 401) {
-								!params.ignoreTokens && (await this.logout());
-								await BaseCommunicator.checkIsSignIn();
+								await BaseCommunicator.signOut();
 							}
 							try {
 								const responseText = await response.text();
 								try {
 									const respJson = JSON.parse(responseText);
 									if (respJson.hasOwnProperty('errorMessage')) {
-										error = new Error(respJson.errorMessage);
+										if (respJson.errorMessage === 'Invalid JWT token provided') {
+											await BaseCommunicator.signOut();
+											error = new Error(`You are logged out`);
+										} else {
+											error = new Error(respJson.errorMessage);
+										}
 										reject(respJson);
 									}
 								} catch (e) {

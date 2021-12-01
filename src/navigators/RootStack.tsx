@@ -7,25 +7,20 @@ import React, { Suspense } from 'react';
 import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import TabStackScreen from './TabStack';
-import useAppContext from '../context/AppContext';
-import { InnerContainer, StyledContainer } from '../components/styles';
+import useAppAuthContext from '../context/AppAuthContext';
 import LabelingStack from './NativeStack';
+import useAppContext from '../context/AppContext';
 
 const RootStack: React.FC = () => {
-	const { isSignedIn, isLoading, t } = useAppContext();
+	const { t } = useAppContext();
+	const { authState: { userToken } } = useAppAuthContext();
 	return (
 		<NavigationContainer>
-			{isLoading ? (
-				<StyledContainer>
-					<InnerContainer>
-						<Text>{t('LOADING')}...</Text>
-					</InnerContainer>
-				</StyledContainer>
-			) : (
+			{
 				<Suspense fallback={<Text>{t('LOADING')}...</Text>}>
-					{isSignedIn ? <LabelingStack/> : <TabStackScreen/>}
+					{userToken === null ? <TabStackScreen/> : <LabelingStack/>}
 				</Suspense>
-			)}
+			}
 		</NavigationContainer>
 	);
 };

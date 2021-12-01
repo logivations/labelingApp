@@ -3,9 +3,7 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-import React, { Context, useCallback, useContext, useEffect, useState } from 'react';
-import Communicator from '../api/Communicator';
-import BaseCommunicator from '../api/BaseCommunicator';
+import React, { Context, useContext, useState } from 'react';
 import usePlayAudio from '../hooks/useAudio';
 import useLanguage from '../hooks/useLanguage';
 import { TFunction } from 'i18next';
@@ -18,27 +16,7 @@ interface AppContextProviderParams {
 }
 
 export const AppContextProvider = ({ children, t }: AppContextProviderParams) => {
-	const [isLoading, setLoading] = useState<boolean>(false);
-	const [isSignedIn, setSignedIn] = useState<boolean>(false);
 	const [mappedRackNameById, setMappedRackById] = useState<Map<number, string>>(new Map());
-	const checkIsSignedIn = useCallback((setSingInning?: Function) => {
-		return Communicator.retrieveTokenOnInit()
-			.then((accessToken) => {
-				setSingInning && setSingInning();
-				setSignedIn(!!accessToken);
-			})
-			.finally(() => setLoading(false));
-	}, []);
-	useEffect(() => {
-		(async () => {
-			BaseCommunicator.checkIsSignIn = checkIsSignedIn;
-			await Communicator.getToken()
-				.then((tokens) => {
-					return Communicator.tokenService.setTokens(tokens);
-				})
-				.finally(() => checkIsSignedIn());
-		})();
-	}, []);
 
 	const getSoundAndPlay = usePlayAudio();
 	const activeLanguage = useLanguage();
@@ -46,10 +24,6 @@ export const AppContextProvider = ({ children, t }: AppContextProviderParams) =>
 	return (
 		<AppContext.Provider
 			value={{
-				isSignedIn,
-				isLoading,
-				setSignedIn,
-				checkIsSignedIn,
 				setMappedRackById,
 				mappedRackNameById,
 				getSoundAndPlay,
