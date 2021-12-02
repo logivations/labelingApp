@@ -34,14 +34,21 @@ class BaseCommunicator {
 		);
 	}
 
+	public ping(properties?: ConnectionProperties) {
+		if (properties) {
+			const url = `${properties.host}:${properties.port}/${properties.contextPath}/anonymous/ping`;
+			return fetch(url, { method: 'GET' });
+		}
+		return this.fetchData(`anonymous/ping`, {}, {}, {
+			method: 'GET',
+			ignoreTokens: true,
+			contentType: 'application/json',
+		});
+	}
+
 	private runPingInterval(): void {
-		setInterval(() => {
-			// prettier-ignore
-			this.fetchData(`anonymous/ping`, {}, {}, {
-				method: 'GET',
-				ignoreTokens: true,
-				contentType: 'application/json',
-			});
+		setInterval(async () => {
+			await this.ping();
 		}, 60000);
 	}
 
