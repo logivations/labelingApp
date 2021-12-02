@@ -3,11 +3,12 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import TextInput from '../components/TextInput';
 import {
 	ButtonText,
 	Colors,
+	ErrorMsgBox,
 	InnerContainer,
 	StyledButton,
 	StyledContainer,
@@ -19,7 +20,7 @@ import { Formik } from 'formik';
 import { getData, STORAGE_KEYS, storeData } from '../services/AsyncStorageOperations';
 import api, { ConnectionProperties } from '../api/Communicator';
 import RouteNames from '../constants/route.names';
-import useAppContext from '../../AppContext';
+import useAppContext from '../context/AppContext';
 import LanguageSelect from '../components/LanguageSelect';
 
 // @ts-ignore
@@ -31,14 +32,35 @@ const Settings = ({ navigation }) => {
 		contextPath: '',
 	});
 
+	const [isValidConnectionProperties, setConnectionPropertiesValidity] = useState<boolean>(false);
+
 	useEffect(() => {
-		getData(STORAGE_KEYS.CONNECTION_PROPERTIES).then((res: string) => {
+		getData(STORAGE_KEYS.CONNECTION_PROPERTIES).then(async (res: string) => {
 			if (res) {
 				const result: ConnectionProperties = JSON.parse(res);
+				await validateConnectionProperties(result);
 				setConnectionProperties(result);
 			}
 		});
 	}, []);
+
+	const validateConnectionProperties = useCallback(async (properties: ConnectionProperties) => {
+		try {
+			await api.ping(properties);
+			setConnectionPropertiesValidity(true);
+			return true;
+		} catch (error) {
+			setConnectionPropertiesValidity(false);
+			return false;
+		}
+	}, []);
+
+	const handleSubmit = useCallback(async (properties: ConnectionProperties) => {
+		await storeData(STORAGE_KEYS.CONNECTION_PROPERTIES, properties);
+		properties && api.saveConnectionProperties(properties);
+		await navigation.navigate(RouteNames.LOGIN);
+	}, []);
+
 	return (
 		<KeyboardAvoidingWrapper>
 			<StyledContainer>
@@ -47,10 +69,10 @@ const Settings = ({ navigation }) => {
 					<Formik
 						enableReinitialize={true}
 						initialValues={connectionProperties}
-						onSubmit={async (properties: ConnectionProperties) => {
-							await storeData(STORAGE_KEYS.CONNECTION_PROPERTIES, properties);
-							properties && api.saveConnectionProperties(properties);
-							await navigation.navigate(RouteNames.LOGIN);
+						onSubmit={(properties: ConnectionProperties) => {
+							validateConnectionProperties(properties).then((isValid) => {
+								isValid && handleSubmit(properties);
+							});
 						}}
 					>
 						{({ handleChange, handleBlur, handleSubmit, values }) => {
@@ -86,6 +108,11 @@ const Settings = ({ navigation }) => {
 										value={values.contextPath}
 										keyboardType={'default'}
 									/>
+									{!isValidConnectionProperties && (
+										<ErrorMsgBox onPress={() => navigation.navigate(RouteNames.SETTINGS)}>
+											{t('SET_VALID_CONNECTION_PROPERTIES')}
+										</ErrorMsgBox>
+									)}
 									<StyledButton onPress={handleSubmit}>
 										<ButtonText>{t('SAVE')}</ButtonText>
 									</StyledButton>

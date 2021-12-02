@@ -21,19 +21,23 @@ import {
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 import Communicator from '../api/Communicator';
 import RouteNames from '../constants/route.names';
-import useAppContext from '../../AppContext';
+import useAppContext from '../context/AppContext';
 import { Ionicons } from '@expo/vector-icons';
+import useAppAuthContext from '../context/AppAuthContext';
 
 // @ts-ignore
 const Login = ({ navigation }) => {
-	const { checkIsSignedIn, t } = useAppContext();
-	const [isSignInning, setSingInning] = useState<boolean>(false);
+	const { authActions } = useAppAuthContext();
+
+	const { t } = useAppContext();
 	const [hidePassword, setHidePassword] = useState<boolean>(true);
 	const [loginErrorMessage, setLoginErrorMessage] = useState<string | null>(null);
 	const [isConnectionPropertiesExist, setIsConnectionPropertiesExist] = useState<boolean>(false);
 
 	useEffect(() => {
-		setIsConnectionPropertiesExist(Communicator.isExistConnectionProperties);
+		setTimeout(() => {
+			setIsConnectionPropertiesExist(Communicator.isExistConnectionProperties);
+		}, 500);
 		return navigation.addListener('focus', () => {
 			setIsConnectionPropertiesExist(Communicator.isExistConnectionProperties);
 		});
@@ -47,18 +51,9 @@ const Login = ({ navigation }) => {
 					<SubTitle>{t('LOG_IN_TO_CONTINUE')}</SubTitle>
 
 					<Formik
-						initialValues={{ email: '', password: '' }}
-						onSubmit={(val) => {
-							setSingInning(true);
-							Communicator.login(val.email, val.password)
-								.then((result) => {
-									result &&
-									setLoginErrorMessage(
-										result.hasOwnProperty('errorMessage') ? result.errorMessage : null,
-									);
-									checkIsSignedIn(() => setSingInning(false));
-								})
-								.finally(() => setSingInning(false));
+						initialValues={{ email: 'forklift', password: 'forklift' }}
+						onSubmit={async (val) => {
+							await authActions.signIn(val.email, val.password, setLoginErrorMessage);
 						}}
 					>
 						{({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -104,7 +99,7 @@ const Login = ({ navigation }) => {
 									</ErrorMsgBox>
 								)}
 								<StyledButton onPress={handleSubmit} disabled={!isConnectionPropertiesExist}>
-									<ButtonText>{isSignInning ? t('SIGN_IN') : t('LOGIN')}</ButtonText>
+									<ButtonText>{t('LOGIN')}</ButtonText>
 								</StyledButton>
 							</StyledFormArea>
 						)}

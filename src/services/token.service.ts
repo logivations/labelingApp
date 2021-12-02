@@ -15,7 +15,7 @@ class TokenService {
 		this.api = api;
 	}
 
-	private static isTokensDatesExpired(): Promise<boolean> {
+	public static isTokensDatesExpired(): Promise<boolean> {
 		return Promise.all(
 			[STORAGE_KEYS.ACCESS_TOKEN_EXPIRE_DATE, STORAGE_KEYS.REFRESH_TOKEN_EXPIRE_DATE].map(
 				async (storageKey: STORAGE_KEYS) => {
@@ -33,28 +33,22 @@ class TokenService {
 		).then((isExpired) => isExpired.some((expire) => expire));
 	}
 
-	private static setTokenExpirationDate(expired: string, storageKey: STORAGE_KEYS): Promise<void> {
-		const reservedTime = 3 * 60000;
+	private static async setTokenExpirationDate(expired: string, storageKey: STORAGE_KEYS): Promise<void> {
+		const reservedTime = 0 * 60000;
 		const expireDate = Number(expired) - reservedTime;
 
-		return storeData(storageKey, String(expireDate));
+		return await storeData(storageKey, String(expireDate));
 	}
 
-	private static asyncStoreToken(
+	private static async asyncStoreToken(
 		token: string,
 		storageKey: STORAGE_KEYS,
 		cache: Map<STORAGE_KEYS, string>,
-	): Promise<void> | void {
+	): Promise<any> {
 		if (token) {
 			cache.set(storageKey, token);
-			return storeData(storageKey, token);
+			return await storeData(storageKey, token);
 		}
-	}
-
-	public getAccessTokenFromStorage() {
-		return TokenService.isTokensDatesExpired().then((isExpired) => {
-			return !isExpired ? getData(STORAGE_KEYS.ACCESS_TOKEN) : null;
-		});
 	}
 
 	public async removeTokens(): Promise<void[]> {

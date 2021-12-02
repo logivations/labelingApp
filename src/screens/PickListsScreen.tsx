@@ -8,7 +8,7 @@ import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from
 import { Colors, ListColumnWrapper } from '../components/styles';
 import PickListItem from '../components/PickListItem';
 import api from '../api/Communicator';
-import useAppContext from '../../AppContext';
+import useAppContext from '../context/AppContext';
 import PickList from '../models/Picklist';
 import PicklistScanStatus from '../enums/PicklistScanStatus';
 import { StatusApproved } from '../enums';

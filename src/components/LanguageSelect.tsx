@@ -5,7 +5,7 @@ import { FlagButton, FlagWrapper, LanguageContainer } from './styles';
 import EnglandFlag from '../../assets/icons/english-flag.svg';
 // @ts-ignore
 import GermanFlag from '../../assets/icons/german-flag.svg';
-import useAppContext from '../../AppContext';
+import useAppContext from '../context/AppContext';
 
 const LanguageSelect = () => {
 	const { activeLanguage } = useAppContext();

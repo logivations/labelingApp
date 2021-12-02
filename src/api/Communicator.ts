@@ -56,10 +56,6 @@ export class Communicator extends BaseCommunicator {
 		);
 	}
 
-	public retrieveTokenOnInit(): Promise<string | undefined> {
-		return this.tokenService.getAccessTokenFromStorage();
-	}
-
 	public async createNewDocument(info: any): Promise<string | undefined> {
 		return this.fetchData('api/vgg/createNewDocument', {}, info, {
 			method: 'POST',
@@ -71,8 +67,8 @@ export class Communicator extends BaseCommunicator {
 	public async setInternalOrdersReadyForPacking(plIds: number[]): Promise<void> {
 		return this.fetchData(
 			'api/vgg/setInternalOrdersReadyForPacking',
-			{ plIds },
 			{},
+			plIds,
 			{
 				method: 'POST',
 				ignoreTokens: false,

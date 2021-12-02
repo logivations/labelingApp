@@ -8,7 +8,7 @@ import api from '../api/Communicator';
 import RouteNames from '../constants/route.names';
 // @ts-ignore
 import { Toast } from 'popup-ui';
-import useAppContext from '../../AppContext';
+import useAppContext from '../context/AppContext';
 import FillLabelingController from '../services/FillLabelingController';
 import useCheckNvePrefix from './useCheckNvePrefix';
 import { Colors } from '../components/styles';

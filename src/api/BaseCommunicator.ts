@@ -13,7 +13,7 @@ import { Colors } from '../components/styles';
 class BaseCommunicator {
 	public tokenService!: TokenService;
 	private readonly connectionProperties: ConnectionProperties = { host: '', port: '', contextPath: '' };
-	static checkIsSignIn: Function = () => {
+	static signOut: Function = () => {
 	};
 
 	constructor() {
@@ -34,14 +34,21 @@ class BaseCommunicator {
 		);
 	}
 
+	public ping(properties?: ConnectionProperties) {
+		if (properties) {
+			const url = `${properties.host}:${properties.port}/${properties.contextPath}/anonymous/ping`;
+			return fetch(url, { method: 'GET' });
+		}
+		return this.fetchData(`anonymous/ping`, {}, {}, {
+			method: 'GET',
+			ignoreTokens: true,
+			contentType: 'application/json',
+		});
+	}
+
 	private runPingInterval(): void {
-		setInterval(() => {
-			// prettier-ignore
-			this.fetchData(`anonymous/ping`, {}, {}, {
-				method: 'GET',
-				ignoreTokens: true,
-				contentType: 'application/json',
-			});
+		setInterval(async () => {
+			await this.ping();
 		}, 60000);
 	}
 
@@ -84,8 +91,10 @@ class BaseCommunicator {
 	}
 
 	private getConfig(params: { [key: string]: any }, body: any): object {
+		const token = this.tokenService.getCashedTokens(STORAGE_KEYS.ACCESS_TOKEN);
+		const refreshToken = this.tokenService.getCashedTokens(STORAGE_KEYS.REFRESH_TOKEN);
 		const getHeaders = () => {
-			const token = this.tokenService.getCashedTokens(STORAGE_KEYS.ACCESS_TOKEN);
+
 			return Object.assign(
 				{
 					Accept: '*/*',
@@ -95,8 +104,16 @@ class BaseCommunicator {
 					'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, X-Requested-With',
 				},
 				token ? { Authorization: token } : {},
+				refreshToken ? { Refresh: refreshToken } : {},
 			);
 		};
+		const cookie = (() => {
+			let baseCookie = '';
+			token && (baseCookie += `Authorization=${token}; `);
+			refreshToken && (baseCookie += `Refresh=${refreshToken}; `);
+			return baseCookie;
+		})();
+
 		return Object.assign(
 			{
 				method: params.method,
@@ -104,7 +121,9 @@ class BaseCommunicator {
 				cache: 'no-cache',
 				credentials: 'same-origin',
 				headers: getHeaders(),
+
 			},
+			cookie ? { Cookie: cookie } : {},
 			params.method === 'POST' ? { body: body instanceof FormData ? body : JSON.stringify(body) } : {},
 		);
 	}
@@ -134,8 +153,7 @@ class BaseCommunicator {
 						} else {
 							let error = new Error(`Response not OK, response status: ${response.status}.`);
 							if (response.status === 401) {
-								!params.ignoreTokens && (await this.logout());
-								await BaseCommunicator.checkIsSignIn();
+								await BaseCommunicator.signOut();
 							}
 							try {
 								const responseText = await response.text();
