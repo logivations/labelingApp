@@ -84,8 +84,10 @@ class BaseCommunicator {
 	}
 
 	private getConfig(params: { [key: string]: any }, body: any): object {
+		const token = this.tokenService.getCashedTokens(STORAGE_KEYS.ACCESS_TOKEN);
+		const refreshToken = this.tokenService.getCashedTokens(STORAGE_KEYS.REFRESH_TOKEN);
 		const getHeaders = () => {
-			const token = this.tokenService.getCashedTokens(STORAGE_KEYS.ACCESS_TOKEN);
+
 			return Object.assign(
 				{
 					Accept: '*/*',
@@ -95,8 +97,16 @@ class BaseCommunicator {
 					'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, X-Requested-With',
 				},
 				token ? { Authorization: token } : {},
+				refreshToken ? { Refresh: refreshToken } : {},
 			);
 		};
+		const cookie = (() => {
+			let baseCookie = '';
+			token && (baseCookie += `Authorization=${token}; `);
+			refreshToken && (baseCookie += `Refresh=${refreshToken}; `);
+			return baseCookie;
+		})();
+
 		return Object.assign(
 			{
 				method: params.method,
@@ -104,7 +114,9 @@ class BaseCommunicator {
 				cache: 'no-cache',
 				credentials: 'same-origin',
 				headers: getHeaders(),
+
 			},
+			cookie ? { Cookie: cookie } : {},
 			params.method === 'POST' ? { body: body instanceof FormData ? body : JSON.stringify(body) } : {},
 		);
 	}
@@ -141,12 +153,7 @@ class BaseCommunicator {
 								try {
 									const respJson = JSON.parse(responseText);
 									if (respJson.hasOwnProperty('errorMessage')) {
-										if (respJson.errorMessage === 'Invalid JWT token provided') {
-											await BaseCommunicator.signOut();
-											error = new Error(`You are logged out`);
-										} else {
-											error = new Error(respJson.errorMessage);
-										}
+										error = new Error(respJson.errorMessage);
 										reject(respJson);
 									}
 								} catch (e) {
