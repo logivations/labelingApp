@@ -67,8 +67,8 @@ export class Communicator extends BaseCommunicator {
 	public async setInternalOrdersReadyForPacking(plIds: number[]): Promise<void> {
 		return this.fetchData(
 			'api/vgg/setInternalOrdersReadyForPacking',
-			{ plIds },
 			{},
+			plIds,
 			{
 				method: 'POST',
 				ignoreTokens: false,
