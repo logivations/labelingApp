@@ -22,6 +22,7 @@ import api, { ConnectionProperties } from '../api/Communicator';
 import RouteNames from '../constants/route.names';
 import useAppContext from '../context/AppContext';
 import LanguageSelect from '../components/LanguageSelect';
+import Constants from 'expo-constants';
 
 // @ts-ignore
 const Settings = ({ navigation }) => {
@@ -61,6 +62,7 @@ const Settings = ({ navigation }) => {
 		await navigation.navigate(RouteNames.LOGIN);
 	}, []);
 
+
 	return (
 		<KeyboardAvoidingWrapper>
 			<StyledContainer>
@@ -76,6 +78,7 @@ const Settings = ({ navigation }) => {
 						}}
 					>
 						{({ handleChange, handleBlur, handleSubmit, values }) => {
+							// @ts-ignore
 							return (
 								<StyledFormArea>
 									<TextInput
@@ -116,6 +119,9 @@ const Settings = ({ navigation }) => {
 									<StyledButton onPress={handleSubmit}>
 										<ButtonText>{t('SAVE')}</ButtonText>
 									</StyledButton>
+									<ErrorMsgBox color={'#4d4d4d'}>
+										Build version: {Constants.manifest.version}
+									</ErrorMsgBox>
 								</StyledFormArea>
 							);
 						}}

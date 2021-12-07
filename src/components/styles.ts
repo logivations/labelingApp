@@ -139,7 +139,7 @@ export const ErrorMsgBox = styled(Text)`
 	font-size: 12px;
 	margin-top: -5px;
 	padding: 0 0 10px;
-	color: ${Colors.red};
+	color: ${({ color }: { color?: string }) => color || Colors.red};
 `;
 
 export const LabelingErrorMsgBox = styled(ErrorMsgBox)`
