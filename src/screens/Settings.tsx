@@ -120,7 +120,7 @@ const Settings = ({ navigation }) => {
 										<ButtonText>{t('SAVE')}</ButtonText>
 									</StyledButton>
 									<ErrorMsgBox color={'#4d4d4d'}>
-										Build version: {Constants.manifest.version}
+										Build version: {Constants?.manifest?.version}
 									</ErrorMsgBox>
 								</StyledFormArea>
 							);
