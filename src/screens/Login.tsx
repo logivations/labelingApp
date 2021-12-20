@@ -47,7 +47,7 @@ const Login = ({ navigation }) => {
 		<KeyboardAvoidingWrapper>
 			<StyledContainer>
 				<InnerContainer>
-					<PageTitle>{t('LABELING_APP')}</PageTitle>
+					<PageTitle>{t('W2MO_SCANNER_APP')}</PageTitle>
 					<SubTitle>{t('LOG_IN_TO_CONTINUE')}</SubTitle>
 
 					<Formik
