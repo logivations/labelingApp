@@ -16,12 +16,15 @@ export interface ConnectionProperties {
 
 export class Communicator extends BaseCommunicator {
 	static Instance: Communicator;
+	public activeWarehouseId: number = 0;
 
 	constructor() {
 		super();
 		if (!Communicator.Instance) {
 			Communicator.Instance = this;
-
+			this.getActiveWhId().then((whId) => {
+				this.activeWarehouseId = whId;
+			});
 			super.setTokenService(new TokenService(this));
 		}
 		return Communicator.Instance;
@@ -104,6 +107,9 @@ export class Communicator extends BaseCommunicator {
 	}
 
 	public getActiveWhId() {
+		if (this.activeWarehouseId) {
+			return Promise.resolve(this.activeWarehouseId);
+		}
 		return this.fetchData(
 			`api/vgg/getActiveWhId`,
 			{},
@@ -129,17 +135,49 @@ export class Communicator extends BaseCommunicator {
 		);
 	}
 
-	public getAllRacks(whId: number) {
-		return this.fetchData(
-			`api/layouts/${whId}/racks/`,
-			{},
-			{},
-			{
-				method: 'GET',
-				ignoreTokens: false,
-				contentType: 'application/json',
-			},
-		);
+	public getAllRacks() {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(
+				`api/layouts/${activeWarehouseId}/racks/`,
+				{},
+				{},
+				{
+					method: 'GET',
+					ignoreTokens: false,
+					contentType: 'application/json',
+				},
+			);
+		});
+	}
+
+	public getAllBins() {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(
+				`api/layouts/${activeWarehouseId}/bins/`,
+				{},
+				{},
+				{
+					method: 'GET',
+					ignoreTokens: false,
+					contentType: 'application/json',
+				},
+			);
+		});
+	}
+
+	public getGeneralBinsByStages(stages: number[]) {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(
+				`api/bins/getGeneralBinsByStages`,
+				{ warehouseId: activeWarehouseId },
+				stages,
+				{
+					method: 'POST',
+					ignoreTokens: false,
+					contentType: 'application/json',
+				},
+			);
+		});
 	}
 }
 

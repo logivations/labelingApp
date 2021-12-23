@@ -8,7 +8,7 @@ import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import TabStackScreen from './TabStack';
 import useAppAuthContext from '../context/AppAuthContext';
-import LabelingStack from './NativeStack';
+import ModeDrawerStack from './ModeDrawerStack';
 import useAppContext from '../context/AppContext';
 
 const RootStack: React.FC = () => {
@@ -18,7 +18,7 @@ const RootStack: React.FC = () => {
 		<NavigationContainer>
 			{
 				<Suspense fallback={<Text>{t('LOADING')}...</Text>}>
-					{userToken === null ? <TabStackScreen/> : <LabelingStack/>}
+					{userToken === null ? <TabStackScreen/> : <ModeDrawerStack/>}
 				</Suspense>
 			}
 		</NavigationContainer>

@@ -5,40 +5,29 @@
 
 import { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 
-class FillLabelingController {
-	private readonly setNve: Function;
-	private readonly setEan: Function;
-	private readonly setSn: Function;
-	private readonly createNewDocument: Function;
+class FillInputsController {
+	private readonly setters: { [key: string]: Function };
+	private readonly createNewDocument: Function = () => {
+	};
 	private readonly refs: { [key: string]: any };
 	private fields: { [key: string]: string };
 
 	private documentWasCreated: boolean = false;
+	private fieldNames: string[] = [];
 	public isManualInput: boolean = false;
 
 	constructor(
-		setNve: Function,
-		setEan: Function,
-		setSn: Function,
 		createNewDocument: Function,
-		refs: { [key: string]: any },
+		refs: any[],
+		setters: { [key: string]: Function },
+		fieldNames: string[],
 	) {
-		this.setNve = setNve;
-		this.setEan = setEan;
-		this.setSn = setSn;
-		this.refs = {
-			nve: refs.nveRef,
-			ean: refs.eanRef,
-			sn: refs.snRef,
-		};
+		this.setters = setters;
+		this.refs = fieldNames.reduce((acc, fieldName, index) => ({ ...acc, [fieldName]: refs[index] }), {});
+		this.fields = fieldNames.reduce((acc, fieldName, index) => ({ ...acc, [fieldName]: '' }), {});
 
 		this.createNewDocument = createNewDocument;
-
-		this.fields = {
-			nve: '',
-			ean: '',
-			sn: '',
-		};
+		this.fieldNames = fieldNames;
 	}
 
 	public async onTextInput(text: string, clearTextInput: Function): Promise<void> {
@@ -67,26 +56,24 @@ class FillLabelingController {
 	}
 
 	private async handleChange(value: string, clearTextFields: Function): Promise<void> {
-		if (!this.fields.nve) {
-			this.fields.nve = value;
-			this.setNve(value);
-		} else if (!this.fields.ean) {
-			this.fields.ean = value;
-			this.setEan(value);
-		} else if (!this.fields.sn) {
-			this.fields.sn = value;
-			this.setSn(value);
-		}
+		let valueWasSet = false;
+		this.fieldNames.forEach((fieldName) => {
+			if (!this.fields[fieldName] && !valueWasSet) {
+				this.fields[fieldName] = value;
+				this.setters[fieldName](value);
+				valueWasSet = true;
+			}
+		});
 
 		await this.createDocument(this.fields, clearTextFields);
 	}
 
 	public createDocument(
-		fields: { [x: string]: string; nve?: any; ean?: any; sn?: any },
+		fields: { [x: string]: string },
 		clearTextFields: Function,
 	): Promise<any> {
 		return new Promise((resolve, reject) => {
-			if (fields.nve && fields.ean && fields.sn && !this.documentWasCreated) {
+			if (Object.values(fields).every((field) => !!field) && !this.documentWasCreated) {
 				this.documentWasCreated = true;
 				setTimeout(async () => {
 					try {
@@ -105,13 +92,9 @@ class FillLabelingController {
 	}
 
 	public clearFields(): void {
-		this.fields = {
-			nve: '',
-			ean: '',
-			sn: '',
-		};
+		this.fields = this.fieldNames.reduce((acc, fieldName, index) => ({ ...acc, [fieldName]: '' }), {});
 		this.documentWasCreated = false;
 	}
 }
 
-export default FillLabelingController;
+export default FillInputsController;

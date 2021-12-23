@@ -14,7 +14,7 @@ import PicklistScanStatus from '../enums/PicklistScanStatus';
 import { StatusApproved } from '../enums';
 
 // @ts-ignore
-const PickListsScreen = ({ navigation }) => {
+const PickListsScreen = ({ stackNavigation, drawerNavigator }) => {
 	const { mappedRackNameById, t } = useAppContext();
 	const [PLList, setPLList] = useState<PickList[]>([]);
 
@@ -23,7 +23,7 @@ const PickListsScreen = ({ navigation }) => {
 			({ scanStatus }) => scanStatus === PicklistScanStatus.READY_FOR_LOADING,
 		);
 		const readyForLoadingPicklistsIds = readyForLoadingPicklists.map(({ picklistId }) => picklistId);
-		navigation.setOptions({
+		stackNavigation.setOptions({
 			headerRight: () => (
 				<TouchableOpacity
 					onPress={async () => {
@@ -44,7 +44,11 @@ const PickListsScreen = ({ navigation }) => {
 			headerShown: true,
 			title: t('PICK_LISTS'),
 		});
-	}, [navigation, PLList]);
+		drawerNavigator.setOptions({ headerShown: false });
+		return () => {
+			drawerNavigator.setOptions({ headerShown: true });
+		};
+	}, [stackNavigation, drawerNavigator, PLList]);
 
 	const updatePickLists = useCallback(async () => {
 		try {
@@ -137,6 +141,7 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		borderColor: Colors.green,
 		backgroundColor: Colors.green,
+		marginRight: 0,
 	},
 });
 
