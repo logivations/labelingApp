@@ -18,23 +18,29 @@ const useGeneralBins = (eanOld: string) => {
 		});
 	}, []);
 
-	const getBinByRackIdBinId = useCallback((rackId?: number | string, binId?: number | string) => {
-		if (rackId && binId) {
-			return generalBins.find((bin) => bin.equals(rackId, binId)) || null;
-		} else {
-			return generalBins;
-		}
-	}, [generalBins, allBins]);
+	const getBinByRackIdBinId = useCallback(
+		(rackId?: number | string, binId?: number | string) => {
+			if (rackId && binId) {
+				return generalBins.find((bin) => bin.equals(rackId, binId)) || null;
+			} else {
+				return generalBins;
+			}
+		},
+		[generalBins, allBins],
+	);
 
-	const handleFilterGeneralBins = useCallback((ean?: string) => {
-		if (ean) {
-			Communicator.getGeneralBinsWithStockByEAN(ean).then((filteredGeneralBinsData) => {
-				setGeneralBins(filteredGeneralBinsData.map((generalBin: any) => new Bin(generalBin)));
-			});
-		} else {
-			setGeneralBins(() => allBins.map((generalBin: any) => new Bin(generalBin)));
-		}
-	}, [allBins]);
+	const handleFilterGeneralBins = useCallback(
+		(ean?: string) => {
+			if (ean) {
+				Communicator.getGeneralBinsWithStockByEAN(ean).then((filteredGeneralBinsData) => {
+					setGeneralBins(filteredGeneralBinsData.map((generalBin: any) => new Bin(generalBin)));
+				});
+			} else {
+				setGeneralBins(() => allBins.map((generalBin: any) => new Bin(generalBin)));
+			}
+		},
+		[allBins],
+	);
 
 	useEffect(() => {
 		if (!eanOld) {

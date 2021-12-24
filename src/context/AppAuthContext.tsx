@@ -71,7 +71,8 @@ export const AppAuthContextProvider = ({ children }) => {
 			async signIn(username: string, password: string, setLoginErrorMessage: Function) {
 				try {
 					const tokensData = await api.login(username, password);
-					tokensData && setLoginErrorMessage(
+					tokensData &&
+					setLoginErrorMessage(
 						tokensData.hasOwnProperty('errorMessage') ? tokensData.errorMessage : null,
 					);
 

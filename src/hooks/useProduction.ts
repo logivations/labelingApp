@@ -31,10 +31,9 @@ const useProduction = (navigation: any) => {
 	const createNewDocument = useCallback(async (info) => {
 		try {
 			console.log('info', info);
-
+			//TODO add confirm action
 		} catch (error) {
 			console.log('Error: ', error);
-			// getSoundAndPlay('warningAlarm');
 		}
 	}, []);
 

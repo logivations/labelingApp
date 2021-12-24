@@ -35,21 +35,20 @@ const CustomDrawerContent = ({ ...rest }: { [key: string]: any }) => {
 
 	return (
 		<DrawerContentScrollView {...rest} style={{ height: '100%' }}>
-			<Animated.View style={{
-				transform: [{ translateX }],
-				position: 'relative',
-				display: 'flex',
-				justifyContent: 'space-between',
-				height: Dimensions.get('screen').height - Constants.statusBarHeight - 50,
-			}}>
+			<Animated.View
+				style={{
+					transform: [{ translateX }],
+					position: 'relative',
+					display: 'flex',
+					justifyContent: 'space-between',
+					height: Dimensions.get('screen').height - Constants.statusBarHeight - 50,
+				}}
+			>
 				<View>
 					<DrawerItemList navigation={rest.navigation} state={rest.state} descriptors={rest.descriptors}/>
 				</View>
 				<View style={{ paddingRight: 10, paddingLeft: 10, paddingBottom: 10 }}>
-					<SecondaryStyledButton
-						onPress={async () => await authActions.signOut()}
-						lastButton={true}
-					>
+					<SecondaryStyledButton onPress={async () => await authActions.signOut()} lastButton={true}>
 						<SecondaryButtonText>{t('LOGOUT')}</SecondaryButtonText>
 					</SecondaryStyledButton>
 				</View>
@@ -57,7 +56,6 @@ const CustomDrawerContent = ({ ...rest }: { [key: string]: any }) => {
 		</DrawerContentScrollView>
 	);
 };
-
 
 const ModeDrawerStack = () => {
 	const { t } = useAppContext();
@@ -73,11 +71,7 @@ const ModeDrawerStack = () => {
 			}}
 			drawerContent={(props: { [key: string]: any }) => <CustomDrawerContent {...props} />}
 		>
-			<Drawer.Screen
-				name={RouteNames.HOME}
-				component={HomeScreen}
-				options={{ title: t('HOME') }}
-			/>
+			<Drawer.Screen name={RouteNames.HOME} component={HomeScreen} options={{ title: t('HOME') }}/>
 			<Drawer.Screen
 				name={RouteNames.LABELING_STACK}
 				component={LabelingStack}

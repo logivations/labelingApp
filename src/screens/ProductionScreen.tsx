@@ -80,7 +80,12 @@ const ProductionScreen = ({ route, stackNavigation, drawerNavigator, ...rest }) 
 										);
 									}}
 									onSubmitEditing={async (value: NativeSyntheticEvent<TextInputFocusEventData>) => {
-										await fillProductionController.onSubmitEditing('eanOld', 'eanNew', value, handleBlur);
+										await fillProductionController.onSubmitEditing(
+											'eanOld',
+											'eanNew',
+											value,
+											handleBlur,
+										);
 									}}
 									reference={eanOldRef}
 									value={values.eanOld}
@@ -105,7 +110,12 @@ const ProductionScreen = ({ route, stackNavigation, drawerNavigator, ...rest }) 
 										);
 									}}
 									onSubmitEditing={async (value: NativeSyntheticEvent<TextInputFocusEventData>) => {
-										await fillProductionController.onSubmitEditing('eanNew', 'sn', value, handleBlur);
+										await fillProductionController.onSubmitEditing(
+											'eanNew',
+											'sn',
+											value,
+											handleBlur,
+										);
 									}}
 									value={values.eanNew}
 									blurOnSubmit={false}
@@ -127,7 +137,6 @@ const ProductionScreen = ({ route, stackNavigation, drawerNavigator, ...rest }) 
 											clearTextFields,
 										);
 									}}
-
 									onSubmitEditing={async (value: NativeSyntheticEvent<TextInputFocusEventData>) => {
 										await fillProductionController.onSubmitEditing(
 											'sn',

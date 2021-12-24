@@ -16,12 +16,7 @@ class FillInputsController {
 	private fieldNames: string[] = [];
 	public isManualInput: boolean = false;
 
-	constructor(
-		createNewDocument: Function,
-		refs: any[],
-		setters: { [key: string]: Function },
-		fieldNames: string[],
-	) {
+	constructor(createNewDocument: Function, refs: any[], setters: { [key: string]: Function }, fieldNames: string[]) {
 		this.setters = setters;
 		this.refs = fieldNames.reduce((acc, fieldName, index) => ({ ...acc, [fieldName]: refs[index] }), {});
 		this.fields = fieldNames.reduce((acc, fieldName, index) => ({ ...acc, [fieldName]: '' }), {});
@@ -56,18 +51,6 @@ class FillInputsController {
 	}
 
 	private handleChange(value: string, clearTextFields: Function): void {
-		// let valueWasSet = false;
-		// this.fieldNames.forEach((fieldName) => {
-		// 	if (!this.fields[fieldName] && !valueWasSet) {
-		// 		this.fields[fieldName] = value;
-		// 		console.log('fieldName, ', fieldName, value);
-		// 		this.setters[fieldName](value);
-		// 		valueWasSet = true;
-		// 	}
-		// });
-		// console.log('fieldNames', this.fields);
-
-
 		if (!this.fields[this.fieldNames[0]]) {
 			this.fields[this.fieldNames[0]] = value;
 			this.setters[this.fieldNames[0]](value);
@@ -79,14 +62,10 @@ class FillInputsController {
 			this.setters[this.fieldNames[2]](value);
 		}
 
-
 		this.createDocument(this.fields, clearTextFields);
 	}
 
-	public createDocument(
-		fields: { [x: string]: string },
-		clearTextFields: Function,
-	): Promise<void> {
+	public createDocument(fields: { [x: string]: string }, clearTextFields: Function): Promise<void> {
 		return new Promise((resolve, reject) => {
 			if (Object.values(fields).every((field) => !!field) && !this.documentWasCreated) {
 				this.documentWasCreated = true;

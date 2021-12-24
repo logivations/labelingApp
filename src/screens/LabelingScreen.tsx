@@ -65,10 +65,7 @@ const LabelingScreen = ({ navigation }) => {
 										}
 									}}
 									onTextInput={(event: NativeSyntheticEvent<TextInputFocusEventData>) => {
-										fillLabelingController.onTextInput(
-											event.nativeEvent.text,
-											clearTextFields,
-										);
+										fillLabelingController.onTextInput(event.nativeEvent.text, clearTextFields);
 									}}
 									onSubmitEditing={async (value: NativeSyntheticEvent<TextInputFocusEventData>) => {
 										await fillLabelingController.onSubmitEditing('nve', 'ean', value, handleBlur);
@@ -166,8 +163,11 @@ const LabelingScreen = ({ navigation }) => {
 										<ButtonText>{t('OK')}</ButtonText>
 									</StyledButton>
 								</ButtonGroup>
-								<SecondaryStyledButton onPress={readyForLoadingAction} minWidth={'45%'}
-													   lastButton={true}>
+								<SecondaryStyledButton
+									onPress={readyForLoadingAction}
+									minWidth={'45%'}
+									lastButton={true}
+								>
 									<SecondaryButtonText>{t('READY_FOR_LOADING')}</SecondaryButtonText>
 								</SecondaryStyledButton>
 							</StyledFormArea>

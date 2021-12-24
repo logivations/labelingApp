@@ -62,10 +62,9 @@ const Settings = ({ navigation }) => {
 		await navigation.navigate(RouteNames.LOGIN);
 	}, []);
 
-
 	return (
 		<KeyboardAvoidingWrapper>
-			<StyledContainer>
+			<StyledContainer headerExist={false}>
 				<InnerContainer>
 					<SubTitle>{t('CONNECTION_PROPERTIES')}</SubTitle>
 					<Formik

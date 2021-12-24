@@ -26,11 +26,7 @@ import useGeneralBins from '../hooks/useGeneralBins';
 const InputProductionScreen = ({ navigation }) => {
 	const [eanOld, setEanOld] = useState<string>('');
 
-	const {
-		getBinByRackIdBinId,
-		mappedGeneralBinsForDropdown,
-		handleFilterGeneralBins,
-	} = useGeneralBins(eanOld);
+	const { getBinByRackIdBinId, mappedGeneralBinsForDropdown, handleFilterGeneralBins } = useGeneralBins(eanOld);
 
 	const { t } = useAppContext();
 	const [open, setOpen] = useState<boolean>(false);
@@ -69,13 +65,15 @@ const InputProductionScreen = ({ navigation }) => {
 					/>
 
 					<StyledInputLabel style={{ paddingTop: 16 }}>{t('EAN_OLD')}</StyledInputLabel>
-					<View style={{
-						width: '100%',
-						display: 'flex',
-						flexDirection: 'row',
-						justifyContent: 'space-between',
-						alignItems: 'flex-start',
-					}}>
+					<View
+						style={{
+							width: '100%',
+							display: 'flex',
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+							alignItems: 'flex-start',
+						}}
+					>
 						<StyledTextInput
 							minWidth={'60%'}
 							placeholder={t('EAN_OLD')}
@@ -85,20 +83,18 @@ const InputProductionScreen = ({ navigation }) => {
 							editable={true}
 							icon={null}
 						/>
-						<SecondaryStyledButton onPress={() => handleFilterGeneralBins(eanOld)} disabled={false}
-											   minWidth={'38%'} lastButton={true}>
+						<SecondaryStyledButton
+							onPress={() => handleFilterGeneralBins(eanOld)}
+							disabled={false}
+							minWidth={'38%'}
+							lastButton={true}
+						>
 							<SecondaryButtonText>{t('FILTER')}</SecondaryButtonText>
 						</SecondaryStyledButton>
 					</View>
-					<StyledButton
-						onPress={handleOk}
-						disabled={false}
-						minWidth={'100%'}
-						lastButton={true}
-					>
+					<StyledButton onPress={handleOk} disabled={false} minWidth={'100%'} lastButton={true}>
 						<ButtonText>{t('OK')}</ButtonText>
 					</StyledButton>
-
 				</InnerContainer>
 			</StyledContainer>
 		</KeyboardAvoidingWrapper>

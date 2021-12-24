@@ -3,7 +3,6 @@
  *  Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-
 class Bin {
 	public id: number = 0;
 	public rackId: number = 0;

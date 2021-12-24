@@ -65,16 +65,11 @@ export class Communicator extends BaseCommunicator {
 	}
 
 	public async setInternalOrdersReadyForPacking(plIds: number[]): Promise<void> {
-		return this.fetchData(
-			'api/vgg/setInternalOrdersReadyForPacking',
-			{},
-			plIds,
-			{
-				method: 'POST',
-				ignoreTokens: false,
-				contentType: 'application/json',
-			},
-		);
+		return this.fetchData('api/vgg/setInternalOrdersReadyForPacking', {}, plIds, {
+			method: 'POST',
+			ignoreTokens: false,
+			contentType: 'application/json',
+		});
 	}
 
 	public async updatePickListsStatus(pickListIds: number[], statusApproved: StatusApproved): Promise<void> {
@@ -167,16 +162,11 @@ export class Communicator extends BaseCommunicator {
 
 	public getGeneralBinsByStages(stages: number[]) {
 		return this.getActiveWhId().then((activeWarehouseId) => {
-			return this.fetchData(
-				`api/bins/getGeneralBinsByStages`,
-				{ warehouseId: activeWarehouseId },
-				stages,
-				{
-					method: 'POST',
-					ignoreTokens: false,
-					contentType: 'application/json',
-				},
-			);
+			return this.fetchData(`api/bins/getGeneralBinsByStages`, { warehouseId: activeWarehouseId }, stages, {
+				method: 'POST',
+				ignoreTokens: false,
+				contentType: 'application/json',
+			});
 		});
 	}
 
