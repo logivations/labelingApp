@@ -56,7 +56,7 @@ const ProductionScreen = ({ route, stackNavigation, drawerNavigator, ...rest }) 
 				<InnerContainer>
 					<Formik
 						enableReinitialize={true}
-						initialValues={{ eanOld: '', eanNew: '', sn: '' }}
+						initialValues={{ eanOld, eanNew, sn }}
 						onSubmit={async () => {
 							await fillProductionController.createDocument({ eanOld, eanNew, sn }, clearTextFields);
 						}}
@@ -130,8 +130,8 @@ const ProductionScreen = ({ route, stackNavigation, drawerNavigator, ...rest }) 
 
 									onSubmitEditing={async (value: NativeSyntheticEvent<TextInputFocusEventData>) => {
 										await fillProductionController.onSubmitEditing(
-											'eanNew',
 											'sn',
+											'eanOld',
 											value,
 											handleBlur,
 											async () => {

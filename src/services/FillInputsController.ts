@@ -55,23 +55,38 @@ class FillInputsController {
 		handleBlur(fieldName)(event);
 	}
 
-	private async handleChange(value: string, clearTextFields: Function): Promise<void> {
-		let valueWasSet = false;
-		this.fieldNames.forEach((fieldName) => {
-			if (!this.fields[fieldName] && !valueWasSet) {
-				this.fields[fieldName] = value;
-				this.setters[fieldName](value);
-				valueWasSet = true;
-			}
-		});
+	private handleChange(value: string, clearTextFields: Function): void {
+		// let valueWasSet = false;
+		// this.fieldNames.forEach((fieldName) => {
+		// 	if (!this.fields[fieldName] && !valueWasSet) {
+		// 		this.fields[fieldName] = value;
+		// 		console.log('fieldName, ', fieldName, value);
+		// 		this.setters[fieldName](value);
+		// 		valueWasSet = true;
+		// 	}
+		// });
+		// console.log('fieldNames', this.fields);
 
-		await this.createDocument(this.fields, clearTextFields);
+
+		if (!this.fields[this.fieldNames[0]]) {
+			this.fields[this.fieldNames[0]] = value;
+			this.setters[this.fieldNames[0]](value);
+		} else if (!this.fields[this.fieldNames[1]]) {
+			this.fields[this.fieldNames[1]] = value;
+			this.setters[this.fieldNames[1]](value);
+		} else if (!this.fields[this.fieldNames[2]]) {
+			this.fields[this.fieldNames[2]] = value;
+			this.setters[this.fieldNames[2]](value);
+		}
+
+
+		this.createDocument(this.fields, clearTextFields);
 	}
 
 	public createDocument(
 		fields: { [x: string]: string },
 		clearTextFields: Function,
-	): Promise<any> {
+	): Promise<void> {
 		return new Promise((resolve, reject) => {
 			if (Object.values(fields).every((field) => !!field) && !this.documentWasCreated) {
 				this.documentWasCreated = true;

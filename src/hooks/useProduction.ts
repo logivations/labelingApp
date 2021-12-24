@@ -12,6 +12,9 @@ const useProduction = (navigation: any) => {
 	const [eanNew, setEanNew] = useState<string>('');
 	const [sn, setSn] = useState<string>('');
 
+	console.log('eanOld', eanOld);
+	console.log('eanNew', eanNew);
+	console.log('sn', sn);
 	const eanOldRef = useRef(null);
 	const eanNewRef = useRef(null);
 	const snRef = useRef(null);
@@ -28,8 +31,7 @@ const useProduction = (navigation: any) => {
 	const createNewDocument = useCallback(async (info) => {
 		try {
 			console.log('info', info);
-			// await api.createNewDocument(info);
-			// Toast.show({ title: t('NVE_IS_ADDED'), color: Colors.green, timing: 5000 });
+
 		} catch (error) {
 			console.log('Error: ', error);
 			// getSoundAndPlay('warningAlarm');
@@ -38,8 +40,7 @@ const useProduction = (navigation: any) => {
 
 	const fillProductionController = useMemo(() => {
 		return new FillInputsController(
-			() => {
-			},
+			createNewDocument,
 			[eanOldRef, eanNewRef, snRef],
 			{ eanOld: setEanOld, eanNew: setEanNew, sn: setSn },
 			['eanOld', 'eanNew', 'sn'],

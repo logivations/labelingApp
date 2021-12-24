@@ -64,8 +64,8 @@ const LabelingScreen = ({ navigation }) => {
 											handleChange('nve')(value);
 										}
 									}}
-									onTextInput={async (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
-										await fillLabelingController.onTextInput(
+									onTextInput={(event: NativeSyntheticEvent<TextInputFocusEventData>) => {
+										fillLabelingController.onTextInput(
 											event.nativeEvent.text,
 											clearTextFields,
 										);

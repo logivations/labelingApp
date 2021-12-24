@@ -3,7 +3,7 @@
  *  Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
 	ButtonText,
 	Colors,
@@ -20,24 +20,24 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import useAppContext from '../context/AppContext';
 import { View } from 'react-native';
 import RouteNames from '../constants/route.names';
+import useGeneralBins from '../hooks/useGeneralBins';
 
 // @ts-ignore
 const InputProductionScreen = ({ navigation }) => {
-	const { getBinByRackIdBinId, t } = useAppContext();
+	const [eanOld, setEanOld] = useState<string>('');
+
+	const {
+		getBinByRackIdBinId,
+		mappedGeneralBinsForDropdown,
+		handleFilterGeneralBins,
+	} = useGeneralBins(eanOld);
+
+	const { t } = useAppContext();
 	const [open, setOpen] = useState<boolean>(false);
 	const [value, setValue] = useState<string>('');
 
-	const [items, setItems] = useState<any[]>([]);
-
-	useEffect(() => {
-		const allBins = getBinByRackIdBinId();
-		setItems(allBins);
-	}, []);
-	console.log('value', value);
-
 	const handleOk = useCallback(() => {
 		const selectedBin = getBinByRackIdBinId(...value.split('-'));
-		console.log('selectedBin', selectedBin);
 		navigation.navigate(RouteNames.PRODUCTION, { selectedBin });
 	}, [value]);
 
@@ -49,10 +49,9 @@ const InputProductionScreen = ({ navigation }) => {
 					<DropDownPicker
 						open={open}
 						value={value}
-						items={items}
+						items={mappedGeneralBinsForDropdown}
 						setOpen={setOpen}
 						setValue={setValue}
-						setItems={setItems}
 						searchable={true}
 						dropDownContainerStyle={{ borderColor: Colors.secondary }}
 						searchContainerStyle={{
@@ -80,10 +79,14 @@ const InputProductionScreen = ({ navigation }) => {
 						<StyledTextInput
 							minWidth={'60%'}
 							placeholder={t('EAN_OLD')}
-
+							value={eanOld}
+							onChangeText={(value: string) => setEanOld(value)}
+							blurOnSubmit={false}
+							editable={true}
+							icon={null}
 						/>
-						<SecondaryStyledButton onPress={() => {
-						}} disabled={false} minWidth={'38%'} lastButton={true}>
+						<SecondaryStyledButton onPress={() => handleFilterGeneralBins(eanOld)} disabled={false}
+											   minWidth={'38%'} lastButton={true}>
 							<SecondaryButtonText>{t('FILTER')}</SecondaryButtonText>
 						</SecondaryStyledButton>
 					</View>

@@ -7,7 +7,7 @@
 class Bin {
 	public id: number = 0;
 	public rackId: number = 0;
-	public text: string = '';
+	public text?: string = '';
 
 	constructor(bin: Bin) {
 		this.id = bin.id;
@@ -23,7 +23,11 @@ class Bin {
 		};
 	}
 
-	public getName(): string {
+	public equals(rackId: number | string, binId: number | string): boolean {
+		return this.getBinId() === Number(binId) && this.getRackId() === Number(rackId);
+	}
+
+	public getName(): string | undefined {
 		return this.text;
 	}
 

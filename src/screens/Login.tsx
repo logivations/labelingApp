@@ -45,7 +45,7 @@ const Login = ({ navigation }) => {
 
 	return (
 		<KeyboardAvoidingWrapper>
-			<StyledContainer>
+			<StyledContainer headerExist={false}>
 				<InnerContainer>
 					<PageTitle>{t('W2MO_SCANNER_APP')}</PageTitle>
 					<SubTitle>{t('LOG_IN_TO_CONTINUE')}</SubTitle>

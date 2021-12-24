@@ -3,54 +3,55 @@
  *  Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Communicator from '../api/Communicator';
 import Bin from '../models/Bin';
 
-const useGeneralBins = () => {
-	const mapBinToList = (bin: Bin) => ({ value: `${bin.rackId}-${bin.id}`, label: bin.text });
-
-	const [generalBins, setGeneralBins] = useState<Map<number, Map<number, Bin>>>(new Map());
+const useGeneralBins = (eanOld: string) => {
+	const [generalBins, setGeneralBins] = useState<Bin[]>([]);
 	const [allBins, setAllBins] = useState<Bin[]>([]);
 
 	useEffect(() => {
-		(async () => {
-			const bins = await Communicator.getGeneralBinsByStages([3, 4]).then((generalBinsByStage) => {
-				console.log('allBins', generalBinsByStage);
-				setAllBins(generalBinsByStage.map((bin: Bin) => ({
-					value: `${bin.rackId}-${bin.id}`,
-					label: bin.text,
-				})));
-				return generalBinsByStage.reduce((mappedBinsByRackId: Map<number, Map<number, Bin>>, bin: Bin) => {
-					if (mappedBinsByRackId.has(bin.rackId)) {
-						const binMap = mappedBinsByRackId.get(bin.rackId);
-						binMap?.set(bin.id, new Bin(bin));
-					} else {
-						const binMap = new Map();
-						binMap.set(bin.id, new Bin(bin));
-						mappedBinsByRackId.set(bin.rackId, binMap);
-					}
-					return mappedBinsByRackId;
-				}, new Map());
-			});
-
-			setGeneralBins(bins);
-		})();
+		Communicator.getGeneralBinsByStages([3, 4]).then((generalBinsByStage) => {
+			setAllBins(generalBinsByStage);
+			setGeneralBins(generalBinsByStage.map((generalBin: any) => new Bin(generalBin)));
+		});
 	}, []);
 
-
-	return useCallback((rackId?: number | string, binId?: number | string) => {
+	const getBinByRackIdBinId = useCallback((rackId?: number | string, binId?: number | string) => {
 		if (rackId && binId) {
-			if (generalBins.has(Number(rackId))) {
-				const rackBins = generalBins.get(Number(rackId));
-				return rackBins?.has(Number(binId)) ? rackBins.get(Number(binId)) : null;
-			} else {
-				return null;
-			}
+			return generalBins.find((bin) => bin.equals(rackId, binId)) || null;
 		} else {
-			return allBins;
+			return generalBins;
 		}
 	}, [generalBins, allBins]);
+
+	const handleFilterGeneralBins = useCallback((ean?: string) => {
+		if (ean) {
+			Communicator.getGeneralBinsWithStockByEAN(ean).then((filteredGeneralBinsData) => {
+				setGeneralBins(filteredGeneralBinsData.map((generalBin: any) => new Bin(generalBin)));
+			});
+		} else {
+			setGeneralBins(() => allBins.map((generalBin: any) => new Bin(generalBin)));
+		}
+	}, [allBins]);
+
+	useEffect(() => {
+		if (!eanOld) {
+			handleFilterGeneralBins();
+		}
+	}, [eanOld]);
+
+	const mappedGeneralBinsForDropdown = useMemo(() => {
+		return generalBins.map((bin: Bin) => ({ value: `${bin.rackId}-${bin.id}`, label: bin.text }));
+	}, [generalBins]);
+
+	return {
+		getBinByRackIdBinId,
+		generalBins,
+		mappedGeneralBinsForDropdown,
+		handleFilterGeneralBins,
+	};
 };
 
 export default useGeneralBins;

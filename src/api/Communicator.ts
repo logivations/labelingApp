@@ -22,9 +22,6 @@ export class Communicator extends BaseCommunicator {
 		super();
 		if (!Communicator.Instance) {
 			Communicator.Instance = this;
-			this.getActiveWhId().then((whId) => {
-				this.activeWarehouseId = whId;
-			});
 			super.setTokenService(new TokenService(this));
 		}
 		return Communicator.Instance;
@@ -119,7 +116,10 @@ export class Communicator extends BaseCommunicator {
 				ignoreTokens: false,
 				contentType: 'application/json',
 			},
-		);
+		).then((activeWarehouseId) => {
+			this.activeWarehouseId = activeWarehouseId;
+			return activeWarehouseId;
+		});
 	}
 
 	public getNvePrefixForCheck() {
@@ -173,6 +173,21 @@ export class Communicator extends BaseCommunicator {
 				stages,
 				{
 					method: 'POST',
+					ignoreTokens: false,
+					contentType: 'application/json',
+				},
+			);
+		});
+	}
+
+	public getGeneralBinsWithStockByEAN(ean: string) {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(
+				`api/bins/getGeneralBinsWithStockByEAN`,
+				{ warehouseId: activeWarehouseId, ean },
+				{},
+				{
+					method: 'GET',
 					ignoreTokens: false,
 					contentType: 'application/json',
 				},

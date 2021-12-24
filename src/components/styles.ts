@@ -66,7 +66,7 @@ export const SubTitle = styled(Text)`
 export const StyledFormArea = styled(View)`
 	width: 100%;
 `;
-export const StyledTextInput: React.FC<{ minWidth?: string, placeholder?: string }> = styled(TextInput)`
+export const StyledTextInput: React.FC<{ minWidth?: string, placeholder?: string, [key: string]: any }> = styled(TextInput)`
 	background-color: ${(props) => (!!props.disabled ? Colors.secondary : Colors.primary)};
 	border: 1px solid ${Colors.secondary}
 	padding: ${(props) => (props.authInput ? '0 0 0 40px' : '0 10px')};
