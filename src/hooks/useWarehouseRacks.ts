@@ -3,17 +3,15 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Communicator from '../api/Communicator';
-import useAppContext from '../context/AppContext';
 
 const useWarehouseRacks = () => {
-	const { setMappedRackById } = useAppContext();
+	const [mappedRackNameById, setMappedRackById] = useState<Map<number, string>>(new Map());
 
 	useEffect(() => {
 		(async () => {
-			const whId = await Communicator.getActiveWhId();
-			const allRacks = await Communicator.getAllRacks(whId);
+			const allRacks = await Communicator.getAllRacks();
 			const mappedRackNameById: Map<number, string> = allRacks.reduce((acc: Map<number, string>, rack: any) => {
 				acc.set(rack.rackId, rack.text);
 				return acc;
@@ -22,6 +20,8 @@ const useWarehouseRacks = () => {
 			setMappedRackById(mappedRackNameById);
 		})();
 	}, []);
+
+	return mappedRackNameById;
 };
 
 export default useWarehouseRacks;

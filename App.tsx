@@ -2,7 +2,7 @@
  * (C) Copyright
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
-
+import 'react-native-gesture-handler';
 import React from 'react';
 
 import RootStack from './src/navigators/RootStack';

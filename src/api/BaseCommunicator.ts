@@ -39,11 +39,16 @@ class BaseCommunicator {
 			const url = `${properties.host}:${properties.port}/${properties.contextPath}/anonymous/ping`;
 			return fetch(url, { method: 'GET' });
 		}
-		return this.fetchData(`anonymous/ping`, {}, {}, {
-			method: 'GET',
-			ignoreTokens: true,
-			contentType: 'application/json',
-		});
+		return this.fetchData(
+			`anonymous/ping`,
+			{},
+			{},
+			{
+				method: 'GET',
+				ignoreTokens: true,
+				contentType: 'application/json',
+			},
+		);
 	}
 
 	private runPingInterval(): void {
@@ -94,7 +99,6 @@ class BaseCommunicator {
 		const token = this.tokenService.getCashedTokens(STORAGE_KEYS.ACCESS_TOKEN);
 		const refreshToken = this.tokenService.getCashedTokens(STORAGE_KEYS.REFRESH_TOKEN);
 		const getHeaders = () => {
-
 			return Object.assign(
 				{
 					Accept: '*/*',
@@ -121,7 +125,6 @@ class BaseCommunicator {
 				cache: 'no-cache',
 				credentials: 'same-origin',
 				headers: getHeaders(),
-
 			},
 			cookie ? { Cookie: cookie } : {},
 			params.method === 'POST' ? { body: body instanceof FormData ? body : JSON.stringify(body) } : {},

@@ -6,16 +6,21 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import RouteNames from '../constants/route.names';
-import Labeling from '../screens/Labeling';
+import LabelingScreen from '../screens/LabelingScreen';
 import PickListsScreen from '../screens/PickListsScreen';
 
 const Stack = createNativeStackNavigator();
 
-const LabelingStack = () => {
+// @ts-ignore
+const LabelingStack = ({ navigation: drawerNavigator }) => {
 	return (
 		<Stack.Navigator initialRouteName={RouteNames.LABELING} screenOptions={{ headerShown: false }}>
-			<Stack.Screen name={RouteNames.LABELING} component={Labeling}/>
-			<Stack.Screen name={RouteNames.PICK_LISTS} component={PickListsScreen}/>
+			<Stack.Screen name={RouteNames.LABELING} component={LabelingScreen}/>
+			<Stack.Screen name={RouteNames.PICK_LISTS}>
+				{({ navigation: stackNavigation }) => (
+					<PickListsScreen stackNavigation={stackNavigation} drawerNavigator={drawerNavigator}/>
+				)}
+			</Stack.Screen>
 		</Stack.Navigator>
 	);
 };

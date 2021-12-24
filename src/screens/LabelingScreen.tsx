@@ -5,6 +5,7 @@
 import React, { SyntheticEvent } from 'react';
 
 import {
+	ButtonGroup,
 	ButtonText,
 	Colors,
 	InnerContainer,
@@ -19,15 +20,11 @@ import useAppContext from '../context/AppContext';
 import { Formik } from 'formik';
 import StyledTextInput from '../components/TextInput';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
-import useWarehouseRacks from '../hooks/useWarehouseRacks';
 import useLabeling from '../hooks/useLabeling';
 import { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
-import useAppAuthContext from '../context/AppAuthContext';
 
 // @ts-ignore
-const Labeling = ({ navigation }) => {
-	useWarehouseRacks();
-	const { authActions } = useAppAuthContext();
+const LabelingScreen = ({ navigation }) => {
 	const { t } = useAppContext();
 	const {
 		nve,
@@ -46,7 +43,7 @@ const Labeling = ({ navigation }) => {
 
 	return (
 		<KeyboardAvoidingWrapper>
-			<StyledContainer>
+			<StyledContainer headerExist={true}>
 				<InnerContainer>
 					<Formik
 						enableReinitialize={true}
@@ -67,11 +64,8 @@ const Labeling = ({ navigation }) => {
 											handleChange('nve')(value);
 										}
 									}}
-									onTextInput={async (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
-										await fillLabelingController.onTextInput(
-											event.nativeEvent.text,
-											clearTextFields,
-										);
+									onTextInput={(event: NativeSyntheticEvent<TextInputFocusEventData>) => {
+										fillLabelingController.onTextInput(event.nativeEvent.text, clearTextFields);
 									}}
 									onSubmitEditing={async (value: NativeSyntheticEvent<TextInputFocusEventData>) => {
 										await fillLabelingController.onSubmitEditing('nve', 'ean', value, handleBlur);
@@ -156,22 +150,25 @@ const Labeling = ({ navigation }) => {
 								{!ean && !!nve && (
 									<LabelingErrorMsgBox>{t('PLEASE_FILL_EAN_FIRST')}</LabelingErrorMsgBox>
 								)}
-
-								<StyledButton onPress={handleSubmit} disabled={!nve || !ean || !sn}>
-									<ButtonText>{t('OK')}</ButtonText>
-								</StyledButton>
-								<StyledButton onPress={readyForLoadingAction}>
-									<ButtonText>{t('READY_FOR_LOADING')}</ButtonText>
-								</StyledButton>
-								<SecondaryStyledButton onPress={clearTextFields} disabled={false}>
-									<SecondaryButtonText>{t('CLEAR')}</SecondaryButtonText>
-								</SecondaryStyledButton>
+								<ButtonGroup>
+									<SecondaryStyledButton onPress={clearTextFields} disabled={false} minWidth={'48%'}>
+										<SecondaryButtonText>{t('CLEAR')}</SecondaryButtonText>
+									</SecondaryStyledButton>
+									<StyledButton
+										onPress={handleSubmit}
+										disabled={!nve || !ean || !sn}
+										minWidth={'48%'}
+										lastButton={true}
+									>
+										<ButtonText>{t('OK')}</ButtonText>
+									</StyledButton>
+								</ButtonGroup>
 								<SecondaryStyledButton
-									onPress={async () => {
-										await authActions.signOut();
-									}}
+									onPress={readyForLoadingAction}
+									minWidth={'45%'}
+									lastButton={true}
 								>
-									<SecondaryButtonText>{t('LOGOUT')}</SecondaryButtonText>
+									<SecondaryButtonText>{t('READY_FOR_LOADING')}</SecondaryButtonText>
 								</SecondaryStyledButton>
 							</StyledFormArea>
 						)}
@@ -182,4 +179,4 @@ const Labeling = ({ navigation }) => {
 	);
 };
 
-export default Labeling;
+export default LabelingScreen;

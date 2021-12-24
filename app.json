@@ -3,7 +3,7 @@
     "name": "W2MO scanner app",
     "slug": "W2MO_scanner_app",
     "owner": "logivations_dev",
-    "version": "1.5.2",
+    "version": "1.5.4",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "splash": {

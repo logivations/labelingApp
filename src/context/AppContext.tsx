@@ -3,10 +3,11 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-import React, { Context, useContext, useState } from 'react';
+import React, { Context, useContext } from 'react';
 import usePlayAudio from '../hooks/useAudio';
 import useLanguage from '../hooks/useLanguage';
 import { TFunction } from 'i18next';
+import useWarehouseRacks from '../hooks/useWarehouseRacks';
 
 export const AppContext: Context<any> = React.createContext(null);
 
@@ -16,7 +17,7 @@ interface AppContextProviderParams {
 }
 
 export const AppContextProvider = ({ children, t }: AppContextProviderParams) => {
-	const [mappedRackNameById, setMappedRackById] = useState<Map<number, string>>(new Map());
+	const mappedRackNameById = useWarehouseRacks();
 
 	const getSoundAndPlay = usePlayAudio();
 	const activeLanguage = useLanguage();
@@ -24,7 +25,6 @@ export const AppContextProvider = ({ children, t }: AppContextProviderParams) =>
 	return (
 		<AppContext.Provider
 			value={{
-				setMappedRackById,
 				mappedRackNameById,
 				getSoundAndPlay,
 				activeLanguage,

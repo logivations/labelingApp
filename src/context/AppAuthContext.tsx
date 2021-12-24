@@ -23,12 +23,12 @@ export const AppAuthContextProvider = ({ children }) => {
 				case RESTORE_TOKEN:
 					return {
 						...prevState,
-						userToken: action.token,
+						userToken: action.userToken,
 						userRefreshToken: action.refreshToken,
 						isLoading: false,
 					};
 				case SIGN_IN:
-					return { ...prevState, userToken: action.token, userRefreshToken: action.refreshToken };
+					return { ...prevState, userToken: action.userToken, userRefreshToken: action.refreshToken };
 				case SIGN_OUT:
 					return { ...prevState, userToken: null, userRefreshToken: null };
 				default:
@@ -42,18 +42,18 @@ export const AppAuthContextProvider = ({ children }) => {
 		let userToken = null;
 		let userRefreshToken = null;
 		try {
-			TokenService.isTokensDatesExpired().then(async (isExpired) => {
+			await TokenService.isTokensDatesExpired().then(async (isExpired) => {
 				if (isExpired) {
+					await api.tokenService.removeTokens();
+				} else {
 					userToken = await getData(STORAGE_KEYS.ACCESS_TOKEN);
 					userRefreshToken = await getData(STORAGE_KEYS.REFRESH_TOKEN);
-				} else {
-					await api.tokenService.removeTokens();
 				}
 			});
 		} catch (e) {
 			console.log('RESTORE_TOKEN ERROR: ', e);
 		} finally {
-			dispatch({ type: RESTORE_TOKEN, token: userToken, refreshToken: userRefreshToken });
+			dispatch({ type: RESTORE_TOKEN, userToken: userToken, refreshToken: userRefreshToken });
 		}
 	}, []);
 
@@ -71,11 +71,12 @@ export const AppAuthContextProvider = ({ children }) => {
 			async signIn(username: string, password: string, setLoginErrorMessage: Function) {
 				try {
 					const tokensData = await api.login(username, password);
-					tokensData && setLoginErrorMessage(
+					tokensData &&
+					setLoginErrorMessage(
 						tokensData.hasOwnProperty('errorMessage') ? tokensData.errorMessage : null,
 					);
 
-					dispatch({ type: SIGN_IN, token: tokensData.token, refreshToken: tokensData.refreshToken });
+					dispatch({ type: SIGN_IN, userToken: tokensData.token, refreshToken: tokensData.refreshToken });
 				} catch (e) {
 					console.log('SIGN_IN ERROR: ', e);
 				}
@@ -88,7 +89,6 @@ export const AppAuthContextProvider = ({ children }) => {
 		}),
 		[],
 	);
-
 	return (
 		<AuthContext.Provider value={{ authState: state, authActions, checkIsUserLoggedIn }}>
 			{children}

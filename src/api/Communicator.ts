@@ -16,12 +16,12 @@ export interface ConnectionProperties {
 
 export class Communicator extends BaseCommunicator {
 	static Instance: Communicator;
+	public activeWarehouseId: number = 0;
 
 	constructor() {
 		super();
 		if (!Communicator.Instance) {
 			Communicator.Instance = this;
-
 			super.setTokenService(new TokenService(this));
 		}
 		return Communicator.Instance;
@@ -65,16 +65,11 @@ export class Communicator extends BaseCommunicator {
 	}
 
 	public async setInternalOrdersReadyForPacking(plIds: number[]): Promise<void> {
-		return this.fetchData(
-			'api/vgg/setInternalOrdersReadyForPacking',
-			{},
-			plIds,
-			{
-				method: 'POST',
-				ignoreTokens: false,
-				contentType: 'application/json',
-			},
-		);
+		return this.fetchData('api/vgg/setInternalOrdersReadyForPacking', {}, plIds, {
+			method: 'POST',
+			ignoreTokens: false,
+			contentType: 'application/json',
+		});
 	}
 
 	public async updatePickListsStatus(pickListIds: number[], statusApproved: StatusApproved): Promise<void> {
@@ -104,6 +99,9 @@ export class Communicator extends BaseCommunicator {
 	}
 
 	public getActiveWhId() {
+		if (this.activeWarehouseId) {
+			return Promise.resolve(this.activeWarehouseId);
+		}
 		return this.fetchData(
 			`api/vgg/getActiveWhId`,
 			{},
@@ -113,7 +111,10 @@ export class Communicator extends BaseCommunicator {
 				ignoreTokens: false,
 				contentType: 'application/json',
 			},
-		);
+		).then((activeWarehouseId) => {
+			this.activeWarehouseId = activeWarehouseId;
+			return activeWarehouseId;
+		});
 	}
 
 	public getNvePrefixForCheck() {
@@ -129,17 +130,59 @@ export class Communicator extends BaseCommunicator {
 		);
 	}
 
-	public getAllRacks(whId: number) {
-		return this.fetchData(
-			`api/layouts/${whId}/racks/`,
-			{},
-			{},
-			{
-				method: 'GET',
+	public getAllRacks() {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(
+				`api/layouts/${activeWarehouseId}/racks/`,
+				{},
+				{},
+				{
+					method: 'GET',
+					ignoreTokens: false,
+					contentType: 'application/json',
+				},
+			);
+		});
+	}
+
+	public getAllBins() {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(
+				`api/layouts/${activeWarehouseId}/bins/`,
+				{},
+				{},
+				{
+					method: 'GET',
+					ignoreTokens: false,
+					contentType: 'application/json',
+				},
+			);
+		});
+	}
+
+	public getGeneralBinsByStages(stages: number[]) {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(`api/bins/getGeneralBinsByStages`, { warehouseId: activeWarehouseId }, stages, {
+				method: 'POST',
 				ignoreTokens: false,
 				contentType: 'application/json',
-			},
-		);
+			});
+		});
+	}
+
+	public getGeneralBinsWithStockByEAN(ean: string) {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(
+				`api/bins/getGeneralBinsWithStockByEAN`,
+				{ warehouseId: activeWarehouseId, ean },
+				{},
+				{
+					method: 'GET',
+					ignoreTokens: false,
+					contentType: 'application/json',
+				},
+			);
+		});
 	}
 }
 

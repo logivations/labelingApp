@@ -1,4 +1,4 @@
-# Labeling App
+# LabelingScreen App
 
 ## Getting started
  ### For IOS and Android
@@ -16,6 +16,6 @@
  
 ## Setup app
  - Run W2MO project
- - Open "Settings" tab in Labeling App
+ - Open "Settings" tab in LabelingScreen App
  - Fill inputs with connection properties (host e.g. http://127.0.0.1, port e.g. 8080, context path e.g. whapp)
  - Log In with W2MO credentials

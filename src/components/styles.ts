@@ -27,9 +27,9 @@ export const Colors = {
 	},
 };
 
-export const StyledContainer = styled(View)`
+export const StyledContainer: React.FC<{ headerExist: boolean }> = styled(View)`
 	flex: 1;
-	padding-top: ${StatusBarHeight}px;
+	padding-top: ${(props) => (props.headerExist ? '16px' : `${StatusBarHeight}px`)};
 	background-color: ${Colors.primary};
 	position: relative;
 	height: ${Dimensions.get('window').height}px;
@@ -41,7 +41,7 @@ export const InnerContainer = styled(View)`
 	width: ${Dimensions.get('screen').width}px;
 	height: 100%;
 	align-items: flex-start;
-	padding: 0 30px;
+	padding: 0 16px;
 `;
 
 export const PageTitle = styled(Text)`
@@ -66,7 +66,7 @@ export const SubTitle = styled(Text)`
 export const StyledFormArea = styled(View)`
 	width: 100%;
 `;
-export const StyledTextInput = styled(TextInput)`
+export const StyledTextInput: React.FC<{ minWidth?: string, placeholder?: string, [key: string]: any }> = styled(TextInput)`
 	background-color: ${(props) => (!!props.disabled ? Colors.secondary : Colors.primary)};
 	border: 1px solid ${Colors.secondary}
 	padding: ${(props) => (props.authInput ? '0 0 0 40px' : '0 10px')};
@@ -76,7 +76,7 @@ export const StyledTextInput = styled(TextInput)`
 	margin-vertical: 0px;
 	margin-bottom: 10px;
 	color: ${Colors.tertiary};
-	min-width: ${(props) => (props.minWidth ? props.minWidth + 'px' : 'auto')};
+	min-width: ${(props) => (props.minWidth ? props.minWidth : 'auto')};
 `;
 
 export const StyledInputLabel = styled(Text)`
@@ -115,7 +115,15 @@ export const StyledButton: React.FC<{ [key: string]: any }> = styled(TouchableOp
 	border-radius: 4px;
 	margin-bottom: 10px;
 	height: 38px;
-	min-width: ${(props) => (props.minWidth ? props.minWidth + 'px' : 'auto')};
+	min-width: ${(props) => (props.minWidth ? props.minWidth : 'auto')};
+`;
+
+export const ButtonGroup = styled(View)`
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
 `;
 
 export const SecondaryStyledButton = styled(StyledButton)`

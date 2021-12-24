@@ -9,7 +9,7 @@ import RouteNames from '../constants/route.names';
 // @ts-ignore
 import { Toast } from 'popup-ui';
 import useAppContext from '../context/AppContext';
-import FillLabelingController from '../services/FillLabelingController';
+import FillInputsController from '../services/FillInputsController';
 import useCheckNvePrefix from './useCheckNvePrefix';
 import { Colors } from '../components/styles';
 
@@ -50,7 +50,12 @@ const useLabeling = (navigation: any): any => {
 	}, []);
 
 	const fillLabelingController = useMemo(() => {
-		return new FillLabelingController(setNve, setEan, setSn, createNewDocument, { nveRef, eanRef, snRef });
+		return new FillInputsController(
+			createNewDocument,
+			[nveRef, eanRef, snRef],
+			{ nve: setNve, ean: setEan, sn: setSn },
+			['nve', 'ean', 'sn'],
+		);
 	}, [setNve, setEan, setSn]);
 
 	const clearTextFields = useCallback(() => {
