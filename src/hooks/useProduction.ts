@@ -12,9 +12,6 @@ const useProduction = (navigation: any) => {
 	const [eanNew, setEanNew] = useState<string>('');
 	const [sn, setSn] = useState<string>('');
 
-	console.log('eanOld', eanOld);
-	console.log('eanNew', eanNew);
-	console.log('sn', sn);
 	const eanOldRef = useRef(null);
 	const eanNewRef = useRef(null);
 	const snRef = useRef(null);

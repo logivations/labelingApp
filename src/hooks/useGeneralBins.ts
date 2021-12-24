@@ -12,7 +12,8 @@ const useGeneralBins = (eanOld: string) => {
 	const [allBins, setAllBins] = useState<Bin[]>([]);
 
 	useEffect(() => {
-		Communicator.getGeneralBinsByStages([3, 4]).then((generalBinsByStage) => {
+		const stages = { third: 3, fourth: 4 };
+		Communicator.getGeneralBinsByStages([stages.third, stages.fourth]).then((generalBinsByStage) => {
 			setAllBins(generalBinsByStage);
 			setGeneralBins(generalBinsByStage.map((generalBin: any) => new Bin(generalBin)));
 		});
@@ -43,9 +44,7 @@ const useGeneralBins = (eanOld: string) => {
 	);
 
 	useEffect(() => {
-		if (!eanOld) {
-			handleFilterGeneralBins();
-		}
+		!eanOld && handleFilterGeneralBins();
 	}, [eanOld]);
 
 	const mappedGeneralBinsForDropdown = useMemo(() => {
