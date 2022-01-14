@@ -36,5 +36,10 @@
   "SETTINGS": "Settings",
   "SHIPMENT_TYPE": "Shipm. type",
   "SCANNING_OUTBOUND": "Scanning Outbound",
-  "SIGN_IN": "Sign in"
+  "SIGN_IN": "Sign in",
+  "WELCOME_TO": "Welcome to",
+  "PLEASE_CHOOSE_THE_MODE": "Please, choose the mode",
+  "LABELING_MODE": "Labeling mode",
+  "PRODUCTION_MODE": "Production mode",
+  "FILTER": "Filter"
 }

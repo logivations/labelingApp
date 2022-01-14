@@ -71,7 +71,11 @@ const ModeDrawerStack = () => {
 			}}
 			drawerContent={(props: { [key: string]: any }) => <CustomDrawerContent {...props} />}
 		>
-			<Drawer.Screen name={RouteNames.HOME} component={HomeScreen} options={{ title: t('HOME') }}/>
+			<Drawer.Screen
+				name={RouteNames.HOME}
+				component={HomeScreen}
+				options={{ title: t('HOME') }}
+			/>
 			<Drawer.Screen
 				name={RouteNames.LABELING_STACK}
 				component={LabelingStack}

@@ -45,7 +45,7 @@ export const InnerContainer = styled(View)`
 `;
 
 export const PageTitle = styled(Text)`
-	font-size: 36px;
+	font-size: 32px;
 	text-align: center;
 	width: 100%;
 	font-weight: 700;
@@ -216,3 +216,4 @@ export const FlagButton: React.FC<{ [key: string]: any }> = styled(TouchableOpac
 export const FlagWrapper = styled(View)`
 	padding: 5px;
 `;
+
