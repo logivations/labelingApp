@@ -127,7 +127,9 @@ class BaseCommunicator {
 				headers: getHeaders(),
 			},
 			cookie ? { Cookie: cookie } : {},
-			params.method === 'POST' ? { body: body instanceof FormData ? body : JSON.stringify(body) } : {},
+			params.method === 'POST' || params.method === 'PUT'
+				? { body: body instanceof FormData ? body : JSON.stringify(body) }
+				: {},
 		);
 	}
 

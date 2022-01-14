@@ -64,6 +64,15 @@ export class Communicator extends BaseCommunicator {
 		});
 	}
 
+	public async confirmProductionMode(info: any): Promise<string | undefined> {
+		console.log('info', info);
+		return this.fetchData('api/vgg/confirmProductionMode', {}, info, {
+			method: 'PUT',
+			ignoreTokens: false,
+			contentType: 'application/json',
+		});
+	}
+
 	public async setInternalOrdersReadyForPacking(plIds: number[]): Promise<void> {
 		return this.fetchData('api/vgg/setInternalOrdersReadyForPacking', {}, plIds, {
 			method: 'POST',

@@ -21,8 +21,9 @@ import { Formik } from 'formik';
 import useProduction from '../hooks/useProduction';
 
 // @ts-ignore
-const ProductionScreen = ({ route, stackNavigation, drawerNavigator, ...rest }) => {
+const ProductionScreen = ({ route, stackNavigation, drawerNavigator }) => {
 	const { t } = useAppContext();
+	const { selectedBin } = route.params;
 
 	const {
 		eanOld,
@@ -38,9 +39,8 @@ const ProductionScreen = ({ route, stackNavigation, drawerNavigator, ...rest }) 
 		createNewDocument,
 		readyForProductionAction,
 		fillProductionController,
-	} = useProduction(stackNavigation);
+	} = useProduction(stackNavigation, selectedBin);
 
-	const { selectedBin } = route.params;
 
 	useLayoutEffect(() => {
 		stackNavigation.setOptions({ headerShown: true, title: t('PRODUCTION') });
@@ -58,7 +58,12 @@ const ProductionScreen = ({ route, stackNavigation, drawerNavigator, ...rest }) 
 						enableReinitialize={true}
 						initialValues={{ eanOld, eanNew, sn }}
 						onSubmit={async () => {
-							await fillProductionController.createDocument({ eanOld, eanNew, sn }, clearTextFields);
+							console.log('_1selectedBin', selectedBin);
+							await fillProductionController.createDocument(
+								{ eanOld, eanNew, sn },
+								clearTextFields,
+								selectedBin,
+							);
 						}}
 					>
 						{({ handleChange, handleSubmit, handleBlur, values }) => (
@@ -98,8 +103,8 @@ const ProductionScreen = ({ route, stackNavigation, drawerNavigator, ...rest }) 
 									placeholder={t('EAN_NEW')}
 									placeholderTextColor={Colors.darkLight}
 									onChangeText={(value: string) => {
-										if (Math.abs(value.length - values.eanOld.length) === 1) {
-											setEanOld(value);
+										if (Math.abs(value.length - values.eanNew.length) === 1) {
+											setEanNew(value);
 											handleChange('eanNew')(value);
 										}
 									}}
@@ -126,8 +131,8 @@ const ProductionScreen = ({ route, stackNavigation, drawerNavigator, ...rest }) 
 									placeholder={'SN'}
 									placeholderTextColor={Colors.darkLight}
 									onChangeText={(value: string) => {
-										if (Math.abs(value.length - values.eanOld.length) === 1) {
-											setEanOld(value);
+										if (Math.abs(value.length - values.sn.length) === 1) {
+											setSn(value);
 											handleChange('sn')(value);
 										}
 									}}

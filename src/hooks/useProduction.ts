@@ -6,8 +6,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import RouteNames from '../constants/route.names';
 import FillInputsController from '../services/FillInputsController';
+import api from '../api/Communicator';
+import Bin from '../models/Bin';
+import { Colors } from '../components/styles';
+// @ts-ignore
+import { Toast } from 'popup-ui';
+import useAppContext from '../context/AppContext';
 
-const useProduction = (navigation: any) => {
+const useProduction = (navigation: any, selectedBin: Bin) => {
+	const { t } = useAppContext();
+
 	const [eanOld, setEanOld] = useState<string>('');
 	const [eanNew, setEanNew] = useState<string>('');
 	const [sn, setSn] = useState<string>('');
@@ -27,8 +35,15 @@ const useProduction = (navigation: any) => {
 
 	const createNewDocument = useCallback(async (info) => {
 		try {
-			console.log('info', info);
-			//TODO add confirm action
+			console.log('selectedBin', selectedBin);
+			await api.confirmProductionMode({
+				rackId: selectedBin.getRackId(),
+				binId: selectedBin.getBinId(),
+				newEan: info.eanNew,
+				oldEan: info.eanOld,
+				sn: info.sn,
+			});
+			Toast.show({ title: t('PROCESSED_SUCCESSFULLY'), color: Colors.green, timing: 5000 });
 		} catch (error) {
 			console.log('Error: ', error);
 		}

@@ -3,7 +3,7 @@
     "name": "W2MO scanner app",
     "slug": "W2MO_scanner_app",
     "owner": "logivations_dev",
-    "version": "1.5.4",
+    "version": "1.6.0",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "splash": {
@@ -38,12 +38,12 @@
     ],
     "ios": {
       "bundleIdentifier": "com.logivations.labelingapp",
-      "buildNumber": "1.5.2",
+      "buildNumber": "1.6.0",
       "supportsTablet": true
     },
     "android": {
       "package": "com.logivations.labelingapp",
-      "versionCode": 8,
+      "versionCode": 16,
       "adaptiveIcon": {
         "foregroundImage": "./assets/app-icon.png",
         "backgroundColor": "#FFFFFF"

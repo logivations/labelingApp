@@ -4,6 +4,7 @@
  ******************************************************************************/
 
 import { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
+import Bin from '../models/Bin';
 
 class FillInputsController {
 	private readonly setters: { [key: string]: Function };
@@ -65,13 +66,13 @@ class FillInputsController {
 		this.createDocument(this.fields, clearTextFields);
 	}
 
-	public createDocument(fields: { [x: string]: string }, clearTextFields: Function): Promise<void> {
+	public createDocument(fields: { [x: string]: string }, clearTextFields: Function, selectedBin?: Bin): Promise<void> {
 		return new Promise((resolve, reject) => {
 			if (Object.values(fields).every((field) => !!field) && !this.documentWasCreated) {
 				this.documentWasCreated = true;
 				setTimeout(async () => {
 					try {
-						await this.createNewDocument(fields);
+						await this.createNewDocument(fields, selectedBin);
 						resolve();
 					} catch (error) {
 						reject(error);
