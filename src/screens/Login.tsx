@@ -51,7 +51,7 @@ const Login = ({ navigation }) => {
 					<SubTitle>{t('LOG_IN_TO_CONTINUE')}</SubTitle>
 
 					<Formik
-						initialValues={{ email: 'forklift', password: 'forklift' }}
+						initialValues={{ email: '', password: '' }}
 						onSubmit={async (val) => {
 							await authActions.signIn(val.email, val.password, setLoginErrorMessage);
 						}}
