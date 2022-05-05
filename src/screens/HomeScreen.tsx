@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation: drawerNavigator }) => {
 			<StyledContainer headerExist={true}>
 				<InnerContainer style={styles.container}>
 					<View style={styles.iconContainer}>
-						<ScannerIcon/>
+						<ScannerIcon />
 					</View>
 					<View>
 						<Text style={styles.subTitle}>{t('WELCOME_TO')}:</Text>
@@ -52,6 +52,23 @@ const HomeScreen = ({ navigation: drawerNavigator }) => {
 									<ButtonText>{t('PRODUCTION_MODE')}</ButtonText>
 								</StyledButton>
 							</ButtonGroup>
+							<ButtonGroup>
+								<StyledButton
+									onPress={() => drawerNavigator.navigate(RouteNames.BARCODE_ASSIGNMENT_STACK)}
+									disabled={false}
+									minWidth={'48%'}
+								>
+									<ButtonText>{t('BARCODE_ASSIGNMENT')}</ButtonText>
+								</StyledButton>
+								<StyledButton
+									onPress={() => drawerNavigator.navigate(RouteNames.PRODUCT_STOCK_STACK)}
+									disabled={false}
+									minWidth={'48%'}
+									lastButton={true}
+								>
+									<ButtonText>{t('PRODUCT_STOCK')}</ButtonText>
+								</StyledButton>
+							</ButtonGroup>
 						</View>
 					</View>
 				</InnerContainer>
@@ -59,7 +76,6 @@ const HomeScreen = ({ navigation: drawerNavigator }) => {
 		</KeyboardAvoidingWrapper>
 	);
 };
-
 
 const styles = StyleSheet.create({
 	container: {
@@ -86,6 +102,5 @@ const styles = StyleSheet.create({
 		marginTop: 30,
 	},
 });
-
 
 export default HomeScreen;

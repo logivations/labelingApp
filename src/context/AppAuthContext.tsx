@@ -72,9 +72,9 @@ export const AppAuthContextProvider = ({ children }) => {
 				try {
 					const tokensData = await api.login(username, password);
 					tokensData &&
-					setLoginErrorMessage(
-						tokensData.hasOwnProperty('errorMessage') ? tokensData.errorMessage : null,
-					);
+						setLoginErrorMessage(
+							tokensData.hasOwnProperty('errorMessage') ? tokensData.errorMessage : null,
+						);
 
 					dispatch({ type: SIGN_IN, userToken: tokensData.token, refreshToken: tokensData.refreshToken });
 				} catch (e) {

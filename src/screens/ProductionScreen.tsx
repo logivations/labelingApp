@@ -41,7 +41,6 @@ const ProductionScreen = ({ route, stackNavigation, drawerNavigator }) => {
 		fillProductionController,
 	} = useProduction(stackNavigation, selectedBin);
 
-
 	useLayoutEffect(() => {
 		stackNavigation.setOptions({ headerShown: true, title: t('PRODUCTION') });
 		drawerNavigator.setOptions({ headerShown: false });

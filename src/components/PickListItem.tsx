@@ -2,7 +2,6 @@
  * (C) Copyright
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
-// @ts-ignore-file
 
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
@@ -21,11 +20,11 @@ import useAppContext from '../context/AppContext';
 const IconByStatus = ({ status }: { status: PicklistScanStatus }) => {
 	switch (status) {
 		case PicklistScanStatus.READY_FOR_LOADING:
-			return <CheckIcon/>;
+			return <CheckIcon />;
 		case PicklistScanStatus.NOT_FOUND:
-			return <CrossIcon/>;
+			return <CrossIcon />;
 		case PicklistScanStatus.NOT_COMPLETE:
-			return <WarnIcon/>;
+			return <WarnIcon />;
 	}
 };
 
@@ -37,7 +36,7 @@ const PickListItem: React.FC<Picklist> = ({ picklistId, rampName, shipmentType, 
 			isVisible={showTip}
 			content={
 				<TooltipContainer>
-					<IconByStatus status={scanStatus}/>
+					<IconByStatus status={scanStatus} />
 					<TooltipText>{t(PicklistScanStatus[scanStatus])}</TooltipText>
 				</TooltipContainer>
 			}
@@ -63,7 +62,7 @@ const PickListItem: React.FC<Picklist> = ({ picklistId, rampName, shipmentType, 
 						<Text>{ShipmentType[shipmentType]}</Text>
 					</View>
 					<View style={styles.status}>
-						<IconByStatus status={scanStatus}/>
+						<IconByStatus status={scanStatus} />
 					</View>
 				</ListItemWrapper>
 			</TouchableHighlight>

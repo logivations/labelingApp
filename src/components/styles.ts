@@ -66,15 +66,20 @@ export const SubTitle = styled(Text)`
 export const StyledFormArea = styled(View)`
 	width: 100%;
 `;
-export const StyledTextInput: React.FC<{ minWidth?: string, placeholder?: string, [key: string]: any }> = styled(TextInput)`
+export const StyledTextInput: React.FC<{
+	minWidth?: string;
+	isInvalid?: boolean;
+	placeholder?: string;
+	[key: string]: any;
+}> = styled(TextInput)`
 	background-color: ${(props) => (!!props.disabled ? Colors.secondary : Colors.primary)};
-	border: 1px solid ${Colors.secondary}
+	border: 1px solid ${(props) => (props.isInvalid ? Colors.red : Colors.secondary)};
 	padding: ${(props) => (props.authInput ? '0 0 0 40px' : '0 10px')};
 	border-radius: 4px;
 	font-size: 16px;
 	height: 38px;
 	margin-vertical: 0px;
-	margin-bottom: 10px;
+	margin-bottom: ${(props) => (props.marginBottom ? props.marginBottom : '10px')};
 	color: ${Colors.tertiary};
 	min-width: ${(props) => (props.minWidth ? props.minWidth : 'auto')};
 `;
@@ -113,7 +118,7 @@ export const StyledButton: React.FC<{ [key: string]: any }> = styled(TouchableOp
 	justify-content: center;
 	align-items: center;
 	border-radius: 4px;
-	margin-bottom: 10px;
+	margin-bottom: ${(props) => (props.marginBottom ? props.marginBottom : '10px')};
 	height: 38px;
 	min-width: ${(props) => (props.minWidth ? props.minWidth : 'auto')};
 `;
@@ -132,8 +137,8 @@ export const SecondaryStyledButton = styled(StyledButton)`
 `;
 
 export const ButtonText = styled(Text)`
-	color: ${Colors.primary};
-	font-size: 16px;
+	color: ${({ color }: { color?: string }) => color || Colors.primary};
+	font-size: ${({ fontSize, color }: { fontSize?: string; color?: string }) => fontSize || '16px'};
 `;
 
 export const SecondaryButtonText = styled(Text)`
@@ -181,8 +186,8 @@ export const ListItemWrapper = styled(View)`
 	margin: 5px 10px;
 	border: 1.5px solid
 		${({ scanStatus }: { scanStatus: PicklistScanStatus }) => {
-	return getColorByStatus(scanStatus);
-}};
+			return getColorByStatus(scanStatus);
+		}};
 	border-left-width: 6px;
 	border-radius: 4px;
 	height: 38px;
@@ -217,3 +222,10 @@ export const FlagWrapper = styled(View)`
 	padding: 5px;
 `;
 
+export const HorizontalLine = styled(View)`
+	border-bottom-color: #c4c4c4;
+	border-bottom-width: 1px;
+	width: 100%;
+	padding-top: 16px;
+	margin-bottom: 8px;
+`;

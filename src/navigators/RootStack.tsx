@@ -13,12 +13,14 @@ import useAppContext from '../context/AppContext';
 
 const RootStack: React.FC = () => {
 	const { t } = useAppContext();
-	const { authState: { userToken } } = useAppAuthContext();
+	const {
+		authState: { userToken },
+	} = useAppAuthContext();
 	return (
 		<NavigationContainer>
 			{
 				<Suspense fallback={<Text>{t('LOADING')}...</Text>}>
-					{userToken === null ? <TabStackScreen/> : <ModeDrawerStack/>}
+					{userToken === null ? <TabStackScreen /> : <ModeDrawerStack />}
 				</Suspense>
 			}
 		</NavigationContainer>
