@@ -31,10 +31,6 @@ const CreateStockRecordScreen = ({ navigation, route }) => {
 	const [open, setOpen] = useState<boolean>(false);
 	const productId = useMemo(() => route.params.productId, [route.params]);
 
-	// const [multiplier, setMultiplier] = useState(1);
-	// const [isQuantityValid, setQuantityValid] = useState('');
-	//
-
 	const dropDownData = useMemo(() => {
 		return [...mappedRacksById.values()].reduce((acc, rack) => {
 			const bins = [...rack.bins.values()].map((bin) => ({
@@ -54,14 +50,6 @@ const CreateStockRecordScreen = ({ navigation, route }) => {
 		});
 	}, [mappedRacksById]);
 
-	// const newQuantityValue = useMemo(() => +quantityValue * multiplier, [multiplier, quantityValue]);
-	// const checkValidation = useCallback((quantity: number) => {
-	// 	const isValid = (() => {
-	// 		if (multiplier === 1) return Math.abs(+quantityValue + quantity) > JAVA_INT_MAX_VALUE;
-	// 		if (multiplier === -1) return +quantityValue > quantity;
-	// 	})();
-	// 	setQuantityValid(isValid);
-	// }, [multiplier]);
 	return (
 		<KeyboardAvoidingWrapper>
 			<StyledContainer headerExist={true}>
