@@ -14,12 +14,12 @@ const LanguageSelect = () => {
 		<LanguageContainer>
 			<FlagButton isActive={activeLanguage === 'en'} onPress={() => i18next.changeLanguage('en')}>
 				<FlagWrapper>
-					<EnglandFlag/>
+					<EnglandFlag />
 				</FlagWrapper>
 			</FlagButton>
 			<FlagButton isActive={activeLanguage === 'de'} onPress={() => i18next.changeLanguage('de')}>
 				<FlagWrapper>
-					<GermanFlag/>
+					<GermanFlag />
 				</FlagWrapper>
 			</FlagButton>
 		</LanguageContainer>

@@ -13,8 +13,6 @@ import { Colors } from '../components/styles';
 class BaseCommunicator {
 	public tokenService!: TokenService;
 	private readonly connectionProperties: ConnectionProperties = { host: '', port: '', contextPath: '' };
-	static signOut: Function = () => {
-	};
 
 	constructor() {
 		getData(STORAGE_KEYS.CONNECTION_PROPERTIES).then((result: string) => {
@@ -34,6 +32,12 @@ class BaseCommunicator {
 		);
 	}
 
+	private get serverUrl(): string {
+		return `${this.connectionProperties.host}:${this.connectionProperties.port}/${this.connectionProperties.contextPath}`;
+	}
+
+	static signOut: Function = () => {};
+
 	public ping(properties?: ConnectionProperties) {
 		if (properties) {
 			const url = `${properties.host}:${properties.port}/${properties.contextPath}/anonymous/ping`;
@@ -49,20 +53,6 @@ class BaseCommunicator {
 				contentType: 'application/json',
 			},
 		);
-	}
-
-	private runPingInterval(): void {
-		setInterval(async () => {
-			await this.ping();
-		}, 60000);
-	}
-
-	protected setTokenService(tokenService: TokenService) {
-		this.tokenService = tokenService;
-	}
-
-	private get serverUrl(): string {
-		return `${this.connectionProperties.host}:${this.connectionProperties.port}/${this.connectionProperties.contextPath}`;
 	}
 
 	public saveConnectionProperties(properties: ConnectionProperties) {
@@ -85,52 +75,8 @@ class BaseCommunicator {
 		);
 	}
 
-	private getUrlByContextPath(path: string): string {
-		return `${this.serverUrl}/${path}`;
-	}
-
-	private getUrlWithQueryParameters(path: string, query: object): string {
-		const queryParams = new URLSearchParams();
-		Object.entries(query).forEach(([key, value]) => queryParams.append(key, value));
-		return `${this.getUrlByContextPath(path)}${queryParams.toString() && `?${queryParams.toString()}`}`;
-	}
-
-	private getConfig(params: { [key: string]: any }, body: any): object {
-		const token = this.tokenService.getCashedTokens(STORAGE_KEYS.ACCESS_TOKEN);
-		const refreshToken = this.tokenService.getCashedTokens(STORAGE_KEYS.REFRESH_TOKEN);
-		const getHeaders = () => {
-			return Object.assign(
-				{
-					Accept: '*/*',
-					Connection: 'keep-alive',
-					'Content-Type': params.contentType,
-					'Access-Control-Allow-Methods': 'POST, GET',
-					'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, X-Requested-With',
-				},
-				token ? { Authorization: token } : {},
-				refreshToken ? { Refresh: refreshToken } : {},
-			);
-		};
-		const cookie = (() => {
-			let baseCookie = '';
-			token && (baseCookie += `Authorization=${token}; `);
-			refreshToken && (baseCookie += `Refresh=${refreshToken}; `);
-			return baseCookie;
-		})();
-
-		return Object.assign(
-			{
-				method: params.method,
-				mode: 'cors',
-				cache: 'no-cache',
-				credentials: 'same-origin',
-				headers: getHeaders(),
-			},
-			cookie ? { Cookie: cookie } : {},
-			params.method === 'POST' || params.method === 'PUT'
-				? { body: body instanceof FormData ? body : JSON.stringify(body) }
-				: {},
-		);
+	protected setTokenService(tokenService: TokenService) {
+		this.tokenService = tokenService;
 	}
 
 	protected async fetchData(
@@ -185,6 +131,60 @@ class BaseCommunicator {
 				);
 			});
 		});
+	}
+
+	private runPingInterval(): void {
+		setInterval(async () => {
+			await this.ping();
+		}, 60000);
+	}
+
+	private getUrlByContextPath(path: string): string {
+		return `${this.serverUrl}/${path}`;
+	}
+
+	private getUrlWithQueryParameters(path: string, query: object): string {
+		const queryParams = new URLSearchParams();
+		Object.entries(query).forEach(([key, value]) => queryParams.append(key, value));
+		return `${this.getUrlByContextPath(path)}${queryParams.toString() && `?${queryParams.toString()}`}`;
+	}
+
+	private getConfig(params: { [key: string]: any }, body: any): object {
+		const token = this.tokenService.getCashedTokens(STORAGE_KEYS.ACCESS_TOKEN);
+		const refreshToken = this.tokenService.getCashedTokens(STORAGE_KEYS.REFRESH_TOKEN);
+		const getHeaders = () => {
+			return Object.assign(
+				{
+					Accept: '*/*',
+					Connection: 'keep-alive',
+					'Content-Type': params.contentType,
+					'Access-Control-Allow-Methods': 'POST, GET',
+					'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, X-Requested-With',
+				},
+				token ? { Authorization: token } : {},
+				refreshToken ? { Refresh: refreshToken } : {},
+			);
+		};
+		const cookie = (() => {
+			let baseCookie = '';
+			token && (baseCookie += `Authorization=${token}; `);
+			refreshToken && (baseCookie += `Refresh=${refreshToken}; `);
+			return baseCookie;
+		})();
+
+		return Object.assign(
+			{
+				method: params.method,
+				mode: 'cors',
+				cache: 'no-cache',
+				credentials: 'same-origin',
+				headers: getHeaders(),
+			},
+			cookie ? { Cookie: cookie } : {},
+			params.method === 'POST' || params.method === 'PUT'
+				? { body: body instanceof FormData ? body : JSON.stringify(body) }
+				: {},
+		);
 	}
 }
 

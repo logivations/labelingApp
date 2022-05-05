@@ -17,7 +17,7 @@ interface AppContextProviderParams {
 }
 
 export const AppContextProvider = ({ children, t }: AppContextProviderParams) => {
-	const mappedRackNameById = useWarehouseRacks();
+	const mappedRacksById = useWarehouseRacks();
 
 	const getSoundAndPlay = usePlayAudio();
 	const activeLanguage = useLanguage();
@@ -25,7 +25,7 @@ export const AppContextProvider = ({ children, t }: AppContextProviderParams) =>
 	return (
 		<AppContext.Provider
 			value={{
-				mappedRackNameById,
+				mappedRacksById,
 				getSoundAndPlay,
 				activeLanguage,
 				t,

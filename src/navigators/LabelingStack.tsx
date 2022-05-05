@@ -15,10 +15,10 @@ const Stack = createNativeStackNavigator();
 const LabelingStack = ({ navigation: drawerNavigator }) => {
 	return (
 		<Stack.Navigator initialRouteName={RouteNames.LABELING} screenOptions={{ headerShown: false }}>
-			<Stack.Screen name={RouteNames.LABELING} component={LabelingScreen}/>
+			<Stack.Screen name={RouteNames.LABELING} component={LabelingScreen} />
 			<Stack.Screen name={RouteNames.PICK_LISTS}>
 				{({ navigation: stackNavigation }) => (
-					<PickListsScreen stackNavigation={stackNavigation} drawerNavigator={drawerNavigator}/>
+					<PickListsScreen stackNavigation={stackNavigation} drawerNavigator={drawerNavigator} />
 				)}
 			</Stack.Screen>
 		</Stack.Navigator>

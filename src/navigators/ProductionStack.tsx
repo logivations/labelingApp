@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 const ProductionStack = ({ navigation: drawerNavigator }) => {
 	return (
 		<Stack.Navigator initialRouteName={RouteNames.INPUT_PRODUCTION} screenOptions={{ headerShown: false }}>
-			<Stack.Screen name={RouteNames.INPUT_PRODUCTION} component={InputProductionScreen}/>
+			<Stack.Screen name={RouteNames.INPUT_PRODUCTION} component={InputProductionScreen} />
 			<Stack.Screen name={RouteNames.PRODUCTION}>
 				{({ navigation: stackNavigation, ...rest }) => (
 					<ProductionScreen stackNavigation={stackNavigation} drawerNavigator={drawerNavigator} {...rest} />

@@ -65,7 +65,6 @@ export class Communicator extends BaseCommunicator {
 	}
 
 	public async confirmProductionMode(info: any): Promise<string | undefined> {
-		console.log('info', info);
 		return this.fetchData('api/vgg/confirmProductionMode', {}, info, {
 			method: 'PUT',
 			ignoreTokens: false,
@@ -187,6 +186,91 @@ export class Communicator extends BaseCommunicator {
 				{},
 				{
 					method: 'GET',
+					ignoreTokens: false,
+					contentType: 'application/json',
+				},
+			);
+		});
+	}
+
+	public getFilteredProductsWithOffset(offset = 0, limit = 200, name?: string, description?: string) {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(
+				`api/products/getFilteredProductsWithOffset`,
+				{ warehouseId: activeWarehouseId, offset, limit, name, description },
+				{},
+				{
+					method: 'GET',
+					ignoreTokens: false,
+					contentType: 'application/json',
+				},
+			);
+		});
+	}
+
+	public createProduct(product: { [key: string]: any }) {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(`api/products/insertProduct`, { warehouseId: activeWarehouseId }, product, {
+				method: 'POST',
+				ignoreTokens: false,
+				contentType: 'application/json',
+			});
+		});
+	}
+
+	public updateProductEanCode(productId: number, eanCode: string) {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(
+				`api/products/updateProductEanCode`,
+				{ warehouseId: activeWarehouseId, productId, eanCode },
+				{},
+				{
+					method: 'GET',
+					ignoreTokens: false,
+					contentType: 'application/json',
+				},
+			);
+		});
+	}
+
+	public getProductIdsByEanCode(eanCode: string) {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(
+				`api/products/getProductIdsByEanCode`,
+				{ warehouseId: activeWarehouseId, eanCode },
+				{},
+				{
+					method: 'GET',
+					ignoreTokens: false,
+					contentType: 'application/json',
+				},
+			);
+		});
+	}
+
+	public getStockSummaryByEanGroupedByRackBin(eanCode: string) {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(
+				`api/stockLevel/getStockSummaryByEanGroupedByRackBin`,
+				{ warehouseId: activeWarehouseId, eanCode },
+				{},
+				{
+					method: 'GET',
+					ignoreTokens: false,
+					contentType: 'application/json',
+				},
+			);
+		});
+	}
+
+	public createNewStockLevelRecord(productId: number, rackId: number, binId: number, quantity: number) {
+		return this.getActiveWhId().then((activeWarehouseId) => {
+			return this.fetchData(
+				`api/stockLevel/addStockLevelRecord`,
+				{ warehouseId: activeWarehouseId, productId, rackId, binId, quantity },
+				{},
+				{
+					method: 'POST',
 					ignoreTokens: false,
 					contentType: 'application/json',
 				},

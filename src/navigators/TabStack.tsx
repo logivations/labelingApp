@@ -27,7 +27,7 @@ const TabStackScreen: React.FC = () => {
 							: route.name === RouteNames.SETTINGS
 							? 'settings-outline'
 							: 'key';
-					return <Ionicons name={iconName} size={size} color={color}/>;
+					return <Ionicons name={iconName} size={size} color={color} />;
 				},
 				headerStyle: { backgroundColor: 'transparent' },
 				headerTintColor: Colors.tertiary,
@@ -37,8 +37,8 @@ const TabStackScreen: React.FC = () => {
 				tabBarStyle: { position: 'absolute' },
 			})}
 		>
-			<Tabs.Screen name={RouteNames.LOGIN} component={Login}/>
-			<Tabs.Screen name={RouteNames.SETTINGS} component={Settings}/>
+			<Tabs.Screen name={RouteNames.LOGIN} component={Login} />
+			<Tabs.Screen name={RouteNames.SETTINGS} component={Settings} />
 		</Tabs.Navigator>
 	);
 };

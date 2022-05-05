@@ -7,15 +7,13 @@ import { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 import Bin from '../models/Bin';
 
 class FillInputsController {
+	public isManualInput: boolean = false;
 	private readonly setters: { [key: string]: Function };
-	private readonly createNewDocument: Function = () => {
-	};
 	private readonly refs: { [key: string]: any };
 	private fields: { [key: string]: string };
 
 	private documentWasCreated: boolean = false;
 	private fieldNames: string[] = [];
-	public isManualInput: boolean = false;
 
 	constructor(createNewDocument: Function, refs: any[], setters: { [key: string]: Function }, fieldNames: string[]) {
 		this.setters = setters;
@@ -51,22 +49,11 @@ class FillInputsController {
 		handleBlur(fieldName)(event);
 	}
 
-	private handleChange(value: string, clearTextFields: Function): void {
-		if (!this.fields[this.fieldNames[0]]) {
-			this.fields[this.fieldNames[0]] = value;
-			this.setters[this.fieldNames[0]](value);
-		} else if (!this.fields[this.fieldNames[1]]) {
-			this.fields[this.fieldNames[1]] = value;
-			this.setters[this.fieldNames[1]](value);
-		} else if (!this.fields[this.fieldNames[2]]) {
-			this.fields[this.fieldNames[2]] = value;
-			this.setters[this.fieldNames[2]](value);
-		}
-
-		this.createDocument(this.fields, clearTextFields);
-	}
-
-	public createDocument(fields: { [x: string]: string }, clearTextFields: Function, selectedBin?: Bin): Promise<void> {
+	public createDocument(
+		fields: { [x: string]: string },
+		clearTextFields: Function,
+		selectedBin?: Bin,
+	): Promise<void> {
 		return new Promise((resolve, reject) => {
 			if (Object.values(fields).every((field) => !!field) && !this.documentWasCreated) {
 				this.documentWasCreated = true;
@@ -89,6 +76,23 @@ class FillInputsController {
 	public clearFields(): void {
 		this.fields = this.fieldNames.reduce((acc, fieldName, index) => ({ ...acc, [fieldName]: '' }), {});
 		this.documentWasCreated = false;
+	}
+
+	private readonly createNewDocument: Function = () => {};
+
+	private handleChange(value: string, clearTextFields: Function): void {
+		if (!this.fields[this.fieldNames[0]]) {
+			this.fields[this.fieldNames[0]] = value;
+			this.setters[this.fieldNames[0]](value);
+		} else if (!this.fields[this.fieldNames[1]]) {
+			this.fields[this.fieldNames[1]] = value;
+			this.setters[this.fieldNames[1]](value);
+		} else if (!this.fields[this.fieldNames[2]]) {
+			this.fields[this.fieldNames[2]] = value;
+			this.setters[this.fieldNames[2]](value);
+		}
+
+		this.createDocument(this.fields, clearTextFields);
 	}
 }
 

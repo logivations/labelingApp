@@ -125,7 +125,7 @@ const Settings = ({ navigation }) => {
 							);
 						}}
 					</Formik>
-					<LanguageSelect/>
+					<LanguageSelect />
 				</InnerContainer>
 			</StyledContainer>
 		</KeyboardAvoidingWrapper>

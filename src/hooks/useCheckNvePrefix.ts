@@ -27,8 +27,7 @@ const useCheckNvePrefix = () => {
 	}, []);
 
 	return useCallback(
-		(nveValue, successCallback = () => {
-		}) => {
+		(nveValue, successCallback = () => {}) => {
 			if (nvePrefixesForCheck.some((prefixForCheck) => nveValue.startsWith(prefixForCheck)) || !nveValue) {
 				successCallback && successCallback();
 			} else {

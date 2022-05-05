@@ -15,7 +15,7 @@ import { StatusApproved } from '../enums';
 
 // @ts-ignore
 const PickListsScreen = ({ stackNavigation, drawerNavigator }) => {
-	const { mappedRackNameById, t } = useAppContext();
+	const { mappedRacksById, t } = useAppContext();
 	const [PLList, setPLList] = useState<PickList[]>([]);
 
 	useLayoutEffect(() => {
@@ -32,7 +32,7 @@ const PickListsScreen = ({ stackNavigation, drawerNavigator }) => {
 							await api.updatePickListsStatus(readyForLoadingPicklistsIds, StatusApproved.SCANNED);
 							await updatePickLists();
 						} catch (error) {
-							console.log('Error:', error);
+							console.error('Error:', error);
 						}
 					}}
 				>
@@ -62,7 +62,7 @@ const PickListsScreen = ({ stackNavigation, drawerNavigator }) => {
 							(picklist: any) =>
 								new PickList({
 									...picklist,
-									rampName: mappedRackNameById.get(picklist.ramp),
+									rampName: mappedRacksById.get(picklist.ramp).text,
 									scanStatus: PicklistScanStatus[picklistScanStatus],
 								}),
 						),
@@ -73,7 +73,7 @@ const PickListsScreen = ({ stackNavigation, drawerNavigator }) => {
 
 			setPLList(allPicklists);
 		} catch (error) {
-			console.log('Error: ', error);
+			console.error('Error: ', error);
 		}
 	}, []);
 

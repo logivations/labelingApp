@@ -35,7 +35,6 @@ const useProduction = (navigation: any, selectedBin: Bin) => {
 
 	const createNewDocument = useCallback(async (info) => {
 		try {
-			console.log('selectedBin', selectedBin);
 			await api.confirmProductionMode({
 				rackId: selectedBin.getRackId(),
 				binId: selectedBin.getBinId(),
@@ -45,7 +44,7 @@ const useProduction = (navigation: any, selectedBin: Bin) => {
 			});
 			Toast.show({ title: t('PROCESSED_SUCCESSFULLY'), color: Colors.green, timing: 5000 });
 		} catch (error) {
-			console.log('Error: ', error);
+			console.error('Processing error: ', error);
 		}
 	}, []);
 

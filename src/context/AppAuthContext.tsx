@@ -51,7 +51,7 @@ export const AppAuthContextProvider = ({ children }) => {
 				}
 			});
 		} catch (e) {
-			console.log('RESTORE_TOKEN ERROR: ', e);
+			console.error('Restore token error: ', e);
 		} finally {
 			dispatch({ type: RESTORE_TOKEN, userToken: userToken, refreshToken: userRefreshToken });
 		}
@@ -72,13 +72,13 @@ export const AppAuthContextProvider = ({ children }) => {
 				try {
 					const tokensData = await api.login(username, password);
 					tokensData &&
-					setLoginErrorMessage(
-						tokensData.hasOwnProperty('errorMessage') ? tokensData.errorMessage : null,
-					);
+						setLoginErrorMessage(
+							tokensData.hasOwnProperty('errorMessage') ? tokensData.errorMessage : null,
+						);
 
 					dispatch({ type: SIGN_IN, userToken: tokensData.token, refreshToken: tokensData.refreshToken });
 				} catch (e) {
-					console.log('SIGN_IN ERROR: ', e);
+					console.error('Sign in: ', e);
 				}
 			},
 			async signOut() {
