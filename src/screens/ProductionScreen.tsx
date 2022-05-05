@@ -57,7 +57,6 @@ const ProductionScreen = ({ route, stackNavigation, drawerNavigator }) => {
 						enableReinitialize={true}
 						initialValues={{ eanOld, eanNew, sn }}
 						onSubmit={async () => {
-							console.log('_1selectedBin', selectedBin);
 							await fillProductionController.createDocument(
 								{ eanOld, eanNew, sn },
 								clearTextFields,

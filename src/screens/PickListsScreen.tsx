@@ -32,7 +32,7 @@ const PickListsScreen = ({ stackNavigation, drawerNavigator }) => {
 							await api.updatePickListsStatus(readyForLoadingPicklistsIds, StatusApproved.SCANNED);
 							await updatePickLists();
 						} catch (error) {
-							console.log('Error:', error);
+							console.error('Error:', error);
 						}
 					}}
 				>
@@ -73,7 +73,7 @@ const PickListsScreen = ({ stackNavigation, drawerNavigator }) => {
 
 			setPLList(allPicklists);
 		} catch (error) {
-			console.log('Error: ', error);
+			console.error('Error: ', error);
 		}
 	}, []);
 

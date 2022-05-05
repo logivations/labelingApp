@@ -24,7 +24,6 @@ import Communicator from '../api/Communicator';
 import { Toast } from 'popup-ui';
 
 const valueValidation = (value: number, charsBeforeComma: number): boolean => {
-	console.log('value', value);
 	const [valBeforeComma, valAfterComma] = String(value).split(',');
 	return valAfterComma
 		? valBeforeComma.length < charsBeforeComma && valAfterComma.length < 5
@@ -82,7 +81,6 @@ const CreateProductScreen = ({ route, navigation }) => {
 						onSubmit={async () => {
 							try {
 								const createdProduct = await Communicator.createProduct(parsedProduct);
-								console.log('createdProduct', createdProduct);
 								DeviceEventEmitter.emit('setSelectedProduct', createdProduct);
 								Toast.show({
 									title: t('PRODUCT_CREATED_SUCCESSFULLY'),
@@ -96,7 +94,6 @@ const CreateProductScreen = ({ route, navigation }) => {
 						}}
 					>
 						{({ errors, handleChange, handleSubmit, handleBlur, values }) => {
-							console.log('errors', errors);
 							return (
 								<StyledFormArea>
 									<StyledTextInput

@@ -219,7 +219,6 @@ export class Communicator extends BaseCommunicator {
 	}
 
 	public updateProductEanCode(productId: number, eanCode: string) {
-		console.log('productId', productId);
 		return this.getActiveWhId().then((activeWarehouseId) => {
 			return this.fetchData(
 				`api/products/updateProductEanCode`,
