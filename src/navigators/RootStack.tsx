@@ -17,13 +17,9 @@ const RootStack: React.FC = () => {
 		authState: { userToken },
 	} = useAppAuthContext();
 	return (
-		<NavigationContainer>
-			{
-				<Suspense fallback={<Text>{t('LOADING')}...</Text>}>
-					{userToken === null ? <TabStackScreen /> : <ModeDrawerStack />}
-				</Suspense>
-			}
-		</NavigationContainer>
+		<Suspense fallback={<Text>{t('LOADING')}...</Text>}>
+			<NavigationContainer>{userToken === null ? <TabStackScreen /> : <ModeDrawerStack />}</NavigationContainer>
+		</Suspense>
 	);
 };
 

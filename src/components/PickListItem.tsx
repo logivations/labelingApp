@@ -3,19 +3,17 @@
  * Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
 
-import React, { useState } from 'react';
-import { Platform, StatusBar, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import Picklist from '../models/Picklist';
-import { Colors, getColorByStatus, ListItemWrapper, TooltipContainer, TooltipText } from './styles';
+import { Colors, ListItemWrapper } from './styles';
 import { PicklistScanStatus, ShipmentType } from '../enums';
-import Tooltip from 'react-native-walkthrough-tooltip';
 // @ts-ignore
 import CheckIcon from './../../assets/icons/circle-check-icon.svg';
 // @ts-ignore
 import CrossIcon from './../../assets/icons/circle-cross-icon.svg';
 // @ts-ignore
 import WarnIcon from './../../assets/icons/circle-warning-icon.svg';
-import useAppContext from '../context/AppContext';
 
 const IconByStatus = ({ status }: { status: PicklistScanStatus }) => {
 	switch (status) {
@@ -29,44 +27,23 @@ const IconByStatus = ({ status }: { status: PicklistScanStatus }) => {
 };
 
 const PickListItem: React.FC<Picklist> = ({ picklistId, rampName, shipmentType, scanStatus }) => {
-	const [showTip, setTip] = useState<boolean>(false);
-	const { t } = useAppContext();
 	return (
-		<Tooltip
-			isVisible={showTip}
-			content={
-				<TooltipContainer>
+		<TouchableHighlight activeOpacity={0.4} underlayColor={Colors.primary}>
+			<ListItemWrapper scanStatus={scanStatus}>
+				<View style={styles.picklistId}>
+					<Text>{picklistId}</Text>
+				</View>
+				<View style={styles.rampName}>
+					<Text>{rampName}</Text>
+				</View>
+				<View style={styles.shipmentType}>
+					<Text>{ShipmentType[shipmentType]}</Text>
+				</View>
+				<View style={styles.status}>
 					<IconByStatus status={scanStatus} />
-					<TooltipText>{t(PicklistScanStatus[scanStatus])}</TooltipText>
-				</TooltipContainer>
-			}
-			placement="top"
-			onClose={() => setTip(false)}
-			disableShadow={true}
-			backgroundColor={'none'}
-			topAdjustment={Platform.OS === 'android' ? -(StatusBar.currentHeight || 0) + 15 : 15}
-			showChildInTooltip={false}
-			contentStyle={{ borderColor: getColorByStatus(scanStatus), borderWidth: 1 }}
-			arrowStyle={{ display: 'none' }}
-			displayInsets={{ top: 0, bottom: 0, left: 0, right: 0 }}
-		>
-			<TouchableHighlight activeOpacity={0.4} underlayColor={Colors.primary} onPress={() => setTip(true)}>
-				<ListItemWrapper scanStatus={scanStatus}>
-					<View style={styles.picklistId}>
-						<Text>{picklistId}</Text>
-					</View>
-					<View style={styles.rampName}>
-						<Text>{rampName}</Text>
-					</View>
-					<View style={styles.shipmentType}>
-						<Text>{ShipmentType[shipmentType]}</Text>
-					</View>
-					<View style={styles.status}>
-						<IconByStatus status={scanStatus} />
-					</View>
-				</ListItemWrapper>
-			</TouchableHighlight>
-		</Tooltip>
+				</View>
+			</ListItemWrapper>
+		</TouchableHighlight>
 	);
 };
 

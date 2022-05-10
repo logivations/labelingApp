@@ -2,8 +2,8 @@
  *  (C) Copyright
  *  Logivations GmbH, Munich 2010-2021
  ******************************************************************************/
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import {
 	ButtonGroup,
 	ButtonText,
@@ -22,58 +22,60 @@ import RouteNames from '../constants/route.names';
 const HomeScreen = ({ navigation: drawerNavigator }) => {
 	const { t } = useAppContext();
 	return (
-		<KeyboardAvoidingWrapper>
-			<StyledContainer headerExist={true}>
-				<InnerContainer style={styles.container}>
-					<View style={styles.iconContainer}>
-						<ScannerIcon />
-					</View>
-					<View>
-						<Text style={styles.subTitle}>{t('WELCOME_TO')}:</Text>
-						<PageTitle style={styles.title}>{t('W2MO_SCANNER_APP')}</PageTitle>
-					</View>
-					<View>
-						<Text style={styles.subTitle}>{t('PLEASE_CHOOSE_THE_MODE')}:</Text>
-						<View style={styles.buttonGroupContainer}>
-							<ButtonGroup>
-								<StyledButton
-									onPress={() => drawerNavigator.navigate(RouteNames.LABELING_STACK)}
-									disabled={false}
-									minWidth={'48%'}
-								>
-									<ButtonText>{t('LABELING_MODE')}</ButtonText>
-								</StyledButton>
-								<StyledButton
-									onPress={() => drawerNavigator.navigate(RouteNames.PRODUCTION_STACK)}
-									disabled={false}
-									minWidth={'48%'}
-									lastButton={true}
-								>
-									<ButtonText>{t('PRODUCTION_MODE')}</ButtonText>
-								</StyledButton>
-							</ButtonGroup>
-							<ButtonGroup>
-								<StyledButton
-									onPress={() => drawerNavigator.navigate(RouteNames.BARCODE_ASSIGNMENT_STACK)}
-									disabled={false}
-									minWidth={'48%'}
-								>
-									<ButtonText>{t('BARCODE_ASSIGNMENT')}</ButtonText>
-								</StyledButton>
-								<StyledButton
-									onPress={() => drawerNavigator.navigate(RouteNames.PRODUCT_STOCK_STACK)}
-									disabled={false}
-									minWidth={'48%'}
-									lastButton={true}
-								>
-									<ButtonText>{t('PRODUCT_STOCK')}</ButtonText>
-								</StyledButton>
-							</ButtonGroup>
+		<>
+			<KeyboardAvoidingWrapper>
+				<StyledContainer headerExist={true}>
+					<InnerContainer style={styles.container}>
+						<View style={styles.iconContainer}>
+							<ScannerIcon />
 						</View>
-					</View>
-				</InnerContainer>
-			</StyledContainer>
-		</KeyboardAvoidingWrapper>
+						<View>
+							<Text style={styles.subTitle}>{t('WELCOME_TO')}:</Text>
+							<PageTitle style={styles.title}>{t('W2MO_SCANNER_APP')}</PageTitle>
+						</View>
+						<View>
+							<Text style={styles.subTitle}>{t('PLEASE_CHOOSE_THE_MODE')}:</Text>
+							<View style={styles.buttonGroupContainer}>
+								<ButtonGroup>
+									<StyledButton
+										onPress={() => drawerNavigator.navigate(RouteNames.LABELING_STACK)}
+										disabled={false}
+										minWidth={'48%'}
+									>
+										<ButtonText>{t('LABELING_MODE')}</ButtonText>
+									</StyledButton>
+									<StyledButton
+										onPress={() => drawerNavigator.navigate(RouteNames.PRODUCTION_STACK)}
+										disabled={false}
+										minWidth={'48%'}
+										lastButton={true}
+									>
+										<ButtonText>{t('PRODUCTION_MODE')}</ButtonText>
+									</StyledButton>
+								</ButtonGroup>
+								<ButtonGroup>
+									<StyledButton
+										onPress={() => drawerNavigator.navigate(RouteNames.BARCODE_ASSIGNMENT_STACK)}
+										disabled={false}
+										minWidth={'48%'}
+									>
+										<ButtonText>{t('BARCODE_ASSIGNMENT')}</ButtonText>
+									</StyledButton>
+									<StyledButton
+										onPress={() => drawerNavigator.navigate(RouteNames.PRODUCT_STOCK_STACK)}
+										disabled={false}
+										minWidth={'48%'}
+										lastButton={true}
+									>
+										<ButtonText>{t('PRODUCT_STOCK')}</ButtonText>
+									</StyledButton>
+								</ButtonGroup>
+							</View>
+						</View>
+					</InnerContainer>
+				</StyledContainer>
+			</KeyboardAvoidingWrapper>
+		</>
 	);
 };
 
