@@ -13,8 +13,9 @@ import {
 import useAppContext from '../context/AppContext';
 import LabelingStack from './LabelingStack';
 import RouteNames from '../constants/route.names';
-import Animated from 'react-native-reanimated';
-import { Dimensions, View } from 'react-native';
+// @ts-ignore
+import Animated, { AnimatedNode } from 'react-native-reanimated';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { SecondaryButtonText, SecondaryStyledButton } from '../components/styles';
 import useAppAuthContext from '../context/AppAuthContext';
 import Constants from 'expo-constants';
@@ -37,15 +38,7 @@ const CustomDrawerContent = ({ ...rest }: { [key: string]: any }) => {
 
 	return (
 		<DrawerContentScrollView {...rest} style={{ height: '100%' }}>
-			<Animated.View
-				style={{
-					transform: [{ translateX }],
-					position: 'relative',
-					display: 'flex',
-					justifyContent: 'space-between',
-					height: Dimensions.get('screen').height - Constants.statusBarHeight - 50,
-				}}
-			>
+			<Animated.View style={style(translateX).animate}>
 				<View>
 					<DrawerItemList navigation={rest.navigation} state={rest.state} descriptors={rest.descriptors} />
 				</View>
@@ -62,40 +55,53 @@ const CustomDrawerContent = ({ ...rest }: { [key: string]: any }) => {
 const ModeDrawerStack = () => {
 	const { t } = useAppContext();
 	return (
-		<Drawer.Navigator
-			initialRouteName={RouteNames.HOME}
-			useLegacyImplementation
-			screenOptions={{
-				drawerStyle: { width: '75%' },
-				drawerActiveBackgroundColor: '#8DBF4C',
-				drawerActiveTintColor: '#EDF5E3',
-				keyboardDismissMode: 'none',
-			}}
-			drawerContent={(props: { [key: string]: any }) => <CustomDrawerContent {...props} />}
-		>
-			<Drawer.Screen name={RouteNames.HOME} component={HomeScreen} options={{ title: t('HOME') }} />
-			<Drawer.Screen
-				name={RouteNames.LABELING_STACK}
-				component={LabelingStack}
-				options={{ title: t('SCANNING') }}
-			/>
-			<Drawer.Screen
-				name={RouteNames.PRODUCTION_STACK}
-				component={ProductionStack}
-				options={{ title: t('PRODUCTION') }}
-			/>
-			<Drawer.Screen
-				name={RouteNames.BARCODE_ASSIGNMENT_STACK}
-				component={BarcodeAssignmentStack}
-				options={{ title: t('BARCODE_ASSIGNMENT') }}
-			/>
-			<Drawer.Screen
-				name={RouteNames.PRODUCT_STOCK_STACK}
-				component={ProductStockStack}
-				options={{ title: t('PRODUCT_STOCK') }}
-			/>
-		</Drawer.Navigator>
+		<>
+			<Drawer.Navigator
+				initialRouteName={RouteNames.HOME}
+				useLegacyImplementation
+				screenOptions={{
+					drawerStyle: { width: '75%' },
+					drawerActiveBackgroundColor: '#8DBF4C',
+					drawerActiveTintColor: '#EDF5E3',
+					keyboardDismissMode: 'none',
+				}}
+				drawerContent={(props: { [key: string]: any }) => <CustomDrawerContent {...props} />}
+			>
+				<Drawer.Screen name={RouteNames.HOME} component={HomeScreen} options={{ title: t('HOME') }} />
+				<Drawer.Screen
+					name={RouteNames.LABELING_STACK}
+					component={LabelingStack}
+					options={{ title: t('SCANNING') }}
+				/>
+				<Drawer.Screen
+					name={RouteNames.PRODUCTION_STACK}
+					component={ProductionStack}
+					options={{ title: t('PRODUCTION') }}
+				/>
+				<Drawer.Screen
+					name={RouteNames.BARCODE_ASSIGNMENT_STACK}
+					component={BarcodeAssignmentStack}
+					options={{ title: t('BARCODE_ASSIGNMENT') }}
+				/>
+				<Drawer.Screen
+					name={RouteNames.PRODUCT_STOCK_STACK}
+					component={ProductStockStack}
+					options={{ title: t('PRODUCT_STOCK') }}
+				/>
+			</Drawer.Navigator>
+		</>
 	);
 };
+
+const style = (translateX: AnimatedNode<number>) =>
+	StyleSheet.create({
+		animate: {
+			transform: [{ translateX }],
+			position: 'relative',
+			display: 'flex',
+			justifyContent: 'space-between',
+			height: Dimensions.get('screen').height - Constants.statusBarHeight - 50,
+		},
+	});
 
 export default ModeDrawerStack;
