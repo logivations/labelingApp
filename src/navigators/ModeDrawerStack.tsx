@@ -54,7 +54,6 @@ const CustomDrawerContent = ({ ...rest }: { [key: string]: any }) => {
 
 const ModeDrawerStack = () => {
 	const { t } = useAppContext();
-	console.log('HomeScreen', HomeScreen);
 	return (
 		<>
 			<Drawer.Navigator
