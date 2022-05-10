@@ -44,10 +44,10 @@ const CreateStockRecordScreen = ({ navigation, route }) => {
 	const defaultRackBin = useMemo(() => {
 		const defaultRack = [...mappedRacksById.values()].reduce((rackWithLowestPickPriority, rack) => {
 			return rackWithLowestPickPriority.pickPriority < rack.pickPriority ? rackWithLowestPickPriority : rack;
-		});
+		}, {});
 		return [...defaultRack.bins.values()].reduce((binWithLowestSequence, bin) => {
 			return binWithLowestSequence.sequence < bin.sequence ? binWithLowestSequence : bin;
-		});
+		}, {});
 	}, [mappedRacksById]);
 
 	return (
